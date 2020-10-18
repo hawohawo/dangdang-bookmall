@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dangdang.bookmall.order.dao.ReceiveDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.dangdang.bookmall.order.entity.ReceiveEntity" id="receiveMap">
+        <result property="id" column="id"/>
+        <result property="receiveName" column="receive_name"/>
+        <result property="receiveTel" column="receive_tel"/>
+        <result property="receiveAddr" column="receive_addr"/>
+        <result property="postal" column="postal"/>
+    </resultMap>
+
+
+</mapper>
