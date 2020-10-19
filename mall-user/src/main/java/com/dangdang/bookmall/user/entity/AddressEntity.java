@@ -12,7 +12,7 @@ import lombok.Data;
  * 
  * @author zengyuzhi
  * @email shbyku@gmail.com
- * @date 2020-10-19 16:49:34
+ * @date 2020-10-19 17:09:29
  */
 @Data
 @TableName("umt_address")
@@ -36,6 +36,10 @@ public class AddressEntity implements Serializable {
 	 * 
 	 */
 	private String phone;
+	/**
+	 * 
+	 */
+	private String address;
 	/**
 	 * 
 	 */
