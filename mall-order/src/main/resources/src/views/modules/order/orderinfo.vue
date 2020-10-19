@@ -137,6 +137,12 @@
         label="自动收货时间">
       </el-table-column>
       <el-table-column
+        prop="userId"
+        header-align="center"
+        align="center"
+        label="">
+      </el-table-column>
+      <el-table-column
         fixed="right"
         header-align="center"
         align="center"

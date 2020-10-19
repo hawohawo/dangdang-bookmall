@@ -58,6 +58,9 @@
     <el-form-item label="自动收货时间" prop="autorecive">
       <el-input v-model="dataForm.autorecive" placeholder="自动收货时间"></el-input>
     </el-form-item>
+    <el-form-item label="" prop="userId">
+      <el-input v-model="dataForm.userId" placeholder=""></el-input>
+    </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -90,7 +93,8 @@
           freight: '',
           discountScore: '',
           discountCoupon: '',
-          autorecive: ''
+          autorecive: '',
+          userId: ''
         },
         dataRule: {
           code: [
@@ -146,6 +150,9 @@
           ],
           autorecive: [
             { required: true, message: '自动收货时间不能为空', trigger: 'blur' }
+          ],
+          userId: [
+            { required: true, message: '不能为空', trigger: 'blur' }
           ]
         }
       }
@@ -181,6 +188,7 @@
                 this.dataForm.discountScore = data.orderinfo.discountScore
                 this.dataForm.discountCoupon = data.orderinfo.discountCoupon
                 this.dataForm.autorecive = data.orderinfo.autorecive
+                this.dataForm.userId = data.orderinfo.userId
               }
             })
           }
@@ -212,7 +220,8 @@
                 'freight': this.dataForm.freight,
                 'discountScore': this.dataForm.discountScore,
                 'discountCoupon': this.dataForm.discountCoupon,
-                'autorecive': this.dataForm.autorecive
+                'autorecive': this.dataForm.autorecive,
+                'userId': this.dataForm.userId
               })
             }).then(({data}) => {
               if (data && data.code === 0) {
