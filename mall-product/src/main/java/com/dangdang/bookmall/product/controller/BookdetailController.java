@@ -22,7 +22,7 @@ import com.dangdang.common.utils.R;
  *
  * @author zengyuzhi
  * @email shbyku@gmail.com
- * @date 2020-10-17 19:56:33
+ * @date 2020-10-19 16:51:28
  */
 @RestController
 @RequestMapping("product/bookdetail")

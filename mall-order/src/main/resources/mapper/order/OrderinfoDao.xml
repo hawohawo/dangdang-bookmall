@@ -24,6 +24,7 @@
         <result property="discountScore" column="discount_score"/>
         <result property="discountCoupon" column="discount_coupon"/>
         <result property="autorecive" column="autorecive"/>
+        <result property="userId" column="user_id"/>
     </resultMap>
 
 

@@ -13,7 +13,7 @@ import lombok.Data;
  * 
  * @author zengyuzhi
  * @email shbyku@gmail.com
- * @date 2020-10-17 20:58:04
+ * @date 2020-10-19 16:50:45
  */
 @Data
 @TableName("omt_bookinfo")

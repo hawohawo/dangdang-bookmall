@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 
  * @author zengyuzhi
  * @email shbyku@gmail.com
- * @date 2020-10-17 20:59:59
+ * @date 2020-10-19 16:49:33
  */
 @Mapper
 public interface UserDao extends BaseMapper<UserEntity> {

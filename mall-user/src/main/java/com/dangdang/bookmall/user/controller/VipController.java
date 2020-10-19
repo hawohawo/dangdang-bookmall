@@ -22,7 +22,7 @@ import com.dangdang.common.utils.R;
  *
  * @author zengyuzhi
  * @email shbyku@gmail.com
- * @date 2020-10-17 20:59:59
+ * @date 2020-10-19 16:49:34
  */
 @RestController
 @RequestMapping("user/vip")
@@ -37,6 +37,7 @@ public class VipController {
     //@RequiresPermissions("user:vip:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = vipService.queryPage(params);
+
         return R.ok().put("page", page);
     }
 
