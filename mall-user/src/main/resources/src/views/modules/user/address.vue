@@ -47,6 +47,12 @@
         label="">
       </el-table-column>
       <el-table-column
+        prop="address"
+        header-align="center"
+        align="center"
+        label="">
+      </el-table-column>
+      <el-table-column
         prop="sort"
         header-align="center"
         align="center"

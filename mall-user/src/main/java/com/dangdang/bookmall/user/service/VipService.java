@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author zengyuzhi
  * @email shbyku@gmail.com
- * @date 2020-10-19 16:49:34
+ * @date 2020-10-19 17:09:29
  */
 public interface VipService extends IService<VipEntity> {
 

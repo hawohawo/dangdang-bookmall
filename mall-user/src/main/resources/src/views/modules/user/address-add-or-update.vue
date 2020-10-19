@@ -13,6 +13,9 @@
     <el-form-item label="" prop="phone">
       <el-input v-model="dataForm.phone" placeholder=""></el-input>
     </el-form-item>
+    <el-form-item label="" prop="address">
+      <el-input v-model="dataForm.address" placeholder=""></el-input>
+    </el-form-item>
     <el-form-item label="" prop="sort">
       <el-input v-model="dataForm.sort" placeholder=""></el-input>
     </el-form-item>
@@ -37,6 +40,7 @@
           userId: '',
           name: '',
           phone: '',
+          address: '',
           sort: '',
           postal: ''
         },
@@ -48,6 +52,9 @@
             { required: true, message: '不能为空', trigger: 'blur' }
           ],
           phone: [
+            { required: true, message: '不能为空', trigger: 'blur' }
+          ],
+          address: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ],
           sort: [
@@ -75,6 +82,7 @@
                 this.dataForm.userId = data.address.userId
                 this.dataForm.name = data.address.name
                 this.dataForm.phone = data.address.phone
+                this.dataForm.address = data.address.address
                 this.dataForm.sort = data.address.sort
                 this.dataForm.postal = data.address.postal
               }
@@ -94,6 +102,7 @@
                 'userId': this.dataForm.userId,
                 'name': this.dataForm.name,
                 'phone': this.dataForm.phone,
+                'address': this.dataForm.address,
                 'sort': this.dataForm.sort,
                 'postal': this.dataForm.postal
               })
