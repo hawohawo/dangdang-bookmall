@@ -35,6 +35,13 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
+        - id: tripartite_route
+          uri: lb://tripartite-service
+          predicates:
+            - Path=/api/tripartite/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
 #        低优先级
         - id: admin_route
           uri: lb://dangdang-mall-bff
