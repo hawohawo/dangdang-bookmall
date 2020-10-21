@@ -13,4 +13,5 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface ProductFeignService {
     @GetMapping("/product/baseinfo/testbook")
     public R setAndGetBook();
+
 }

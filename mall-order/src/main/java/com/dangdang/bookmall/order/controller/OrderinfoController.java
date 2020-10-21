@@ -1,10 +1,14 @@
 package com.dangdang.bookmall.order.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dangdang.bookmall.order.entity.BookinfoEntity;
 import com.dangdang.bookmall.order.feign.ProductFeignService;
+import com.dangdang.bookmall.order.service.BookinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +32,42 @@ public class OrderinfoController {
     @Autowired
     private OrderinfoService orderinfoService;
 
+    @Autowired
+    private BookinfoService bookinfoService;
+
     //远程调用测试接口
     @Autowired
     private ProductFeignService productFeignService;
+
+
+    /**
+     * 订单详细信息
+     */
+    @RequestMapping("/detail/{id}")
+    //@RequiresPermissions("order:orderinfo:list")
+    public R detail(@PathVariable Long id){
+
+        OrderinfoEntity orderinfoEntity = orderinfoService.getById(id);
+        //获取...
+        Map<String,Object> cmap = new HashMap<>();
+        cmap.put("order_id",id);
+        List<BookinfoEntity> bookinfoEntities = bookinfoService.listByMap(cmap);
+
+        //计算积分
+        //远程调用接口,<获取某个书本的积分>
+        int sum = 0;
+        for(BookinfoEntity b : bookinfoEntities) {
+            R r =  productFeignService.getScore(b.getBookId());
+            r.get("book_score");
+            //TODO 不会写
+        }
+
+
+
+
+        return R.ok().put("order",orderinfoEntity).put("books", bookinfoEntities).put("score_all",sum);
+    }
+
 
     /**
      * 远程调用接口测试
