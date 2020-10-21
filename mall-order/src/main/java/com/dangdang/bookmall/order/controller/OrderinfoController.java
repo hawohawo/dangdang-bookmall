@@ -5,7 +5,10 @@ import java.util.Map;
 
 import com.dangdang.bookmall.order.entity.BookinfoEntity;
 import com.dangdang.bookmall.order.feign.ProductFeignService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.dangdang.bookmall.order.entity.OrderinfoEntity;
@@ -22,6 +25,7 @@ import com.dangdang.common.utils.R;
  * @email shbyku@gmail.com
  * @date 2020-10-17 20:58:04
  */
+
 @RestController
 @RequestMapping("order/orderinfo")
 public class OrderinfoController {
@@ -45,14 +49,13 @@ public class OrderinfoController {
         orderinfoEntity.setCode("1erf-we25-de4c-f78d");
         R book = productFeignService.setAndGetBook();
         return R.ok().put("orderinfo",orderinfoEntity).put("book",book.get("book"));
-
     }
+
 
     /**
      * 列表
      */
     @RequestMapping("/list")
-    //@RequiresPermissions("order:orderinfo:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = orderinfoService.queryPage(params);
 
