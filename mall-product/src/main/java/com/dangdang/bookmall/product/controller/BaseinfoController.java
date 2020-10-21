@@ -1,8 +1,11 @@
 package com.dangdang.bookmall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.dangdang.bookmall.product.dto.BaseinfosEntity;
+import com.dangdang.bookmall.product.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,8 +13,6 @@ import com.dangdang.bookmall.product.entity.BaseinfoEntity;
 import com.dangdang.bookmall.product.service.BaseinfoService;
 import com.dangdang.common.utils.PageUtils;
 import com.dangdang.common.utils.R;
-
-
 
 /**
  * 
@@ -25,6 +26,33 @@ import com.dangdang.common.utils.R;
 public class BaseinfoController {
     @Autowired
     private BaseinfoService baseinfoService;
+
+    @Autowired
+    private TypeService typeService;
+
+    /**
+     * 查询全部图书信息
+     */
+    @RequestMapping("/books")
+    //@RequiresPermissions("product:baseinfo:list")
+    public R books(@RequestParam Map<String, Object> params){
+        PageUtils info  =  baseinfoService.getBooksType(params);
+        return R.ok().put("info",info);
+    }
+
+    /**
+     * 列表（按图书分类查询图书信息）
+     */
+    @RequestMapping("/infoByType/{typeId}")
+    //@RequiresPermissions("product:baseinfo:info")
+    public R infobByType(@PathVariable("typeId") int typeId){
+        List<BaseinfoEntity> info  =  baseinfoService.getBooksByType(typeId);
+        return R.ok().put("info", info);
+    }
+
+
+
+
 
     /**
      * 远程调用接口测试
@@ -40,8 +68,6 @@ public class BaseinfoController {
         return R.ok().put("book",baseinfoEntity);
     }
 
-
-
     /**
      * 列表
      */
@@ -49,10 +75,9 @@ public class BaseinfoController {
     //@RequiresPermissions("product:baseinfo:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = baseinfoService.queryPage(params);
-
         return R.ok().put("page", page);
-    }
 
+    }
 
     /**
      * 信息
