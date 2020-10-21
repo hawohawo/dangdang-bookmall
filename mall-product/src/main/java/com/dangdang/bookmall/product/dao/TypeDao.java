@@ -3,6 +3,8 @@ package com.dangdang.bookmall.product.dao;
 import com.dangdang.bookmall.product.entity.TypeEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 
@@ -13,5 +15,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface TypeDao extends BaseMapper<TypeEntity> {
-	
+
 }

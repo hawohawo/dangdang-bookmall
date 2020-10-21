@@ -3,7 +3,6 @@
 
 <mapper namespace="com.dangdang.bookmall.product.dao.BaseinfoDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.dangdang.bookmall.product.entity.BaseinfoEntity" id="baseinfoMap">
         <result property="id" column="id"/>
         <result property="picture" column="picture"/>
@@ -26,5 +25,27 @@
         <result property="commentId" column="comment_id"/>
     </resultMap>
 
+    <resultMap type="com.dangdang.bookmall.product.dto.BaseinfosEntity" id="baseinfosMap">
+        <result property="id" column="id"/>
+        <result property="picture" column="picture"/>
+        <result property="typeId" column="type_id"/>
+        <result property="name" column="name"/>
+        <result property="fname" column="fname"/>
+        <result property="introduce" column="introduce"/>
+        <result property="author" column="author"/>
+        <result property="score" column="score"/>
+        <result property="priceDj" column="price_dj"/>
+        <result property="priceSj" column="price_sj"/>
+        <result property="priceYf" column="price_yf"/>
+        <result property="insale" column="insale"/>
+        <result property="keyword" column="keyword"/>
+        <result property="stock" column="stock"/>
+        <result property="integral" column="integral"/>
+        <result property="remarks" column="remarks"/>
+        <result property="publishId" column="publish_id"/>
+        <result property="bookdetailId" column="bookdetail_id"/>
+        <result property="commentId" column="comment_id"/>
+        <result property="name1" column="name1"/>
+    </resultMap>
 
 </mapper>
