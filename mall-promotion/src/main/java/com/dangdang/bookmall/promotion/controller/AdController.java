@@ -30,20 +30,21 @@ public class AdController {
     @Autowired
     private AdService adService;
 
+
+
     /**
-     * 列表
+     * 广告列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("promotion:ad:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = adService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
 
     /**
-     * 信息
+     * 显示某条广告信息
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("promotion:ad:info")
@@ -54,18 +55,17 @@ public class AdController {
     }
 
     /**
-     * 保存
+     * 新增广告信息
      */
     @RequestMapping("/save")
     //@RequiresPermissions("promotion:ad:save")
     public R save(@RequestBody AdEntity ad){
 		adService.save(ad);
-
         return R.ok();
     }
 
     /**
-     * 修改
+     * 修改广告信息
      */
     @RequestMapping("/update")
     //@RequiresPermissions("promotion:ad:update")
@@ -76,7 +76,7 @@ public class AdController {
     }
 
     /**
-     * 删除
+     * 删除byId
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("promotion:ad:delete")
