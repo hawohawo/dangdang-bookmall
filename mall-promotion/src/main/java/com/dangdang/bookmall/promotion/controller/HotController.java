@@ -31,7 +31,7 @@ public class HotController {
     private HotService hotService;
 
     /**
-     * 列表
+     * 人气列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("promotion:hot:list")
@@ -43,7 +43,7 @@ public class HotController {
 
 
     /**
-     * 信息
+     * 查看某条人气信息
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("promotion:hot:info")
@@ -54,7 +54,7 @@ public class HotController {
     }
 
     /**
-     * 保存
+     * 新增人气商品
      */
     @RequestMapping("/save")
     //@RequiresPermissions("promotion:hot:save")
@@ -65,7 +65,7 @@ public class HotController {
     }
 
     /**
-     * 修改
+     * 修改人气商品
      */
     @RequestMapping("/update")
     //@RequiresPermissions("promotion:hot:update")
@@ -76,7 +76,7 @@ public class HotController {
     }
 
     /**
-     * 删除
+     * 删除人气商品
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("promotion:hot:delete")
