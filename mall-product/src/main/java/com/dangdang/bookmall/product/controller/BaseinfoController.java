@@ -6,6 +6,10 @@ import java.util.Map;
 
 import com.dangdang.bookmall.product.dto.BaseInfoAddNameEntity;
 import com.dangdang.bookmall.product.dto.SelectBookByParam;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dangdang.bookmall.product.dto.BaseinfosEntity;
+import com.dangdang.bookmall.product.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,12 +62,14 @@ public class BaseinfoController {
     }
 
     /**
+     * 分页示例
      * 查询全部图书信息
      */
-    @RequestMapping("/allinfo")
-    public R allinfo(@RequestParam Map<String, Object> params){
-        //TODO 还没写校验
-        List<BaseInfoAddNameEntity> info  =  baseinfoService.getBooksType();
+    @RequestMapping("/books")
+    //@RequiresPermissions("product:baseinfo:list")
+    public R books(@RequestParam(value = "current", required = false, defaultValue = "1") int current,@RequestParam(value = "size", required = false, defaultValue = "10") int size){
+        Page<BaseInfoAddNameEntity> objectPage = new Page<>(current,size);
+        IPage<BaseInfoAddNameEntity> info  =  baseinfoService.getBooksType(objectPage);
         return R.ok().put("info",info);
     }
 

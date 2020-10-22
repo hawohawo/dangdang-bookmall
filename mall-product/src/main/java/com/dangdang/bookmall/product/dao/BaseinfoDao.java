@@ -1,12 +1,17 @@
 package com.dangdang.bookmall.product.dao;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dangdang.bookmall.product.dto.BaseInfoAddNameEntity;
+import com.dangdang.bookmall.product.dto.BaseinfosEntity;
 import com.dangdang.bookmall.product.entity.BaseinfoEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -24,6 +29,6 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
      * @return
      */
     @Select("select a.* , b.`name` as name1 from bmt_baseinfo a,bmt_type b where a.type_id=b.id")
-    List<BaseInfoAddNameEntity> getBooksType();
+    IPage<BaseInfoAddNameEntity> getBooksType(Page<BaseInfoAddNameEntity> page);
 
 }
