@@ -1,7 +1,5 @@
 package com.dangdang.bookmall.product.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dangdang.bookmall.product.dto.BaseinfosEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,13 +34,8 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     }
 
     @Override
-    public PageUtils getBooksType(Map<String, Object> params) {
-        IPage<BaseinfoEntity> page = this.page(
-                new Query<BaseinfoEntity>().getPage(params),
-                new QueryWrapper<BaseinfoEntity>()
-        );
-
-        return baseinfoDao.getBooksType(page);
+    public List<BaseinfosEntity> getBooksType() {
+        return baseinfoDao.getBooksType();
     }
 
     @Override
