@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dangdang.bookmall.product.dto.BaseinfosEntity;
 import com.dangdang.bookmall.product.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +33,14 @@ public class BaseinfoController {
     private TypeService typeService;
 
     /**
+     * 分页示例
      * 查询全部图书信息
      */
     @RequestMapping("/books")
     //@RequiresPermissions("product:baseinfo:list")
-    public R books(){
-        List<BaseinfosEntity> info  =  baseinfoService.getBooksType();
+    public R books(@RequestParam(value = "current", required = false, defaultValue = "1") int current,@RequestParam(value = "size", required = false, defaultValue = "10") int size){
+        Page<BaseinfosEntity> objectPage = new Page<>(current,size);
+        IPage<BaseinfosEntity> info  =  baseinfoService.getBooksType(objectPage);
         return R.ok().put("info",info);
     }
 

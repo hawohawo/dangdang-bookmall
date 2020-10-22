@@ -28,6 +28,6 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
      * @return
      */
     @Select("select a.* , b.`name` as name1 from bmt_baseinfo a,bmt_type b where a.type_id=b.id")
-    List<BaseinfosEntity> getBooksType();
+    IPage<BaseinfosEntity> getBooksType(Page<BaseinfosEntity> page);
 
 }

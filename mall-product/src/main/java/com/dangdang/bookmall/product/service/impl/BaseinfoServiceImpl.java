@@ -1,5 +1,6 @@
 package com.dangdang.bookmall.product.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dangdang.bookmall.product.dto.BaseinfosEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,8 +35,8 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     }
 
     @Override
-    public List<BaseinfosEntity> getBooksType() {
-        return baseinfoDao.getBooksType();
+    public IPage<BaseinfosEntity> getBooksType(Page<BaseinfosEntity> page) {
+        return baseinfoDao.getBooksType(page);
     }
 
     @Override
