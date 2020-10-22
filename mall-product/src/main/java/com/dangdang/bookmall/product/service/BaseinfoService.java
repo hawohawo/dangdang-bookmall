@@ -1,7 +1,5 @@
 package com.dangdang.bookmall.product.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dangdang.bookmall.product.dto.BaseinfosEntity;
 import com.dangdang.common.utils.PageUtils;
@@ -21,7 +19,7 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    PageUtils getBooksType(Map<String, Object> params);
+    List<BaseinfosEntity> getBooksType();
 
     List<BaseinfoEntity> getBooksByType(int typeId);
 }

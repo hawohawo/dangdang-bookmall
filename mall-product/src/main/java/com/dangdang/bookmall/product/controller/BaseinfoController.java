@@ -35,8 +35,8 @@ public class BaseinfoController {
      */
     @RequestMapping("/books")
     //@RequiresPermissions("product:baseinfo:list")
-    public R books(@RequestParam Map<String, Object> params){
-        PageUtils info  =  baseinfoService.getBooksType(params);
+    public R books(){
+        List<BaseinfosEntity> info  =  baseinfoService.getBooksType();
         return R.ok().put("info",info);
     }
 
