@@ -1,5 +1,6 @@
 package com.dangdang.bookmall.product.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -15,6 +16,9 @@ import com.dangdang.bookmall.product.service.TypeService;
 
 @Service("typeService")
 public class TypeServiceImpl extends ServiceImpl<TypeDao, TypeEntity> implements TypeService {
+
+    @Autowired
+    private TypeDao typeDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {

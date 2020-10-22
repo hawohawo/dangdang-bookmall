@@ -1,9 +1,11 @@
 package com.dangdang.bookmall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dangdang.bookmall.product.dto.BaseinfosEntity;
 import com.dangdang.common.utils.PageUtils;
 import com.dangdang.bookmall.product.entity.BaseinfoEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +18,9 @@ import java.util.Map;
 public interface BaseinfoService extends IService<BaseinfoEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    List<BaseinfosEntity> getBooksType(Map<String, Object> params);
+
+    List<BaseinfoEntity> getBooksByType(int typeId);
 }
 
