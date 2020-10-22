@@ -1,8 +1,7 @@
 package com.dangdang.bookmall.product.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.dangdang.bookmall.product.dto.BaseinfosEntity;
+import com.dangdang.bookmall.product.dto.BaseInfoAddNameEntity;
+import com.dangdang.bookmall.product.dto.SelectBookByParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +35,8 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     }
 
     @Override
-    public PageUtils getBooksType(Map<String, Object> params) {
-        IPage<BaseinfoEntity> page = this.page(
-                new Query<BaseinfoEntity>().getPage(params),
-                new QueryWrapper<BaseinfoEntity>()
-        );
-
-        return baseinfoDao.getBooksType(page);
+    public List<BaseInfoAddNameEntity> getBooksType() {
+        return baseinfoDao.getBooksType();
     }
 
     @Override
@@ -52,6 +46,18 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
                 .select(BaseinfoEntity::getTypeId);*/
         QueryWrapper<BaseinfoEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("type_id", typeId);
+        List<BaseinfoEntity> list = this.list(queryWrapper);
+        return list;
+    }
+
+    @Override
+    public List<BaseinfoEntity> getBooksByParams(SelectBookByParam sbbp) {
+        QueryWrapper<BaseinfoEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("name", sbbp.getName())
+                    .eq("author",sbbp.getAuthor())
+                    .eq("type_id",sbbp.getTypeId())
+                    .eq("insale",sbbp.getInsale())
+                    .eq("publish_id",sbbp.getPublishId());
         List<BaseinfoEntity> list = this.list(queryWrapper);
         return list;
     }

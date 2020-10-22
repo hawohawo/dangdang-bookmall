@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.dangdang.bookmall.product.dto.BaseinfosEntity;
-import com.dangdang.bookmall.product.service.TypeService;
+import com.dangdang.bookmall.product.dto.BaseInfoAddNameEntity;
+import com.dangdang.bookmall.product.dto.SelectBookByParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,16 +27,43 @@ public class BaseinfoController {
     @Autowired
     private BaseinfoService baseinfoService;
 
-    @Autowired
-    private TypeService typeService;
+    /**
+     * 删除一条图书信息(批量修改)
+     */
+    @RequestMapping("/deletebook")
+    public R deletebook(@RequestBody Long[] ids){
+        //TODO 还没写校验
+        baseinfoService.removeByIds(Arrays.asList(ids));
+        return R.ok();
+    }
+
+    /**
+     * 修改一条图书信息
+     */
+    @RequestMapping("/updatebook")
+    public R updatebook(@RequestBody BaseinfoEntity baseinfo){
+        //TODO 还没写校验
+        baseinfoService.updateById(baseinfo);
+        return R.ok();
+    }
+
+    /**
+     * 添加一条图书信息
+     */
+    @RequestMapping("/savebook")
+    public R savebooks(@RequestBody BaseinfoEntity baseinfo){
+        //TODO 还没写校验
+        baseinfoService.save(baseinfo);
+        return R.ok();
+    }
 
     /**
      * 查询全部图书信息
      */
-    @RequestMapping("/books")
-    //@RequiresPermissions("product:baseinfo:list")
-    public R books(@RequestParam Map<String, Object> params){
-        PageUtils info  =  baseinfoService.getBooksType(params);
+    @RequestMapping("/allinfo")
+    public R allinfo(@RequestParam Map<String, Object> params){
+        //TODO 还没写校验
+        List<BaseInfoAddNameEntity> info  =  baseinfoService.getBooksType();
         return R.ok().put("info",info);
     }
 
@@ -44,14 +71,21 @@ public class BaseinfoController {
      * 列表（按图书分类查询图书信息）
      */
     @RequestMapping("/infoByType/{typeId}")
-    //@RequiresPermissions("product:baseinfo:info")
     public R infobByType(@PathVariable("typeId") int typeId){
+        //TODO 还没写校验
         List<BaseinfoEntity> info  =  baseinfoService.getBooksByType(typeId);
         return R.ok().put("info", info);
     }
 
-
-
+    /**
+     * 查询图书信息列表（多条件）
+     */
+    @RequestMapping("/infoByParams")
+    public R infoByParams(SelectBookByParam sbbp){
+        //TODO 还没写校验
+        List<BaseinfoEntity> info  =  baseinfoService.getBooksByParams(sbbp);
+        return R.ok().put("info", info);
+    }
 
 
     /**
@@ -72,12 +106,12 @@ public class BaseinfoController {
      * 列表
      */
     @RequestMapping("/list")
-    //@RequiresPermissions("product:baseinfo:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = baseinfoService.queryPage(params);
         return R.ok().put("page", page);
 
     }
+
 
     /**
      * 信息
@@ -119,7 +153,6 @@ public class BaseinfoController {
     //@RequiresPermissions("product:baseinfo:delete")
     public R delete(@RequestBody Long[] ids){
 		baseinfoService.removeByIds(Arrays.asList(ids));
-
         return R.ok();
     }
 
