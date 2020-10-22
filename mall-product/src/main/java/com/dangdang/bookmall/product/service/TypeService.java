@@ -16,5 +16,6 @@ import java.util.Map;
 public interface TypeService extends IService<TypeEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
 }
 
