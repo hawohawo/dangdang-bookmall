@@ -1,14 +1,11 @@
 package com.dangdang.bookmall.order.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dangdang.bookmall.order.entity.ReceiveEntity;
 import com.dangdang.bookmall.order.service.ReceiveService;
@@ -29,6 +26,25 @@ import com.dangdang.common.utils.R;
 public class ReceiveController {
     @Autowired
     private ReceiveService receiveService;
+
+    /**
+     * 商家退货地址列表
+     */
+    @GetMapping("/receives")
+    //@RequiresPermissions("order:receive:list")
+    public R receives(@RequestParam Map<String, Object> params){
+        List<ReceiveEntity> list = receiveService.list();
+        return R.ok().put("receives", list);
+    }
+
+
+
+
+
+
+
+
+
 
     /**
      * 列表

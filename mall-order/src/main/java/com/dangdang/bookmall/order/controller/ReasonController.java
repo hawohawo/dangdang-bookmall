@@ -1,14 +1,11 @@
 package com.dangdang.bookmall.order.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dangdang.bookmall.order.entity.ReasonEntity;
 import com.dangdang.bookmall.order.service.ReasonService;
@@ -29,6 +26,20 @@ import com.dangdang.common.utils.R;
 public class ReasonController {
     @Autowired
     private ReasonService reasonService;
+
+    /**
+     * 退货原因列表
+     */
+    @GetMapping("/reasons")
+    //@RequiresPermissions("order:reason:list")
+    public R reasons(@RequestParam Map<String, Object> params){
+        List<ReasonEntity> list = reasonService.list();
+
+        return R.ok().put("reasons", list);
+    }
+
+
+
 
     /**
      * 列表

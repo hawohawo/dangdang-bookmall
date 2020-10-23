@@ -55,18 +55,25 @@ public class OrderinfoController {
 
         //计算积分
         //远程调用接口,<获取某个书本的积分>
-        int sum = 0;
-        for(BookinfoEntity b : bookinfoEntities) {
-            R r =  productFeignService.getScore(b.getBookId());
-            r.get("book_score");
-            //TODO 不会写
-        }
 
 
-
-
-        return R.ok().put("order",orderinfoEntity).put("books", bookinfoEntities).put("score_all",sum);
+        return R.ok().put("order",orderinfoEntity).put("books", bookinfoEntities);
     }
+
+
+    /**
+     * 订单列表
+     */
+    @GetMapping("/orders")
+    //@RequiresPermissions("order:orderinfo:list")
+    public R orders(@RequestParam Map<String, Object> params){
+
+        List<OrderinfoEntity> list = orderinfoService.list();
+
+
+        return R.ok().put("orders", list);
+    }
+
 
 
     /**

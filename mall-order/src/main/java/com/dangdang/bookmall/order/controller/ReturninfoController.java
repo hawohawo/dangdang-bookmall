@@ -1,6 +1,7 @@
 package com.dangdang.bookmall.order.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,23 @@ import com.dangdang.common.utils.R;
 public class ReturninfoController {
     @Autowired
     private ReturninfoService returninfoService;
+
+
+    /**
+     * 退货申请列表
+     */
+    @GetMapping("/returns")
+    //@RequiresPermissions("order:returninfo:list")
+    public R returns(@RequestParam Map<String, Object> params){
+        List<ReturninfoEntity> list = returninfoService.list();
+        return R.ok().put("returns", list);
+    }
+
+
+
+
+
+
 
 
     /**
