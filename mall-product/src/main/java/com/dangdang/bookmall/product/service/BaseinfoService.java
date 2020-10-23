@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dangdang.bookmall.product.dto.BaseInfoAddNameEntity;
-import com.dangdang.bookmall.product.dto.BaseinfosEntity;
+import com.dangdang.bookmall.product.dto.SelectBookByInsale;
+import com.dangdang.bookmall.product.dto.SelectBookByParam;
 import com.dangdang.common.utils.PageUtils;
 import com.dangdang.bookmall.product.entity.BaseinfoEntity;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -24,8 +26,12 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
 
     IPage<BaseInfoAddNameEntity> getBooksType(Page<BaseInfoAddNameEntity> page);
 
-    List<BaseinfoEntity> getBooksByType(int typeId);
+    IPage<BaseinfoEntity> getBooksByType(Page<BaseinfoEntity> page,int typeId);
 
-    public List<BaseinfoEntity> getBooksByParams(SelectBookByParam sbbp);
+    IPage<BaseinfoEntity> getBooksByParams(Page<BaseinfoEntity> page,SelectBookByParam sbbp);
+
+    IPage<SelectBookByInsale> getBooksByInsale(Page<SelectBookByInsale> objectPage);
+
+    BigDecimal getScoreById(int id);
 }
 
