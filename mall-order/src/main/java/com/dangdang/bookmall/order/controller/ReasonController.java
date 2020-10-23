@@ -38,6 +38,42 @@ public class ReasonController {
         return R.ok().put("reasons", list);
     }
 
+    /**
+     * 添加退货原因
+     */
+    @PostMapping("/save")
+    //@RequiresPermissions("order:reason:save")
+    public R saveReason(@RequestBody ReasonEntity reason){
+        boolean result = reasonService.save(reason);
+        if(result){
+            return R.ok();
+        }else
+            return R.error(400,"添加失败");
+    }
+
+    /**
+     * 修改退货原因
+     */
+    @PostMapping("/update")
+    //@RequiresPermissions("order:reason:update")
+    public R updateReason(@RequestBody ReasonEntity reason){
+        boolean result =  reasonService.updateById(reason);
+        if(result){
+            return R.ok();
+        }else
+        return R.error(400,"修改失败");
+    }
+
+    /**
+     * 删除退货原因
+     */
+    @PostMapping("/delete")
+    //@RequiresPermissions("order:reason:delete")
+    public R deleteReason(@RequestBody Long[] ids){
+        reasonService.removeByIds(Arrays.asList(ids));
+        return R.ok();
+    }
+
 
 
 

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.dangdang.bookmall.order.entity.OrderinfoEntity;
+import com.dangdang.bookmall.order.service.OrderinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,9 @@ public class ReturninfoController {
     @Autowired
     private ReturninfoService returninfoService;
 
+    @Autowired
+    private OrderinfoService orderinfoService;
+
 
     /**
      * 退货申请列表
@@ -38,6 +43,17 @@ public class ReturninfoController {
         return R.ok().put("returns", list);
     }
 
+    /**
+     * 退货申请详情
+     */
+    @GetMapping("/return/{id}")
+    //@RequiresPermissions("order:returninfo:list")
+    public R returninfo(@PathVariable Long id){
+//        List<ReturninfoEntity> list = returninfoService.list();
+        ReturninfoEntity returninfoEntity = returninfoService.getById(id);
+        OrderinfoEntity orderinfoEntity = orderinfoService.getById(id);
+        return R.ok().put("return", returninfoEntity).put("code",orderinfoEntity.getCode());
+    }
 
 
 

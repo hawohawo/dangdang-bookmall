@@ -69,11 +69,21 @@ public class OrderinfoController {
     public R orders(@RequestParam Map<String, Object> params){
 
         List<OrderinfoEntity> list = orderinfoService.list();
-
-
         return R.ok().put("orders", list);
     }
 
+
+    /**
+     * 根据id查订单编号
+     */
+    @RequestMapping("/orderid/{id}")
+    //@RequiresPermissions("order:orderinfo:list")
+    public R orderid(@PathVariable Long id){
+
+        OrderinfoEntity orderinfoEntity = orderinfoService.getById(id);
+        //获取订单编号
+        return R.ok().put("code",orderinfoEntity.getCode());
+    }
 
 
     /**
