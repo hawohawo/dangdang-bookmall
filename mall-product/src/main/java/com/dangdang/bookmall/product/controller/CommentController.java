@@ -49,7 +49,6 @@ public class CommentController {
     //@RequiresPermissions("product:comment:info")
     public R info(@PathVariable("id") Long id){
 		CommentEntity comment = commentService.getById(id);
-
         return R.ok().put("comment", comment);
     }
 

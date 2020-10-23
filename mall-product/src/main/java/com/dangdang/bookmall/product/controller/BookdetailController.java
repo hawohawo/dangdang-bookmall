@@ -31,6 +31,41 @@ public class BookdetailController {
     private BookdetailService bookdetailService;
 
     /**
+     * 添加图文详情
+     */
+    @RequestMapping("/saveBookDetail")
+    public R saveBookDetail(@RequestBody BookdetailEntity bookdetail){
+        //TODO 还没写校验
+        bookdetailService.save(bookdetail);
+        return R.ok();
+    }
+
+    /**
+     * 删除图文详情
+     */
+    @RequestMapping("/deleteBookDetail")
+    public R deleteBookDetail(@RequestBody Long[] ids){
+        //TODO 还没写校验
+        bookdetailService.removeByIds(Arrays.asList(ids));
+        return R.ok();
+    }
+
+    /**
+     * 修改图文详情
+     */
+    @RequestMapping("/updateBookDetail")
+    //@RequiresPermissions("product:bookdetail:update")
+    public R updateBookDetail(@RequestBody BookdetailEntity bookdetail){
+        bookdetailService.updateById(bookdetail);
+
+        return R.ok();
+    }
+
+
+
+
+
+    /**
      * 列表
      */
     @RequestMapping("/list")
