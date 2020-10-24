@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  *联表查询
  */
 @Data
-public class BaseinfosEntity implements Serializable {
+public class BaseInfoAddNameEntity {
 
     private Long id;
     /**
