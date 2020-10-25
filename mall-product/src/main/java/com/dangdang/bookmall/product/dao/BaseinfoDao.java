@@ -72,4 +72,5 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
 
     @Select("select name from bmt_baseinfo where id=#{id}")
     String getBookNameById(Long id);
+
 }

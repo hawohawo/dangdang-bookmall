@@ -35,5 +35,6 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
     BigDecimal getScoreById(int id);
 
     String getBookNameById(Long id);
+
 }
 
