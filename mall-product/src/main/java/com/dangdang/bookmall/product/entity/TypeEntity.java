@@ -28,5 +28,10 @@ public class TypeEntity implements Serializable {
 	 * 类别名
 	 */
 	private String name;
+	/**
+	 * 类别图片
+	 */
+	private String picture;
+
 
 }
