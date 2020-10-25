@@ -88,4 +88,11 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
         return baseinfoDao.getScoreByIds(id);
     }
 
+
+//    远程调用服务，根据图书id 获取到 图书的名称
+    @Override
+    public String getBookNameById(Long id) {
+        return baseinfoDao.getBookNameById(id);
+    }
+
 }

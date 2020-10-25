@@ -131,16 +131,12 @@ public class BaseinfoController {
 
     /**
      * 远程调用接口测试
-     * for ： 订单服务 -> 商品服务（this）
-     * detail ： 输出订单信息 和 某个商品的信息
+     * 根据图书id 获取到图书的名称
      */
-    @GetMapping("/testbook")
-    public R setAndGetBook(){
-        BaseinfoEntity baseinfoEntity = new BaseinfoEntity();
-        baseinfoEntity.setId(1L);
-        baseinfoEntity.setAuthor("王尔德");
-        baseinfoEntity.setName("豌豆实验");
-        return R.ok().put("book",baseinfoEntity);
+    @GetMapping("/feignbookname/{id}")
+    public String getBookNameById(@PathVariable("id") Long id){
+        String bookName = baseinfoService.getBookNameById(id);
+        return bookName;
     }
 
     /**
