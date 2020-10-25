@@ -3,6 +3,9 @@ package com.dangdang.bookmall.promotion.dao;
 import com.dangdang.bookmall.promotion.entity.SeckillSessionBookEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * 
@@ -13,5 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SeckillSessionBookDao extends BaseMapper<SeckillSessionBookEntity> {
-	
+
+    @Select("select * from smt_seckill_session_book where seckill_id=#{seckillId} and seckill_session_id=#{seckillSessionId}")
+    List<SeckillSessionBookEntity> getBySeeionAndSeckill(Integer seckillId, Integer seckillSessionId);
 }

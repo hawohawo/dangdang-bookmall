@@ -25,5 +25,12 @@ public interface ProductFeignService {
     @GetMapping("product/baseinfo/infobByInsale")
     public R infobByInsale(@RequestParam Map<String, Object> params);
 
+    /**
+     * 通过图书id 获取到图书的基本信息
+     * 返回类型为 BaseinfoEntity 映射在map中
+     * 目前仅传了 图书name 和 图书priceSj
+     */
+    @GetMapping("product/baseinfo/feignbookinfo/{id}")
+    public R feignBookInfoById(@PathVariable("id") Long id);
 
 }
