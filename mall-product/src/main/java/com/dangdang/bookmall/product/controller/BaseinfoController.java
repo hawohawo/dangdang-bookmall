@@ -92,13 +92,13 @@ public class BaseinfoController {
     /**
      * 列表（按图书分类查询图书信息）
      */
-    @RequestMapping("/infoByType/{typeId}")
+    @RequestMapping("/infoByType")
     public R infobByType(@RequestParam(value = "current", required = false, defaultValue = "1") int current,
                          @RequestParam(value = "size", required = false, defaultValue = "10") int size,
-                         @PathVariable("typeId") int typeId){
+                         @RequestParam int id){
         //TODO 还没写校验
         Page<BaseinfoEntity> objectPage = new Page<>(current,size);
-        IPage<BaseinfoEntity> info  =  baseinfoService.getBooksByType(objectPage,typeId);
+        IPage<BaseinfoEntity> info  =  baseinfoService.getBooksByType(objectPage,id);
         return R.ok().put("info", info);
     }
 
@@ -157,11 +157,9 @@ public class BaseinfoController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    //@RequiresPermissions("product:baseinfo:info")
-    public R info(@PathVariable("id") Long id){
+    @RequestMapping("/info")
+    public R info(@RequestParam Long id){
 		BaseinfoEntity baseinfo = baseinfoService.getById(id);
-
         return R.ok().put("baseinfo", baseinfo);
     }
 

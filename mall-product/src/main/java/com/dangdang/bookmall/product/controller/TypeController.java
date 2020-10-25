@@ -37,7 +37,6 @@ public class TypeController {
     //@RequiresPermissions("product:type:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = typeService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
@@ -49,7 +48,6 @@ public class TypeController {
     //@RequiresPermissions("product:type:info")
     public R info(@PathVariable("id") Long id){
 		TypeEntity type = typeService.getById(id);
-
         return R.ok().put("type", type);
     }
 
@@ -60,7 +58,6 @@ public class TypeController {
     //@RequiresPermissions("product:type:save")
     public R save(@RequestBody TypeEntity type){
 		typeService.save(type);
-
         return R.ok();
     }
 
@@ -82,7 +79,6 @@ public class TypeController {
     //@RequiresPermissions("product:type:delete")
     public R delete(@RequestBody Long[] ids){
 		typeService.removeByIds(Arrays.asList(ids));
-
         return R.ok();
     }
 
