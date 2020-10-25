@@ -38,9 +38,44 @@ public class ReceiveController {
     }
 
 
+    /**
+     * 新增商家退货地址列表
+     */
+    @PostMapping("/save")
+    //@RequiresPermissions("order:receive:save")
+    public R saveReceive(@RequestBody ReceiveEntity receive){
+        boolean result = receiveService.save(receive);
+        if(result){
+            return R.ok();
+        }else
+            return R.error(400,"添加失败");
+    }
 
+    /**
+     * 删除商家退货地址列表
+     */
+    @PostMapping("/delete")
+    //@RequiresPermissions("order:receive:delete")
+    public R deleteReceive(@RequestBody Long[] ids){
+        boolean result = receiveService.removeByIds(Arrays.asList(ids));
+        if(result){
+            return R.ok();
+        }else
+            return R.error(400,"删除失败");
+    }
 
-
+    /**
+     * 修改商家退货列表
+     */
+    @PostMapping("/update")
+    //@RequiresPermissions("order:receive:update")
+    public R updateReceive(@RequestBody ReceiveEntity receive){
+        boolean result = receiveService.updateById(receive);
+        if(result){
+            return R.ok();
+        }else
+            return R.error(400,"修改失败");
+    }
 
 
 
@@ -98,7 +133,6 @@ public class ReceiveController {
     //@RequiresPermissions("order:receive:delete")
     public R delete(@RequestBody Long[] ids){
 		receiveService.removeByIds(Arrays.asList(ids));
-
         return R.ok();
     }
 

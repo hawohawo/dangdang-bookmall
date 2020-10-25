@@ -43,6 +43,20 @@ public class RecordController {
         return R.ok().put("records", recordEntities);
     }
 
+    /**
+     * 新增订单操作
+     */
+    @PostMapping("/save")
+    //@RequiresPermissions("order:record:save")
+    public R saveRecord(@RequestBody RecordEntity record){
+        boolean result = recordService.save(record);
+        if(result){
+            return R.ok();
+        }else
+            return R.error(400,"添加失败");
+    }
+
+
 
     /**
      * 列表

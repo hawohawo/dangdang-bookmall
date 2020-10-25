@@ -67,6 +67,6 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
      * @param id
      * @return
      */
-    @Select("select score from bmt_baseinfo where id=#{id}")
+    @Select("select integral from bmt_baseinfo where id=#{id}")
     BigDecimal getScoreByIds (int id);
 }
