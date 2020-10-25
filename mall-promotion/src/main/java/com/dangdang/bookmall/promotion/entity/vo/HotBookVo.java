@@ -8,9 +8,8 @@ import lombok.Data;
  * @date 2020/10/25 上午9:50
  */
 @Data
-public class HotBookVo {
+public class HotBookVo{
     private HotEntity hotEntity;
-
     private String bookName;
 
 }

@@ -34,5 +34,6 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
 
     String getBookNameById(Long id);
 
+    BaseinfoEntity feignBookInfoById(Long id);
 }
 

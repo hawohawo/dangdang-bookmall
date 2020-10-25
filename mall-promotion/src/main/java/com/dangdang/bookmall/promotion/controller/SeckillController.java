@@ -1,15 +1,14 @@
 package com.dangdang.bookmall.promotion.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookInfoVo;
+import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookNumVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dangdang.bookmall.promotion.entity.SeckillEntity;
 import com.dangdang.bookmall.promotion.service.SeckillService;
@@ -74,11 +73,30 @@ public class SeckillController {
     //@RequiresPermissions("promotion:seckill:delete")
     public R delete(@RequestBody Integer[] ids){
 		seckillService.removeByIds(Arrays.asList(ids));
-        //TODO 秒杀的商品也需要下架
         return R.ok();
     }
 
 
+    /**
+     * 列表
+     * 查询秒杀活动对应的时间段及对应下的商品数量 (时间段必须是上架的时间段)
+     */
+    @GetMapping("/sessionbooknum/{id}")
+    public R getSeckillSessionBooksNum(@PathVariable("id") Integer id){
+        List<SeckillSessionAndBookNumVo> seckillSessionBooksNum = seckillService.getSeckillSessionBooksNum(id);
+        return R.ok().put("info",seckillSessionBooksNum);
+    }
+
+    /**
+     * 列表
+     * 查询秒杀活动对应的时间段及对应下的商品详细信息
+     * tips:查询对应下架的时间段或者下架的秒杀服务不会进行相应的显示
+     */
+    @GetMapping("/sessionbookinfo")
+    public R getSeckillSessionBooksinfo(@RequestParam("seckillId") Integer seckillId,@RequestParam("seckillSessionId") Integer seckillSessionId){
+        List<SeckillSessionAndBookInfoVo> seckillSessionAndBookInfoVos = seckillService.getSeckillSessionBooksInfo(seckillId,seckillSessionId);
+        return R.ok().put("info",seckillSessionAndBookInfoVos);
+    }
 
     /**
      * ==================================================end
