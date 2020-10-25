@@ -22,10 +22,15 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         //配置跨域
+        //允许那种请求头跨域
         corsConfiguration.addAllowedHeader("*");
+        //允许哪种类型方法跨域 get post delete put
         corsConfiguration.addAllowedMethod("*");
+        // 允许哪些请求源跨域
         corsConfiguration.addAllowedOrigin("*");
+        // 是否携带cookie跨域
         corsConfiguration.setAllowCredentials(true);
+        //允许跨域的路径
         source.registerCorsConfiguration("/**",corsConfiguration);
 
         return new CorsWebFilter(source);
