@@ -3,12 +3,9 @@ package com.dangdang.bookmall.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import org.checkerframework.common.util.report.qual.ReportUnqualified;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dangdang.bookmall.product.entity.BookdetailEntity;
 import com.dangdang.bookmall.product.service.BookdetailService;
@@ -80,9 +77,8 @@ public class BookdetailController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    //@RequiresPermissions("product:bookdetail:info")
-    public R info(@PathVariable("id") Long id){
+    @GetMapping("/info")
+    public R info(@RequestParam Long id){
 		BookdetailEntity bookdetail = bookdetailService.getById(id);
 
         return R.ok().put("bookdetail", bookdetail);

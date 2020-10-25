@@ -1,4 +1,4 @@
-package com.dangdang.bookmall.product.dto;
+package com.dangdang.bookmall.product.vo;
 
 import lombok.Data;
 

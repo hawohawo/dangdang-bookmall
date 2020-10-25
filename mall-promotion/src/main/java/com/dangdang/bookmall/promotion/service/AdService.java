@@ -16,5 +16,6 @@ import java.util.Map;
 public interface AdService extends IService<AdEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
 }
 

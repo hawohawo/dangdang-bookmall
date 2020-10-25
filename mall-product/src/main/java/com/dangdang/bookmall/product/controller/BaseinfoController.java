@@ -2,12 +2,10 @@ package com.dangdang.bookmall.product.controller;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
-import com.dangdang.bookmall.product.dto.BaseInfoAddNameEntity;
-import com.dangdang.bookmall.product.dto.SelectBookByInsale;
-import com.dangdang.bookmall.product.dto.SelectBookByParam;
+import com.dangdang.bookmall.product.vo.SelectBookByInsale;
+import com.dangdang.bookmall.product.vo.SelectBookByParam;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,25 +78,24 @@ public class BaseinfoController {
      */
     @RequestMapping("/books")
     //@RequiresPermissions("product:baseinfo:list")
-    public R books(@RequestParam(value = "current", required = false, defaultValue = "1") int current,
-                   @RequestParam(value = "size", required = false, defaultValue = "10") int size){
-        Page<BaseInfoAddNameEntity> objectPage = new Page<>(current,size);
-        IPage<BaseInfoAddNameEntity> info  =  baseinfoService.getBooksType(objectPage);
-        return R.ok().put("info",info);
+    public R books(@RequestParam Map<String, Object> params){
+        PageUtils page = baseinfoService.getBooksType(params);
+        return R.ok().put("page", page);
 
-
+//        IPage<BaseInfoAddNameEntity> info  =  baseinfoService.getBooksType(objectPage);
+//        return R.ok().put("info",info);
     }
 
     /**
      * 列表（按图书分类查询图书信息）
      */
-    @RequestMapping("/infoByType/{typeId}")
+    @RequestMapping("/infoByType")
     public R infobByType(@RequestParam(value = "current", required = false, defaultValue = "1") int current,
                          @RequestParam(value = "size", required = false, defaultValue = "10") int size,
-                         @PathVariable("typeId") int typeId){
+                         @RequestParam int id){
         //TODO 还没写校验
         Page<BaseinfoEntity> objectPage = new Page<>(current,size);
-        IPage<BaseinfoEntity> info  =  baseinfoService.getBooksByType(objectPage,typeId);
+        IPage<BaseinfoEntity> info  =  baseinfoService.getBooksByType(objectPage,id);
         return R.ok().put("info", info);
     }
 
@@ -106,12 +103,10 @@ public class BaseinfoController {
      * 列表（查询所有图书，参数条图书名称和id还有售价，条件是这些商品是上架的商品）
      */
     @GetMapping("/infobByInsale")
-    public R infobByInsale(@RequestParam(value = "current", required = false, defaultValue = "1") int current,
-                         @RequestParam(value = "size", required = false, defaultValue = "10") int size){
+    public R infobByInsale(@RequestParam Map<String, Object> params){
         //TODO 还没写校验
-        Page<SelectBookByInsale> objectPage = new Page<>(current,size);
-        IPage<SelectBookByInsale> info  =  baseinfoService.getBooksByInsale(objectPage);
-        return R.ok().put("info", info);
+        PageUtils page = baseinfoService.getBooksByInsale(params);
+        return R.ok().put("page", page);
     }
 
     /**
@@ -131,16 +126,12 @@ public class BaseinfoController {
 
     /**
      * 远程调用接口测试
-     * for ： 订单服务 -> 商品服务（this）
-     * detail ： 输出订单信息 和 某个商品的信息
+     * 根据图书id 获取到图书的名称
      */
-    @GetMapping("/testbook")
-    public R setAndGetBook(){
-        BaseinfoEntity baseinfoEntity = new BaseinfoEntity();
-        baseinfoEntity.setId(1L);
-        baseinfoEntity.setAuthor("王尔德");
-        baseinfoEntity.setName("豌豆实验");
-        return R.ok().put("book",baseinfoEntity);
+    @GetMapping("/feignbookname/{id}")
+    public String getBookNameById(@PathVariable("id") Long id){
+        String bookName = baseinfoService.getBookNameById(id);
+        return bookName;
     }
 
     /**
@@ -157,11 +148,9 @@ public class BaseinfoController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    //@RequiresPermissions("product:baseinfo:info")
-    public R info(@PathVariable("id") Long id){
+    @RequestMapping("/info")
+    public R info(@RequestParam Long id){
 		BaseinfoEntity baseinfo = baseinfoService.getById(id);
-
         return R.ok().put("baseinfo", baseinfo);
     }
 

@@ -3,6 +3,10 @@ package com.dangdang.bookmall.promotion.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dangdang.bookmall.promotion.entity.vo.HotBookVo;
+import com.dangdang.bookmall.promotion.feign.ProductFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,20 +34,32 @@ public class HotController {
     @Autowired
     private HotService hotService;
 
+    @Autowired
+    private ProductFeignService productFeignService;
+
     /**
-     * 人气列表
+     * 新增推荐图书的列表
+     */
+    @RequestMapping("/addlist")
+    public R addList(@RequestParam Map<String, Object> params){
+        R r = productFeignService.infobByInsale(params);
+        return r;
+    }
+
+
+
+    /**
+     * 列表
      */
     @RequestMapping("/list")
-    //@RequiresPermissions("promotion:hot:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = hotService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
 
     /**
-     * 查看某条人气信息
+     * 信息
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("promotion:hot:info")
@@ -54,7 +70,7 @@ public class HotController {
     }
 
     /**
-     * 新增人气商品
+     * 保存
      */
     @RequestMapping("/save")
     //@RequiresPermissions("promotion:hot:save")
@@ -65,7 +81,7 @@ public class HotController {
     }
 
     /**
-     * 修改人气商品
+     * 修改
      */
     @RequestMapping("/update")
     //@RequiresPermissions("promotion:hot:update")
@@ -76,7 +92,7 @@ public class HotController {
     }
 
     /**
-     * 删除人气商品
+     * 删除
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("promotion:hot:delete")
