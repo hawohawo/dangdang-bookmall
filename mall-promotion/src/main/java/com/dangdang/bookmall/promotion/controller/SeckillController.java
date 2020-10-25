@@ -3,6 +3,7 @@ package com.dangdang.bookmall.promotion.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,16 +43,6 @@ public class SeckillController {
     }
 
 
-    /**
-     * 信息
-     */
-    @RequestMapping("/info/{id}")
-    //@RequiresPermissions("promotion:seckill:info")
-    public R info(@PathVariable("id") Integer id){
-		SeckillEntity seckill = seckillService.getById(id);
-
-        return R.ok().put("seckill", seckill);
-    }
 
     /**
      * 保存
@@ -77,13 +68,31 @@ public class SeckillController {
 
     /**
      * 删除
+     * 删除 秒杀活动，对应的秒杀商品也随之下架
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("promotion:seckill:delete")
     public R delete(@RequestBody Integer[] ids){
 		seckillService.removeByIds(Arrays.asList(ids));
-
+        //TODO 秒杀的商品也需要下架
         return R.ok();
+    }
+
+
+
+    /**
+     * ==================================================end
+     */
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/info/{id}")
+    //@RequiresPermissions("promotion:seckill:info")
+    public R info(@PathVariable("id") Integer id){
+        SeckillEntity seckill = seckillService.getById(id);
+
+        return R.ok().put("seckill", seckill);
     }
 
 }
