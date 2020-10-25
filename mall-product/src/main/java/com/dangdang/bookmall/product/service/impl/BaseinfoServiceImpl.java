@@ -1,18 +1,22 @@
 package com.dangdang.bookmall.product.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.dangdang.bookmall.product.dto.BaseInfoAddNameEntity;
-import com.dangdang.bookmall.product.dto.SelectBookByInsale;
-import com.dangdang.bookmall.product.dto.SelectBookByParam;
-import com.dangdang.common.utils.R;
+import com.dangdang.bookmall.product.vo.BaseInfoAddNameEntity;
+import com.dangdang.bookmall.product.vo.SelectBookByInsale;
+import com.dangdang.bookmall.product.vo.SelectBookByParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -41,8 +45,24 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     }
 
     @Override
-    public IPage<BaseInfoAddNameEntity> getBooksType(Page<BaseInfoAddNameEntity> page) {
-        return baseinfoDao.getBooksType(page);
+    public PageUtils getBooksType(Map<String, Object> params) {
+        IPage<BaseinfoEntity> page = this.page(
+                new Query<BaseinfoEntity>().getPage(params),
+                new QueryWrapper<BaseinfoEntity>()
+        );
+        PageUtils pageUtils = new PageUtils(page);
+
+        List<BaseinfoEntity> records = page.getRecords();
+        List<BaseInfoAddNameEntity> baseInfoAddNameEntityList = records.stream().map(baseinfoEntity -> {
+            BaseInfoAddNameEntity baseInfoAddNameEntity = new BaseInfoAddNameEntity();
+            baseInfoAddNameEntity.setBaseinfoEntity(baseinfoEntity);
+            String typeName = baseinfoDao.getBooksType(Integer.parseInt(String.valueOf(baseinfoEntity.getTypeId())));
+            baseInfoAddNameEntity.setName1(typeName);
+            return baseInfoAddNameEntity;
+        }).collect(Collectors.toList());
+
+        pageUtils.setList(baseInfoAddNameEntityList);
+        return pageUtils;
     }
 
     @Override
@@ -79,8 +99,25 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     }
 
     @Override
-    public IPage<SelectBookByInsale> getBooksByInsale(Page<SelectBookByInsale> page) {
-        return baseinfoDao.getBookByInsale(page);
+    public PageUtils getBooksByInsale(Map<String, Object> params) {
+        IPage<BaseinfoEntity> page = this.page(
+                new Query<BaseinfoEntity>().getPage(params),
+                new QueryWrapper<BaseinfoEntity>()
+        );
+        PageUtils pageUtils = new PageUtils(page);
+        List<BaseinfoEntity> records = page.getRecords();
+        List<SelectBookByInsale> collect = records.stream().map((baseinfoEntity) -> {
+            SelectBookByInsale selectBookByInsale = new SelectBookByInsale();
+            selectBookByInsale.setId(baseinfoEntity.getId());
+            selectBookByInsale.setName(baseinfoEntity.getName());
+            selectBookByInsale.setPriceSj(baseinfoEntity.getPriceSj());
+            return selectBookByInsale;
+        }).collect(Collectors.toList());
+        pageUtils.setList(collect);
+        return pageUtils;
+//        SelectBookByInsale
+//        return baseinfoDao.getBookByInsale(params);
+
     }
 
     @Override

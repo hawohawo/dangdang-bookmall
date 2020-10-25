@@ -2,12 +2,10 @@ package com.dangdang.bookmall.product.controller;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
-import com.dangdang.bookmall.product.dto.BaseInfoAddNameEntity;
-import com.dangdang.bookmall.product.dto.SelectBookByInsale;
-import com.dangdang.bookmall.product.dto.SelectBookByParam;
+import com.dangdang.bookmall.product.vo.SelectBookByInsale;
+import com.dangdang.bookmall.product.vo.SelectBookByParam;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,13 +78,12 @@ public class BaseinfoController {
      */
     @RequestMapping("/books")
     //@RequiresPermissions("product:baseinfo:list")
-    public R books(@RequestParam(value = "current", required = false, defaultValue = "1") int current,
-                   @RequestParam(value = "size", required = false, defaultValue = "10") int size){
-        Page<BaseInfoAddNameEntity> objectPage = new Page<>(current,size);
-        IPage<BaseInfoAddNameEntity> info  =  baseinfoService.getBooksType(objectPage);
-        return R.ok().put("info",info);
+    public R books(@RequestParam Map<String, Object> params){
+        PageUtils page = baseinfoService.getBooksType(params);
+        return R.ok().put("page", page);
 
-
+//        IPage<BaseInfoAddNameEntity> info  =  baseinfoService.getBooksType(objectPage);
+//        return R.ok().put("info",info);
     }
 
     /**
@@ -106,12 +103,10 @@ public class BaseinfoController {
      * 列表（查询所有图书，参数条图书名称和id还有售价，条件是这些商品是上架的商品）
      */
     @GetMapping("/infobByInsale")
-    public R infobByInsale(@RequestParam(value = "current", required = false, defaultValue = "1") int current,
-                         @RequestParam(value = "size", required = false, defaultValue = "10") int size){
+    public R infobByInsale(@RequestParam Map<String, Object> params){
         //TODO 还没写校验
-        Page<SelectBookByInsale> objectPage = new Page<>(current,size);
-        IPage<SelectBookByInsale> info  =  baseinfoService.getBooksByInsale(objectPage);
-        return R.ok().put("info", info);
+        PageUtils page = baseinfoService.getBooksByInsale(params);
+        return R.ok().put("page", page);
     }
 
     /**

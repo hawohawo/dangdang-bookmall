@@ -41,9 +41,8 @@ public class HotController {
      * 新增推荐图书的列表
      */
     @RequestMapping("/addlist")
-    public R addList(@RequestParam(value = "current", required = false, defaultValue = "1") int current,
-                     @RequestParam(value = "size", required = false, defaultValue = "10") int size){
-        R r = productFeignService.infobByInsale(current,size);
+    public R addList(@RequestParam Map<String, Object> params){
+        R r = productFeignService.infobByInsale(params);
         return r;
     }
 
