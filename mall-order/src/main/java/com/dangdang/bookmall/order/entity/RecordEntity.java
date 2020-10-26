@@ -41,4 +41,10 @@ public class RecordEntity implements Serializable {
 	 */
 	private String remark;
 
+	/**
+	 * 操作时间
+	 */
+	private Date time;
+
+
 }

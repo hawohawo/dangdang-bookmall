@@ -1,9 +1,6 @@
 package com.dangdang.bookmall.order.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -118,8 +115,10 @@ public class OrderinfoController {
             pricezj.updateAndGet(v -> v + price);
             return bookinfoAndPriceVo;
         }).collect(Collectors.toList());
-        //TODO record/records/{orderId} 获取订单操作记录
-        return R.ok().put("order",orderinfoEntity).put("books", collect).put("totalJF",totalJF).put("pricezj",pricezj);
+        //TODO record/records/{orderId} 获取订单操
+        List<OrderinfoEntity> orderinfoEntities = new ArrayList<>();
+        orderinfoEntities.add(orderinfoEntity);
+        return R.ok().put("order",orderinfoEntities).put("books", collect).put("totalJF",totalJF).put("pricezj",pricezj);
     }
 
 
@@ -250,6 +249,18 @@ public class OrderinfoController {
         }
     }
 
+    /**
+     * 商家 修改收货人的信息
+     */
+    @PostMapping("/updateReceiveAddress")
+    public R updateReceiveAddress(@RequestBody OrderinfoEntity orderinfo) {
+        if(orderinfo.getStatus()==1){
+            orderinfoService.updateById(orderinfo);
+            return R.ok();
+        }
+        else
+            return R.error(400,"当前订单状态下无法进行地址的修改");
+    }
 
 
 
