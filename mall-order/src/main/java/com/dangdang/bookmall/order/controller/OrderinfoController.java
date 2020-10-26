@@ -249,6 +249,18 @@ public class OrderinfoController {
         }
     }
 
+    /**
+     * 商家 修改收货人的信息
+     */
+    @PostMapping("/updateReceiveAddress")
+    public R updateReceiveAddress(@RequestBody OrderinfoEntity orderinfo) {
+        if(orderinfo.getStatus()==1){
+            orderinfoService.updateById(orderinfo);
+            return R.ok();
+        }
+        else
+            return R.error(400,"当前订单状态下无法进行地址的修改");
+    }
 
 
 
