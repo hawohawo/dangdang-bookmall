@@ -92,8 +92,8 @@ public class SeckillController {
      * 查询秒杀活动对应的时间段及对应下的商品详细信息
      * tips:查询对应下架的时间段或者下架的秒杀服务不会进行相应的显示
      */
-    @GetMapping("/sessionbookinfo")
-    public R getSeckillSessionBooksinfo(@RequestParam("seckillId") Integer seckillId,@RequestParam("seckillSessionId") Integer seckillSessionId){
+    @GetMapping("/sessionbookinfo/{seckillId}/{seckillSessionId}")
+    public R getSeckillSessionBooksinfo(@PathVariable("seckillId") Integer seckillId,@PathVariable("seckillSessionId") Integer seckillSessionId){
         List<SeckillSessionAndBookInfoVo> seckillSessionAndBookInfoVos = seckillService.getSeckillSessionBooksInfo(seckillId,seckillSessionId);
         return R.ok().put("info",seckillSessionAndBookInfoVos);
     }

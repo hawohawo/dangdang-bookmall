@@ -28,7 +28,7 @@ public class ReceiveController {
     private ReceiveService receiveService;
 
     /**
-     * 商家退货地址列表
+     * 商家退货地址列表 未分页
      */
     @GetMapping("/receives")
     //@RequiresPermissions("order:receive:list")
@@ -78,9 +78,6 @@ public class ReceiveController {
     }
 
 
-
-
-
     /**
      * 列表
      */
@@ -100,40 +97,39 @@ public class ReceiveController {
     //@RequiresPermissions("order:receive:info")
     public R info(@PathVariable("id") Long id){
 		ReceiveEntity receive = receiveService.getById(id);
-
         return R.ok().put("receive", receive);
     }
-
-    /**
-     * 保存
-     */
-    @RequestMapping("/save")
-    //@RequiresPermissions("order:receive:save")
-    public R save(@RequestBody ReceiveEntity receive){
-		receiveService.save(receive);
-
-        return R.ok();
-    }
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
-    //@RequiresPermissions("order:receive:update")
-    public R update(@RequestBody ReceiveEntity receive){
-		receiveService.updateById(receive);
-
-        return R.ok();
-    }
-
-    /**
-     * 删除
-     */
-    @RequestMapping("/delete")
-    //@RequiresPermissions("order:receive:delete")
-    public R delete(@RequestBody Long[] ids){
-		receiveService.removeByIds(Arrays.asList(ids));
-        return R.ok();
-    }
+//
+//    /**
+//     * 保存
+//     */
+//    @RequestMapping("/save")
+//    //@RequiresPermissions("order:receive:save")
+//    public R save(@RequestBody ReceiveEntity receive){
+//		receiveService.save(receive);
+//
+//        return R.ok();
+//    }
+//
+//    /**
+//     * 修改
+//     */
+//    @RequestMapping("/update")
+//    //@RequiresPermissions("order:receive:update")
+//    public R update(@RequestBody ReceiveEntity receive){
+//		receiveService.updateById(receive);
+//
+//        return R.ok();
+//    }
+//
+//    /**
+//     * 删除
+//     */
+//    @RequestMapping("/delete")
+//    //@RequiresPermissions("order:receive:delete")
+//    public R delete(@RequestBody Long[] ids){
+//		receiveService.removeByIds(Arrays.asList(ids));
+//        return R.ok();
+//    }
 
 }

@@ -100,37 +100,37 @@ public class ReasonController {
         return R.ok().put("reason", reason);
     }
 
-    /**
-     * 保存
-     */
-    @RequestMapping("/save")
-    //@RequiresPermissions("order:reason:save")
-    public R save(@RequestBody ReasonEntity reason){
-		reasonService.save(reason);
-
-        return R.ok();
-    }
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
-    //@RequiresPermissions("order:reason:update")
-    public R update(@RequestBody ReasonEntity reason){
-		reasonService.updateById(reason);
-
-        return R.ok();
-    }
-
-    /**
-     * 删除
-     */
-    @RequestMapping("/delete")
-    //@RequiresPermissions("order:reason:delete")
-    public R delete(@RequestBody Long[] ids){
-		reasonService.removeByIds(Arrays.asList(ids));
-
-        return R.ok();
-    }
+//    /**
+//     * 保存
+//     */
+//    @RequestMapping("/save")
+//    //@RequiresPermissions("order:reason:save")
+//    public R save(@RequestBody ReasonEntity reason){
+//		reasonService.save(reason);
+//
+//        return R.ok();
+//    }
+//
+//    /**
+//     * 修改
+//     */
+//    @RequestMapping("/update")
+//    //@RequiresPermissions("order:reason:update")
+//    public R update(@RequestBody ReasonEntity reason){
+//		reasonService.updateById(reason);
+//
+//        return R.ok();
+//    }
+//
+//    /**
+//     * 删除
+//     */
+//    @RequestMapping("/delete")
+//    //@RequiresPermissions("order:reason:delete")
+//    public R delete(@RequestBody Long[] ids){
+//		reasonService.removeByIds(Arrays.asList(ids));
+//
+//        return R.ok();
+//    }
 
 }
