@@ -54,6 +54,23 @@ public class OrderinfoController {
     }
 
     /**
+     * 订单列表筛选（多条件模糊）
+     */
+    @GetMapping("/findOrders")
+    //@RequiresPermissions("order:returninfo:list")
+    public R findOrders(@RequestParam Map<String, Object> orderMap){
+        String[] conditions = {"code","userPhone","status","timeXd"};
+        Object value;
+        for (String condition : conditions) {
+            if ((value=orderMap.get(condition))==null){
+                orderMap.put(condition,"");
+            }
+        }
+        List<OrderinfoEntity> orderinfoEntityList = orderinfoService.findOrders(orderMap);
+        return R.ok().put("findOrders", orderinfoEntityList);
+    }
+
+    /**
      * 订单详细信息
      */
     @GetMapping("/detail/{id}")
@@ -61,7 +78,7 @@ public class OrderinfoController {
     public R detail(@PathVariable Long id){
 
         OrderinfoEntity orderinfoEntity = orderinfoService.getById(id);
-        //获取...
+        //获取订单详情
         Map<String,Object> cmap = new HashMap<>();
         cmap.put("order_id",id);
         List<BookinfoEntity> bookinfoEntities = bookinfoService.listByMap(cmap);
@@ -124,7 +141,19 @@ public class OrderinfoController {
     }
 
 
+    /**
+     * 新增订单
+     */
+    @RequestMapping("/save")
+    //@RequiresPermissions("order:orderinfo:save")
+    public R saveOrder(@RequestBody OrderinfoEntity orderinfo){
+        boolean result = orderinfoService.save(orderinfo);
+        if(result){
+            return R.ok();
+        } else
+            return R.error(400,"新增订单失败");
 
+    }
 
 
 
@@ -429,20 +458,5 @@ public class OrderinfoController {
     }
 
 
-    /**
-     * 退货申请筛选（多条件模糊）
-     */
-    @GetMapping("/findOrders")
-    //@RequiresPermissions("order:returninfo:list")
-    public R findOrders(@RequestParam Map<String, Object> orderMap){
-        String[] conditions = {"code","userPhone","status","timeXd"};
-        Object value;
-        for (String condition : conditions) {
-            if ((value=orderMap.get(condition))==null){
-                orderMap.put(condition,"");
-            }
-        }
-        List<OrderinfoEntity> orderinfoEntityList = orderinfoService.findOrders(orderMap);
-        return R.ok().put("findOrders", orderinfoEntityList);
-    }
+
 }
