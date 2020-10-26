@@ -135,6 +135,19 @@ public class BaseinfoController {
     }
 
     /**
+     * 远程调用接口测试
+     * 根据图书id 获取到图书的基本信息
+     * 返回类型为 BaseinfoEntity
+     */
+    @GetMapping("/feignbookinfo/{id}")
+    public R feignBookInfoById(@PathVariable("id") Long id){
+        BaseinfoEntity baseinfoEntity = baseinfoService.feignBookInfoById(id);
+        return R.ok().put("name",baseinfoEntity.getName()).put("priceSj",baseinfoEntity.getPriceSj());
+    }
+
+
+
+    /**
      * 列表
      */
     @RequestMapping("/list")

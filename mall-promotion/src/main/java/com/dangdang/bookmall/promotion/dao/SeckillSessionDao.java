@@ -3,6 +3,7 @@ package com.dangdang.bookmall.promotion.dao;
 import com.dangdang.bookmall.promotion.entity.SeckillSessionEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 
@@ -13,5 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SeckillSessionDao extends BaseMapper<SeckillSessionEntity> {
-	
+
+    @Select("select status from smt_seckill_session where id=#{seckillSessionId} ")
+    Integer isStatus(Integer seckillSessionId);
 }
