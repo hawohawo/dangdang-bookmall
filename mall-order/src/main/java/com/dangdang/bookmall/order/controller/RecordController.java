@@ -1,14 +1,12 @@
 package com.dangdang.bookmall.order.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dangdang.bookmall.order.entity.RecordEntity;
 import com.dangdang.bookmall.order.service.RecordService;
@@ -29,6 +27,36 @@ import com.dangdang.common.utils.R;
 public class RecordController {
     @Autowired
     private RecordService recordService;
+
+
+    /**
+     * 订单操作列表
+     */
+    @GetMapping("/records/{orderId}")
+    //@RequiresPermissions("order:record:list")
+    public R records(@PathVariable Long orderId){
+
+        Map<String,Object> cmap = new HashMap<>();
+        cmap.put("order_id",orderId);
+        List<RecordEntity> recordEntities = recordService.listByMap(cmap);
+
+        return R.ok().put("records", recordEntities);
+    }
+
+    /**
+     * 新增订单操作
+     */
+    @PostMapping("/save")
+    //@RequiresPermissions("order:record:save")
+    public R saveRecord(@RequestBody RecordEntity record){
+        boolean result = recordService.save(record);
+        if(result){
+            return R.ok();
+        }else
+            return R.error(400,"添加失败");
+    }
+
+
 
     /**
      * 列表
