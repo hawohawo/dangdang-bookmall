@@ -2,18 +2,15 @@ package com.dangdang.bookmall.product.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.dangdang.bookmall.product.dto.BaseInfoAddNameEntity;
-import com.dangdang.bookmall.product.dto.SelectBookByInsale;
-import com.dangdang.bookmall.product.dto.SelectBookByParam;
+import com.dangdang.bookmall.product.vo.BaseInfoAddNameEntity;
+import com.dangdang.bookmall.product.vo.SelectBookByInsale;
+import com.dangdang.bookmall.product.vo.SelectBookByParam;
 import com.dangdang.bookmall.product.entity.BaseinfoEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 
@@ -30,8 +27,8 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
      * @param
      * @return
      */
-    @Select("select a.* , b.`name` as name1 from bmt_baseinfo a,bmt_type b where a.type_id=b.id")
-    IPage<BaseInfoAddNameEntity> getBooksType(Page<BaseInfoAddNameEntity> page);
+    @Select("select name from bmt_type where id = #{id} ")
+    String getBooksType(int id);
 
     /**
      * 联表查图书基本信息和分类名
@@ -70,4 +67,9 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
     @Select("select score from bmt_baseinfo where id=#{id}")
     BigDecimal getScoreByIds (int id);
 
+    @Select("select name from bmt_baseinfo where id=#{id}")
+    String getBookNameById(Long id);
+
+    @Select("select * from bmt_baseinfo where id=#{id}")
+    BaseinfoEntity feignBookInfoById(Long id);
 }

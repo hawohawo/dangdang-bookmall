@@ -17,6 +17,9 @@ import com.dangdang.bookmall.promotion.service.AdService;
 @Service("adService")
 public class AdServiceImpl extends ServiceImpl<AdDao, AdEntity> implements AdService {
 
+    @Autowired
+    private AdDao adDao;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<AdEntity> page = this.page(
@@ -26,6 +29,8 @@ public class AdServiceImpl extends ServiceImpl<AdDao, AdEntity> implements AdSer
 
         return new PageUtils(page);
     }
+
+
 
 
 }

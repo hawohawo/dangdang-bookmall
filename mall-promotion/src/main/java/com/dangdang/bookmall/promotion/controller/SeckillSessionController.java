@@ -42,16 +42,6 @@ public class SeckillSessionController {
     }
 
 
-    /**
-     * 信息
-     */
-    @RequestMapping("/info/{id}")
-    //@RequiresPermissions("promotion:seckillsession:info")
-    public R info(@PathVariable("id") Integer id){
-		SeckillSessionEntity seckillSession = seckillSessionService.getById(id);
-
-        return R.ok().put("seckillSession", seckillSession);
-    }
 
     /**
      * 保存
@@ -85,5 +75,21 @@ public class SeckillSessionController {
 
         return R.ok();
     }
+
+    /**
+     * ======================================================
+     */
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/info/{id}")
+    //@RequiresPermissions("promotion:seckillsession:info")
+    public R info(@PathVariable("id") Integer id){
+        SeckillSessionEntity seckillSession = seckillSessionService.getById(id);
+
+        return R.ok().put("seckillSession", seckillSession);
+    }
+
 
 }

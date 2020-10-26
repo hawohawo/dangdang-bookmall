@@ -3,12 +3,6 @@
 
 <mapper namespace="com.dangdang.bookmall.promotion.dao.HotDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.dangdang.bookmall.promotion.entity.HotEntity" id="hotMap">
-        <result property="id" column="id"/>
-        <result property="bookId" column="book_id"/>
-        <result property="status" column="status"/>
-    </resultMap>
 
 
 </mapper>
