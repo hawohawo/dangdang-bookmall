@@ -31,6 +31,26 @@ public class BookinfoController {
     private BookinfoService bookinfoService;
 
     /**
+     * 新增订单详情
+     */
+    @RequestMapping("/save")
+    //@RequiresPermissions("order:bookinfo:save")
+    public R saveBookinfo(@RequestBody BookinfoEntity bookinfo){
+        boolean result = bookinfoService.save(bookinfo);
+        if(result){
+            return R.ok();
+        } else
+            return R.error(400,"新增订单详情失败");
+
+    }
+
+
+
+
+
+
+
+    /**
      * 列表
      */
     @RequestMapping("/list")

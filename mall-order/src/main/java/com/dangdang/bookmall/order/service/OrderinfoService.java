@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.dangdang.common.utils.PageUtils;
 import com.dangdang.bookmall.order.entity.OrderinfoEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface OrderinfoService extends IService<OrderinfoEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    List<OrderinfoEntity> findOrders(Map<String,Object> orderinfoEntity);
 }
 

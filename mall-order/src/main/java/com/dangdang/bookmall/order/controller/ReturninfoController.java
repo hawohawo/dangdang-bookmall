@@ -1,8 +1,11 @@
 package com.dangdang.bookmall.order.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.dangdang.bookmall.order.entity.OrderinfoEntity;
+import com.dangdang.bookmall.order.service.OrderinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +28,96 @@ import com.dangdang.common.utils.R;
 public class ReturninfoController {
     @Autowired
     private ReturninfoService returninfoService;
+
+    @Autowired
+    private OrderinfoService orderinfoService;
+
+
+    /**
+     * 退货申请列表
+     */
+    @GetMapping("/returns")
+    //@RequiresPermissions("order:returninfo:list")
+    public R returns(@RequestParam Map<String, Object> params){
+        List<ReturninfoEntity> list = returninfoService.list();
+        return R.ok().put("returns", list);
+    }
+
+    /**
+     * 退货申请筛选（多条件模糊）
+     */
+    @GetMapping("/findReturn")
+    //@RequiresPermissions("order:returninfo:list")
+    public R findReturn(@RequestParam Map<String, Object> returnMap){
+
+        String[] conditions = {"code","userPhone","status","timeXd"};
+        Object value;
+        for (String condition : conditions) {
+            if ((value=returnMap.get(condition))==null){
+                returnMap.put(condition,"");
+            }
+        }
+        List<ReturninfoEntity> returninfoEntityList = returninfoService.findReturn(returnMap);
+
+        return R.ok().put("return", returninfoEntityList);
+    }
+
+    /**
+     * 退货申请详情
+     */
+    @GetMapping("/return/{id}")
+    //@RequiresPermissions("order:returninfo:list")
+    public R returninfo(@PathVariable Long id){
+//        List<ReturninfoEntity> list = returninfoService.list();
+        ReturninfoEntity returninfoEntity = returninfoService.getById(id);
+        OrderinfoEntity orderinfoEntity = orderinfoService.getById(id);
+        return R.ok().put("return", returninfoEntity).put("code",orderinfoEntity.getCode());
+    }
+
+    /**
+     * 同意退货
+     * 状态：  1-申请退货，2-同意退货，3-拒绝退货
+     */
+    @PostMapping("/updateAccept")
+    //@RequiresPermissions("order:returninfo:update")
+    public R updateAccept(@RequestBody ReturninfoEntity returninfo){
+        returninfo = returninfoService.getById(returninfo.getId());
+        Integer status = returninfo.getStatus();
+        if(status==1) {
+            returninfo.setStatus(2);
+            boolean result = returninfoService.updateById(returninfo);
+            if (result) {
+                return R.ok();
+            } else
+                return R.error(400, "同意退货失败");
+        } else
+            return R.error(400, "当前状态下不可同意退货");
+    }
+
+    /**
+     * 拒绝退货
+     * 状态：  1-申请退货，2-同意退货，3-拒绝退货
+     */
+    @PostMapping("/updateRefuse")
+    //@RequiresPermissions("order:returninfo:update")
+    public R updateRefuse(@RequestBody ReturninfoEntity returninfo){
+        returninfo = returninfoService.getById(returninfo.getId());
+        Integer status = returninfo.getStatus();
+        if(status==1) {
+            returninfo.setStatus(3);
+            boolean result = returninfoService.updateById(returninfo);
+            if (result) {
+                return R.ok();
+            } else
+                return R.error(400, "拒绝退货失败");
+        } else
+            return R.error(400, "当前状态下不可拒绝退货");
+    }
+
+
+
+
+
 
 
     /**
