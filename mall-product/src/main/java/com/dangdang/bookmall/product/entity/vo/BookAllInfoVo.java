@@ -82,10 +82,7 @@ public class BookAllInfoVo {
      * 图书详情ID
      */
     private Long bookdetailId;
-    /**
-     * 评论ID
-     */
-    private Long commentId;
+
     private String content;
     /**
      * 出版社

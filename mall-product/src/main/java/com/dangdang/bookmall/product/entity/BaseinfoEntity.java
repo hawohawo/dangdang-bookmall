@@ -93,9 +93,6 @@ public class BaseinfoEntity implements Serializable {
 	 * 图书详情ID
 	 */
 	private Long bookdetailId;
-	/**
-	 * 评论ID
-	 */
-	private Long commentId;
+
 
 }
