@@ -48,5 +48,7 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
 
     BaseinfoEntity feignBookInfoById(Long id);
 
+
+    int insert(BaseinfoEntity baseinfoEntity);
 }
 

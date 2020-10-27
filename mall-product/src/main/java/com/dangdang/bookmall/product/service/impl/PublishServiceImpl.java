@@ -11,6 +11,7 @@ import com.dangdang.common.utils.Query;
 import com.dangdang.bookmall.product.dao.PublishDao;
 import com.dangdang.bookmall.product.entity.PublishEntity;
 import com.dangdang.bookmall.product.service.PublishService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("publishService")
@@ -24,6 +25,12 @@ public class PublishServiceImpl extends ServiceImpl<PublishDao, PublishEntity> i
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    @Transactional
+    public int insert(PublishEntity publishEntity) {
+        return baseMapper.insert(publishEntity);
     }
 
 }
