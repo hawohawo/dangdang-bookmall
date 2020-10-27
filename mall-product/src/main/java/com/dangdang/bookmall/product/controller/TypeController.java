@@ -40,6 +40,12 @@ public class TypeController {
         return R.ok().put("page", page);
     }
 
+    @RequestMapping("/types")
+    //@RequiresPermissions("product:type:list")
+    public R types(){
+        return R.ok().put("list", typeService.list());
+    }
+
 
     /**
      * 信息

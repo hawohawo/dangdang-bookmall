@@ -1,5 +1,6 @@
 package com.dangdang.bookmall.order.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +72,9 @@ public class ReturninfoController {
 //        List<ReturninfoEntity> list = returninfoService.list();
         ReturninfoEntity returninfoEntity = returninfoService.getById(id);
         OrderinfoEntity orderinfoEntity = orderinfoService.getById(id);
-        return R.ok().put("return", returninfoEntity).put("code",orderinfoEntity.getCode());
+        List<ReturninfoEntity> returninfoEntities = new ArrayList<>();
+        returninfoEntities.add(returninfoEntity);
+        return R.ok().put("return", returninfoEntities).put("ordercode",orderinfoEntity.getCode());
     }
 
     /**
@@ -97,6 +100,7 @@ public class ReturninfoController {
     /**
      * 拒绝退货
      * 状态：  1-申请退货，2-同意退货，3-拒绝退货
+     *        4：确认收货，
      */
     @PostMapping("/updateRefuse")
     //@RequiresPermissions("order:returninfo:update")

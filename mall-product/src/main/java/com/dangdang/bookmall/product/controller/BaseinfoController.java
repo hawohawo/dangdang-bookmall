@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
 
-import com.dangdang.bookmall.product.vo.SelectBookByInsale;
+import com.alibaba.fastjson.JSON;
+import com.dangdang.bookmall.product.entity.BookdetailEntity;
+import com.dangdang.bookmall.product.entity.PublishEntity;
 import com.dangdang.bookmall.product.vo.SelectBookByParam;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -30,6 +32,19 @@ public class BaseinfoController {
     private BaseinfoService baseinfoService;
 
     /**
+     * 添加一本图书
+     */
+    @PostMapping("/book")
+    public R addBook(@RequestBody BaseinfoEntity baseinfoEntity,PublishEntity publishEntity){
+
+        System.out.println("baseinfoEntity:==="+JSON.toJSONString(baseinfoEntity));
+        System.out.println("publishEntity:==="+JSON.toJSONString(publishEntity));
+//        System.out.println("bookdetailEntity:==="+JSON.toJSONString(bookdetailEntity));
+
+        return R.ok();
+    }
+
+    /**
      * 获取积分（条件：id）
      */
     @GetMapping("/scoreById/{id}")
@@ -40,36 +55,6 @@ public class BaseinfoController {
         Page<BaseinfoEntity> objectPage = new Page<>(current,size);
         BigDecimal info  =  baseinfoService.getScoreById(id);
         return R.ok().put("info", info);
-    }
-
-    /**
-     * 删除一条图书信息(批量修改)
-     */
-    @RequestMapping("/deletebook")
-    public R deletebook(@RequestBody Long[] ids){
-        //TODO 还没写校验
-        baseinfoService.removeByIds(Arrays.asList(ids));
-        return R.ok();
-    }
-
-    /**
-     * 修改一条图书信息
-     */
-    @RequestMapping("/updatebook")
-    public R updatebook(@RequestBody BaseinfoEntity baseinfo){
-        //TODO 还没写校验
-        baseinfoService.updateById(baseinfo);
-        return R.ok();
-    }
-
-    /**
-     * 添加一条图书信息
-     */
-    @RequestMapping("/savebook")
-    public R savebooks(@RequestBody BaseinfoEntity baseinfo){
-        //TODO 还没写校验
-        baseinfoService.save(baseinfo);
-        return R.ok();
     }
 
     /**
