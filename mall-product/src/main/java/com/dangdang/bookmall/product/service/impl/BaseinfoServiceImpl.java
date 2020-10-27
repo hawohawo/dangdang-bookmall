@@ -67,7 +67,7 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     }
 
     @Override
-    public IPage<BaseinfoEntity> getBooksByType(Page<BaseinfoEntity> page,int typeId) {
+    public IPage<BaseinfoEntity> getBooksByType(Page<BaseinfoEntity> page, int typeId) {
         /*LambdaQueryWrapper<BaseinfoEntity> wrapper = new LambdaQueryWrapper();
         wrapper.eq(BaseinfoEntity::getTypeId,typeId)
                 .select(BaseinfoEntity::getTypeId);*/
@@ -75,27 +75,27 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
         /*QueryWrapper<BaseinfoEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("type_id", typeId);
         List<BaseinfoEntity> list = this.list(queryWrapper);*/
-        return baseinfoDao.getBooksByType(page,typeId);
+        return baseinfoDao.getBooksByType(page, typeId);
     }
 
     @Override
-    public IPage<BaseinfoEntity> getBooksByParams(Page<BaseinfoEntity> page,SelectBookByParam sbbp) {
+    public IPage<BaseinfoEntity> getBooksByParams(Page<BaseinfoEntity> page, SelectBookByParam sbbp) {
         QueryWrapper<BaseinfoEntity> queryWrapper = new QueryWrapper<>();
 
         Map<String, Object> map = new HashMap<>();
-        map.put("name",sbbp.getName());
-        map.put("author",sbbp.getAuthor());
-        map.put("type_id",sbbp.getTypeId());
-        map.put("insale",sbbp.getInsale());
-        map.put("publish_id",sbbp.getPublishId());
-        queryWrapper.allEq(map,false);
+        map.put("name", sbbp.getName());
+        map.put("author", sbbp.getAuthor());
+        map.put("type_id", sbbp.getTypeId());
+        map.put("insale", sbbp.getInsale());
+        map.put("publish_id", sbbp.getPublishId());
+        queryWrapper.allEq(map, false);
         /*queryWrapper.allEq({name:sbbp.getName()})
                     .like("author",sbbp.getAuthor())
                     .like("type_id",sbbp.getTypeId())
                     .like("insale",sbbp.getInsale())
                     .like("publish_id",sbbp.getPublishId());*/
         //<BaseinfoEntity> list = this.list(queryWrapper);
-        IPage<BaseinfoEntity> list = this.page(page,queryWrapper);
+        IPage<BaseinfoEntity> list = this.page(page, queryWrapper);
         return list;
     }
 
@@ -130,11 +130,15 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
 
 
 
-//    远程调用服务，根据图书id 获取到 图书的名称
+
+
+    //    远程调用服务，根据图书id 获取到 图书的名称
+
     @Override
     public String getBookNameById(Long id) {
         return baseinfoDao.getBookNameById(id);
     }
+
 
     @Override
     public String getTotalOnShelves() {
@@ -156,3 +160,12 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
         return  baseinfoDao.getStockDto();
     }
     }
+
+    //    远程调用服务，根据图书id 获取到 图书的基本信息
+    @Override
+    public BaseinfoEntity feignBookInfoById(Long id) {
+        return baseinfoDao.feignBookInfoById(id);
+    }
+
+}
+

@@ -67,7 +67,7 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
      * @param id
      * @return
      */
-    @Select("select score from bmt_baseinfo where id=#{id}")
+    @Select("select integral from bmt_baseinfo where id=#{id}")
     BigDecimal getScoreByIds (int id);
 
     @Select("select name from bmt_baseinfo where id=#{id}")
@@ -90,5 +90,9 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
     @Select("SELECT name,stock FROM bmt_baseinfo WHERE stock <=5 ORDER BY stock")
 
     List<StockDto> getStockDto();
+
+
+    @Select("select * from bmt_baseinfo where id=#{id}")
+    BaseinfoEntity feignBookInfoById(Long id);
 
 }

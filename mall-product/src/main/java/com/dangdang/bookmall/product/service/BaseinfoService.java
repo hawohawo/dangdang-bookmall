@@ -36,6 +36,7 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
 
     String getBookNameById(Long id);
 
+
     String getTotalOnShelves();
     //上架商品总数
     String getTotalOffShelves();
@@ -44,5 +45,8 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
     //全部商品数
     List<StockDto> getStockDto();
     //库存
+
+    BaseinfoEntity feignBookInfoById(Long id);
+
 }
 

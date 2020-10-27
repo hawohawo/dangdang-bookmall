@@ -10,7 +10,13 @@ import lombok.Data;
 /**
  * 
  * 
- * @author zengyuzhi
+ * @author zengyuzhiprivate Integer id;
+
+    private Date startTime;
+
+    private Date endTime;
+
+    private Integer bookNum;
  * @email shbyku@gmail.com
  * @date 2020-10-19 16:54:13
  */

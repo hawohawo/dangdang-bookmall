@@ -4,11 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dangdang.bookmall.order.entity.BookinfoEntity;
 import com.dangdang.bookmall.order.service.BookinfoService;
@@ -29,6 +25,21 @@ import com.dangdang.common.utils.R;
 public class BookinfoController {
     @Autowired
     private BookinfoService bookinfoService;
+
+    /**
+     * 新增订单详情
+     */
+    @PostMapping("/save")
+    //@RequiresPermissions("order:bookinfo:save")
+    public R saveBookinfo(@RequestBody BookinfoEntity bookinfo){
+        boolean result = bookinfoService.save(bookinfo);
+        if(result){
+            return R.ok();
+        } else
+            return R.error(400,"新增订单详情失败");
+
+    }
+
 
     /**
      * 列表
