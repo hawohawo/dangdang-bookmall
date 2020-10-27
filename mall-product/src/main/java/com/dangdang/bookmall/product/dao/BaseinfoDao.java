@@ -2,6 +2,8 @@ package com.dangdang.bookmall.product.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dangdang.bookmall.product.entity.dto.SalesrRankingOfTheMonthDto;
+import com.dangdang.bookmall.product.entity.dto.StockDto;
 import com.dangdang.bookmall.product.vo.BaseInfoAddNameEntity;
 import com.dangdang.bookmall.product.vo.SelectBookByInsale;
 import com.dangdang.bookmall.product.vo.SelectBookByParam;
@@ -11,6 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 
@@ -69,5 +72,23 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
 
     @Select("select name from bmt_baseinfo where id=#{id}")
     String getBookNameById(Long id);
+
+
+    //统计 远程调用
+    @Select("SELECT COUNT(id) FROM bmt_baseinfo WHERE insale = 0")
+
+    String getTotalOnShelves();
+
+    @Select("SELECT COUNT(id) FROM bmt_baseinfo WHERE insale = 1")
+
+    String getTotalOffShelves();
+
+    @Select("SELECT COUNT(id) FROM bmt_baseinfo")
+
+    String getAllShelves();
+
+    @Select("SELECT name,stock FROM bmt_baseinfo WHERE stock <=5 ORDER BY stock")
+
+    List<StockDto> getStockDto();
 
 }

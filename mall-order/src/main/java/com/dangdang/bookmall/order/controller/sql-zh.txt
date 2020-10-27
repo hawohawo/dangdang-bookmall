@@ -1,0 +1,71 @@
+    /**
+     * startup.cmd -m standalone
+
+     * 本月订单量：
+     * SELECT COUNT(id) from omt_orderinfo where `status` =7 AND DATE_FORMAT(time_xd,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m')
+     * 此语句查出本月订单量具体数
+
+     *
+     * 本周订单量：
+     * SELECT COUNT(id) FROM omt_orderinfo WHERE `status` =7 AND YEARWEEK(DATE_FORMAT(time_xd,'%Y-%m-%d')) = YEARWEEK(now())
+     * 此语句查出本周订单量具体数
+     *
+     *
+     * 当前上架总数：
+     * SELECT COUNT(id) FROM bmt_baseinfo WHERE insale = 0
+     * 此语句查出商城上架的商品总数
+     *
+     * 当前下架总数：
+     * SELECT COUNT(id) FROM bmt_baseinfo WHERE insale = 1
+     * 此语句查出商城下架的商品总数
+     *
+     * 全部商品总数：
+     * SELECT COUNT(id) FROM bmt_baseinfo
+     * 此语句查出商城全部的商品总数
+     *
+     * 库存紧张：
+     * SELECT name,stock FROM bmt_baseinfo WHERE stock <=5 ORDER BY stock
+     * 此语句查出商城中库存紧张（库存<=5）的书的信息（书名）,按照库存量从小到大排序
+     *
+     * 当月销量排名：https://echarts.apache.org/examples/zh/editor.html?c=dataset-encode0&theme=light
+     * SELECT a.book_name,a.book_num,b.time_xd
+     * FROM omt_bookinfo a JOIN omt_orderinfo b
+     * ON a.order_id = b.`code`
+     * where DATE_FORMAT(time_xd,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m')
+     * ORDER BY a.book_num DESC
+     * 此语句查出当月卖出书籍的销量，从大到小排名
+     *
+     * 差评率排名：
+     * select (select count(*) from bmt_comment where type='差评'
+     * )/(select count(*) from bmt_comment)
+     * 此语句查出商品的差评率
+     *
+     * 今日销售额统计：
+     * SELECT SUM(a.book_price),b.time_xd
+     * FROM omt_bookinfo a JOIN omt_orderinfo b
+     * ON a.order_id = b.`code`
+     * where TO_DAYS(b.time_xd) = TO_DAYS(NOW())
+     * 此语句查出商城当日销售额总计
+     *
+     * 总销售额统计：
+     * SELECT SUM(book_price) FROM omt_bookinfo
+     * 此语句查出商城的总销售额
+     *
+     * 本月销售额统计：
+     * SELECT SUM(a.book_price)
+     * FROM omt_bookinfo a JOIN omt_orderinfo b
+     * ON a.order_id = b.`code`
+     * where date_format(time_xd,'%Y-%m')=date_format(now(),'%Y-%m')
+     * 此语句查出商城本月的销售额总计
+     * **/
+
+
+          * 待发货订单量：
+          * SELECT * FROM omt_orderinfo WHERE `status` =1
+          * 此语句查出待发货的所有订单基本信息
+
+               * SELECT * FROM omt_orderinfo WHERE `status` =7 AND YEARWEEK(DATE_FORMAT(time_xd,'%Y-%m-%d')) = YEARWEEK(now())
+               * 此语句查出本月订单具体信息
+
+                    * SELECT * from omt_orderinfo where `status` =7 AND DATE_FORMAT(time_xd,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m')
+                    * 此语句查出本月订单具体信息
