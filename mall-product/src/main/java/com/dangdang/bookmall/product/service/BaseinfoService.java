@@ -3,12 +3,14 @@ package com.dangdang.bookmall.product.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dangdang.bookmall.product.entity.dto.StockDto;
 import com.dangdang.bookmall.product.vo.SelectBookByInsale;
 import com.dangdang.bookmall.product.vo.SelectBookByParam;
 import com.dangdang.common.utils.PageUtils;
 import com.dangdang.bookmall.product.entity.BaseinfoEntity;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +36,17 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
 
     String getBookNameById(Long id);
 
+
+    String getTotalOnShelves();
+    //上架商品总数
+    String getTotalOffShelves();
+    //下架商品总数
+    String getAllShelves();
+    //全部商品数
+    List<StockDto> getStockDto();
+    //库存
+
     BaseinfoEntity feignBookInfoById(Long id);
+
 }
 

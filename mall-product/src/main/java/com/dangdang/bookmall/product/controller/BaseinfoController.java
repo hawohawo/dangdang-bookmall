@@ -1,9 +1,13 @@
 package com.dangdang.bookmall.product.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.dangdang.bookmall.product.entity.dto.StatisticsDto;
+import com.dangdang.bookmall.product.entity.dto.StockDto;
 import com.dangdang.bookmall.product.vo.SelectBookByInsale;
 import com.dangdang.bookmall.product.vo.SelectBookByParam;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -28,6 +32,48 @@ import com.dangdang.common.utils.R;
 public class BaseinfoController {
     @Autowired
     private BaseinfoService baseinfoService;
+    private Object StockDto;
+
+//    统计 远程调用
+
+    @GetMapping("/off/shelves")//下架总数统计
+    public R getTotalOffShelves() {
+        StatisticsDto statisticsDto = new StatisticsDto();
+        statisticsDto.setName("下架总数");
+        statisticsDto.setValue(Double.valueOf(baseinfoService.getTotalOffShelves()));
+        return R.ok().put("offshelves",statisticsDto);
+    }
+    @GetMapping("/on/shelves")//上架总数统计
+    public  R getTotalOnShelves(){
+        StatisticsDto statisticsDto = new StatisticsDto();
+        statisticsDto.setName("上架总数");
+        statisticsDto.setValue(Double.valueOf(baseinfoService.getTotalOnShelves()));
+        return  R.ok().put("onshelves",statisticsDto);
+    }
+    @GetMapping("/all/shelves")//全部商品数
+    public  R getAllShelves(){
+        StatisticsDto statisticsDto = new StatisticsDto();
+        statisticsDto.setName("全部商品数");
+        statisticsDto.setValue(Double.valueOf(baseinfoService.getAllShelves()));
+        return R.ok().put("allshelves",statisticsDto);
+    }
+    @GetMapping("/stock")//库存
+    public R getSalesrRankingOfTheMonth(){
+        List<StockDto> StockDto = baseinfoService.getStockDto();
+//        String[] result = new String[salesrRankingOfTheMonth.size()+1];
+//        int i = 1;
+//        for(SalesrRankingOfTheMonthDto salesrRankingOfTheMonthDto : salesrRankingOfTheMonth){
+//            result[i] = salesrRankingOfTheMonthDto.getBookNum()+","+salesrRankingOfTheMonthDto.getBookNum()+","+salesrRankingOfTheMonthDto.getBookName();
+//            i++;
+//        }
+//        result[0] = "'score','bookNum','bookName'";
+//
+//        for(String a : result)
+//            System.out.println(a);
+        return R.ok().put("Stock",StockDto);
+    }
+
+
 
     /**
      * 获取积分（条件：id）
