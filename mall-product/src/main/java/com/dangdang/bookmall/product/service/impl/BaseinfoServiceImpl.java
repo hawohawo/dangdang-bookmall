@@ -155,11 +155,12 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
 
         return  baseinfoDao.getAllShelves();
     }
+
     @Override
     public List<StockDto> getStockDto(){
         return  baseinfoDao.getStockDto();
     }
-    }
+
 
     //    远程调用服务，根据图书id 获取到 图书的基本信息
     @Override
