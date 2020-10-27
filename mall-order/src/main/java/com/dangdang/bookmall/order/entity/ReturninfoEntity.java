@@ -65,5 +65,11 @@ public class ReturninfoEntity implements Serializable {
 	 * 问题描述
 	 */
 	private String problem;
+	/**
+	 * 图书图片
+	 */
+	private String bookPic;
+
+
 
 }
