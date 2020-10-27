@@ -41,4 +41,9 @@ public class CommentEntity implements Serializable {
 	 */
 	private String type;
 
+	/**
+	 * 所属图书id
+	 */
+	private int bookId;
+
 }

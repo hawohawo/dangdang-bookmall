@@ -1,12 +1,11 @@
-package com.dangdang.bookmall.product.entity;
+package com.dangdang.bookmall.user.entity.dto;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.math.BigDecimal;
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * 
@@ -93,6 +92,9 @@ public class BaseinfoEntity implements Serializable {
 	 * 图书详情ID
 	 */
 	private Long bookdetailId;
-
+	/**
+	 * 评论ID
+	 */
+	private Long commentId;
 
 }

@@ -27,6 +27,7 @@ import com.dangdang.common.utils.Query;
 import com.dangdang.bookmall.product.dao.BaseinfoDao;
 import com.dangdang.bookmall.product.entity.BaseinfoEntity;
 import com.dangdang.bookmall.product.service.BaseinfoService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("baseinfoService")
@@ -155,16 +156,23 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
 
         return  baseinfoDao.getAllShelves();
     }
+
     @Override
     public List<StockDto> getStockDto(){
         return  baseinfoDao.getStockDto();
     }
-    }
+
 
     //    远程调用服务，根据图书id 获取到 图书的基本信息
     @Override
     public BaseinfoEntity feignBookInfoById(Long id) {
         return baseinfoDao.feignBookInfoById(id);
+    }
+
+    @Override
+    @Transactional
+    public int insert(BaseinfoEntity baseinfoEntity) {
+        return baseMapper.insert(baseinfoEntity);
     }
 
 }
