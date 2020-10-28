@@ -92,6 +92,7 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
     List<StockDto> getStockDto();
 
 
+
     @Select("select * from bmt_baseinfo where id=#{id}")
     BaseinfoEntity feignBookInfoById(Long id);
 

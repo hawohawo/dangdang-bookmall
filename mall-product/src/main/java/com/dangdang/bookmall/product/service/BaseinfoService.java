@@ -50,5 +50,7 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
 
 
     int insert(BaseinfoEntity baseinfoEntity);
+
+    int updateOwn(BaseinfoEntity baseinfoEntity);
 }
 

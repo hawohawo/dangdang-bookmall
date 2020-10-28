@@ -129,10 +129,6 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
 
 
 
-
-
-
-
     //    远程调用服务，根据图书id 获取到 图书的名称
 
     @Override
@@ -173,6 +169,12 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     @Transactional
     public int insert(BaseinfoEntity baseinfoEntity) {
         return baseMapper.insert(baseinfoEntity);
+    }
+
+    @Override
+    @Transactional
+    public int updateOwn(BaseinfoEntity baseinfoEntity) {
+        return baseMapper.updateById(baseinfoEntity);
     }
 
 }

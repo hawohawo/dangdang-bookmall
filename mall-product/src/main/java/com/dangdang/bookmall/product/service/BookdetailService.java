@@ -18,5 +18,7 @@ public interface BookdetailService extends IService<BookdetailEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     int insert(BookdetailEntity bookdetailEntity);
+
+    int updateOwn(BookdetailEntity bookdetailEntity);
 }
 

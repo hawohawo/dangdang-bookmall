@@ -1,8 +1,6 @@
 package com.dangdang.bookmall.order.dao;
 
 import com.dangdang.bookmall.order.entity.dto.SalesrRankingOfTheMonthDto;
-import com.dangdang.bookmall.product.entity.dto.StockDto;
-import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -53,9 +51,9 @@ public interface StatisticsDao {
 
     String getTotalOffShelves();
 
-    @Select("SELECT name,stock FROM bmt_baseinfo WHERE stock <=5 ORDER BY stock")
-
-    List<StockDto> getStockDto();
+//    @Select("SELECT name,stock FROM bmt_baseinfo WHERE stock <=5 ORDER BY stock")
+//
+//    List<StockDto> getStockDto();
 
     @Select("SELECT SUM(a.book_price) FROM omt_bookinfo a JOIN omt_orderinfo b ON a.order_id = b.`code` where TO_DAYS(b.time_xd) = TO_DAYS(NOW())")
 
