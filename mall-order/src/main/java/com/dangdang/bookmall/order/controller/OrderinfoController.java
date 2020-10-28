@@ -144,7 +144,7 @@ public class OrderinfoController {
     /**
      * 新增订单
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     //@RequiresPermissions("order:orderinfo:save")
     public R saveOrder(@RequestBody OrderinfoEntity orderinfo){
         boolean result = orderinfoService.save(orderinfo);
