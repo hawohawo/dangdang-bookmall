@@ -7,6 +7,7 @@ import java.util.Map;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookInfoVo;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookNumVo;
+import com.dangdang.bookmall.promotion.feign.ProductFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,8 @@ public class SeckillController {
     @Autowired
     private SeckillService seckillService;
 
+    @Autowired
+    private ProductFeignService productFeignService;
     /**
      * 列表
      */
@@ -96,6 +99,16 @@ public class SeckillController {
     public R getSeckillSessionBooksinfo(@PathVariable("seckillId") Integer seckillId,@PathVariable("seckillSessionId") Integer seckillSessionId){
         List<SeckillSessionAndBookInfoVo> seckillSessionAndBookInfoVos = seckillService.getSeckillSessionBooksInfo(seckillId,seckillSessionId);
         return R.ok().put("info",seckillSessionAndBookInfoVos);
+    }
+
+    /**
+     * 列表
+     * 查询秒杀活动添加商品的列表
+     */
+    @GetMapping("/addlist")
+    public R addlist(@RequestParam Map<String, Object> params){
+        R r = productFeignService.addSeckillBookByInsale(params);
+        return r;
     }
 
     /**

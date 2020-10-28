@@ -177,5 +177,24 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
         return baseMapper.updateById(baseinfoEntity);
     }
 
+    @Override
+    public PageUtils getBooksByInsaleSeckill(Map<String, Object> params) {
+        IPage<BaseinfoEntity> page = this.page(
+                new Query<BaseinfoEntity>().getPage(params),
+                new QueryWrapper<BaseinfoEntity>()
+        );
+        PageUtils pageUtils = new PageUtils(page);
+        List<BaseinfoEntity> records = page.getRecords();
+        List<SelectBookByInsale> collect = records.stream().map((baseinfoEntity) -> {
+            SelectBookByInsale selectBookByInsale = new SelectBookByInsale();
+            selectBookByInsale.setId(baseinfoEntity.getId());
+            selectBookByInsale.setName(baseinfoEntity.getName());
+            selectBookByInsale.setPriceSj(baseinfoEntity.getPriceSj());
+            return selectBookByInsale;
+        }).collect(Collectors.toList());
+        pageUtils.setList(collect);
+        return pageUtils;
+    }
+
 }
 

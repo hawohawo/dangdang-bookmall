@@ -124,7 +124,7 @@ public class BaseinfoController {
     }
 
     /**
-     * 分页示例
+
      * 查询全部图书信息
      */
     @RequestMapping("/books")
@@ -133,8 +133,6 @@ public class BaseinfoController {
         PageUtils page = baseinfoService.getBooksType(params);
         return R.ok().put("page", page);
 
-//        IPage<BaseInfoAddNameEntity> info  =  baseinfoService.getBooksType(objectPage);
-//        return R.ok().put("info",info);
     }
 
     /**
@@ -151,7 +149,7 @@ public class BaseinfoController {
     }
 
     /**
-     * 列表（查询所有图书，参数条图书名称和id还有售价，条件是这些商品是上架的商品）
+     * 列表（查询所有图书，参数条图书名称和id还有售价，条件是这些商品是上架的商品，推荐相关）
      */
     @GetMapping("/infobByInsale")
     public R infobByInsale(@RequestParam Map<String, Object> params) {
@@ -159,6 +157,17 @@ public class BaseinfoController {
         PageUtils page = baseinfoService.getBooksByInsale(params);
         return R.ok().put("page", page);
     }
+
+    /**
+     * 列表（查询所有图书，参数条图书名称和id还有售价，条件是这些商品是上架的商品,秒杀相关）
+     */
+    //TODO 过滤 子查询
+    @GetMapping("/addSeckillBookByInsale")
+    public R addSeckillBookByInsale(@RequestParam Map<String, Object> params){
+        PageUtils page = baseinfoService.getBooksByInsaleSeckill(params);
+        return R.ok().put("page", page);
+    }
+
 
     /**
      * 查询图书信息列表（多条件）

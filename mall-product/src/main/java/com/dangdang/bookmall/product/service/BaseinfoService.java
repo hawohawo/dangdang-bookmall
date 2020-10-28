@@ -31,6 +31,7 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
     IPage<BaseinfoEntity> getBooksByParams(Page<BaseinfoEntity> page,SelectBookByParam sbbp);
 
     PageUtils getBooksByInsale(Map<String, Object> params);
+    PageUtils getBooksByInsaleSeckill(Map<String, Object> params);
 
     BigDecimal getScoreById(int id);
 
@@ -52,5 +53,7 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
     int insert(BaseinfoEntity baseinfoEntity);
 
     int updateOwn(BaseinfoEntity baseinfoEntity);
+
+
 }
 

@@ -1,5 +1,6 @@
 package com.dangdang.bookmall.promotion.feign;
 
+import com.dangdang.common.utils.PageUtils;
 import com.dangdang.common.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,4 +34,6 @@ public interface ProductFeignService {
     @GetMapping("product/baseinfo/feignbookinfo/{id}")
     public R feignBookInfoById(@PathVariable("id") Long id);
 
+    @GetMapping("product/baseinfo/addSeckillBookByInsale")
+    public R addSeckillBookByInsale(@RequestParam Map<String, Object> params);
 }
