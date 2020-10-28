@@ -49,7 +49,7 @@ public class BookinfoEntity implements Serializable {
 	/**
 	 * 付款价格
 	 */
-	private BigDecimal bookPrice;
+	private Double bookPrice;
 	/**
 	 * 图书状态
 	 */

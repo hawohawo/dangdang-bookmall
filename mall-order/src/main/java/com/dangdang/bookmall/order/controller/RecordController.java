@@ -30,7 +30,7 @@ public class RecordController {
 
 
     /**
-     * 订单操作列表
+     * 订单操作记录
      */
     @GetMapping("/records/{orderId}")
     //@RequiresPermissions("order:record:list")

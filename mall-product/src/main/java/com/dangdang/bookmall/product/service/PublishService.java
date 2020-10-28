@@ -16,5 +16,7 @@ import java.util.Map;
 public interface PublishService extends IService<PublishEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    int insert(PublishEntity publishEntity);
 }
 

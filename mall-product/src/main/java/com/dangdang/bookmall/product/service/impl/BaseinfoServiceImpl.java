@@ -1,6 +1,7 @@
 package com.dangdang.bookmall.product.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dangdang.bookmall.product.entity.dto.StockDto;
 import com.dangdang.bookmall.product.vo.BaseInfoAddNameEntity;
 import com.dangdang.bookmall.product.vo.SelectBookByInsale;
 import com.dangdang.bookmall.product.vo.SelectBookByParam;
@@ -26,6 +27,7 @@ import com.dangdang.common.utils.Query;
 import com.dangdang.bookmall.product.dao.BaseinfoDao;
 import com.dangdang.bookmall.product.entity.BaseinfoEntity;
 import com.dangdang.bookmall.product.service.BaseinfoService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("baseinfoService")
@@ -126,11 +128,40 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     }
 
 
+
+
+
+
+
     //    远程调用服务，根据图书id 获取到 图书的名称
+
     @Override
     public String getBookNameById(Long id) {
         return baseinfoDao.getBookNameById(id);
     }
+
+
+    @Override
+    public String getTotalOnShelves() {
+        return baseinfoDao.getTotalOnShelves();
+    }
+
+    @Override
+    public String getTotalOffShelves() {
+        return baseinfoDao.getTotalOffShelves();
+    }
+
+    @Override
+    public  String getAllShelves(){
+
+        return  baseinfoDao.getAllShelves();
+    }
+
+    @Override
+    public List<StockDto> getStockDto(){
+        return  baseinfoDao.getStockDto();
+    }
+
 
     //    远程调用服务，根据图书id 获取到 图书的基本信息
     @Override
@@ -138,4 +169,11 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
         return baseinfoDao.feignBookInfoById(id);
     }
 
+    @Override
+    @Transactional
+    public int insert(BaseinfoEntity baseinfoEntity) {
+        return baseMapper.insert(baseinfoEntity);
+    }
+
 }
+

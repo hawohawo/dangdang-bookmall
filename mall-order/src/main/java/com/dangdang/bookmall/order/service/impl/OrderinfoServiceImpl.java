@@ -25,11 +25,14 @@ public class OrderinfoServiceImpl extends ServiceImpl<OrderinfoDao, OrderinfoEnt
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+
+        QueryWrapper<OrderinfoEntity> orderinfoEntityQueryWrapper = new QueryWrapper<>();
+        orderinfoEntityQueryWrapper.orderByAsc("time_xd","status");
+
         IPage<OrderinfoEntity> page = this.page(
                 new Query<OrderinfoEntity>().getPage(params),
-                new QueryWrapper<OrderinfoEntity>()
+                orderinfoEntityQueryWrapper
         );
-
         return new PageUtils(page);
     }
 
@@ -37,5 +40,6 @@ public class OrderinfoServiceImpl extends ServiceImpl<OrderinfoDao, OrderinfoEnt
     public List<OrderinfoEntity> findOrders(Map<String,Object> orderinfoEntity) {
         return orderinfoDao.findOrders(orderinfoEntity);
     }
+
 
 }

@@ -1,15 +1,14 @@
 package com.dangdang.bookmall.order.controller;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.dangdang.bookmall.order.entity.BookinfoEntity;
+import com.dangdang.bookmall.order.entity.vo.BookinfoAndPriceVo;
 import com.dangdang.bookmall.order.feign.ProductFeignService;
 import com.dangdang.bookmall.order.service.BookinfoService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +16,6 @@ import com.dangdang.bookmall.order.entity.OrderinfoEntity;
 import com.dangdang.bookmall.order.service.OrderinfoService;
 import com.dangdang.common.utils.PageUtils;
 import com.dangdang.common.utils.R;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 
@@ -42,13 +40,29 @@ public class OrderinfoController {
     @Resource
     ProductFeignService productFeignService;
 
+
     /**
-     * 订单列表
+     * =============================后台接口============================
+     */
+
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/list")
+    //@RequiresPermissions("order:orderinfo:list")
+    public R list(@RequestParam Map<String, Object> params){
+        PageUtils page = orderinfoService.queryPage(params);
+        return R.ok().put("page", page);
+    }
+
+
+    /**
+     * 订单列表 没分页
      */
     @GetMapping("/orders")
     //@RequiresPermissions("order:orderinfo:list")
     public R orders(@RequestParam Map<String, Object> params){
-
         List<OrderinfoEntity> list = orderinfoService.list();
         return R.ok().put("orders", list);
     }
@@ -89,9 +103,22 @@ public class OrderinfoController {
             R r = productFeignService.scoreById(Integer.parseInt(bookinfoEntity.getId().toString()));
             Object info = r.get("info");
             int integral = Integer.valueOf(info.toString());
+            integral = integral * bookinfoEntity.getBookNum();
             totalJF+=integral;
-        }
-        return R.ok().put("order",orderinfoEntity).put("books", bookinfoEntities).put("totalJF",totalJF);
+        };
+        AtomicReference<Double> pricezj = new AtomicReference<>(0.00);
+        List<BookinfoAndPriceVo> collect = bookinfoEntities.stream().map((item) -> {
+            BookinfoAndPriceVo bookinfoAndPriceVo = new BookinfoAndPriceVo();
+            BeanUtils.copyProperties(item, bookinfoAndPriceVo);
+            double price = (item.getBookNum().doubleValue()) * item.getBookPrice().doubleValue();
+            bookinfoAndPriceVo.setPriceSum(price);
+            pricezj.updateAndGet(v -> v + price);
+            return bookinfoAndPriceVo;
+        }).collect(Collectors.toList());
+        //TODO record/records/{orderId} 获取订单操
+        List<OrderinfoEntity> orderinfoEntities = new ArrayList<>();
+        orderinfoEntities.add(orderinfoEntity);
+        return R.ok().put("order",orderinfoEntities).put("books", collect).put("totalJF",totalJF).put("pricezj",pricezj);
     }
 
 
@@ -121,27 +148,6 @@ public class OrderinfoController {
     }
 
     /**
-     * 前台用
-     * 根据状态查询订单
-     *0：待付款，1：待发货，2：待收货，3：已收货，4：申请退货，5：待退货，6：拒绝退货，7：退货退款完成，8：已关闭，9：已取消，10：待评价
-     */
-    @GetMapping("/orders/{userId}/{status}")
-    //@RequiresPermissions("order:orderinfo:list")
-    public R getOrdersByStatus(@PathVariable Long status,@PathVariable Long userId){
-
-        Map<String,Object> map = new HashMap<String,Object>(){
-            {
-                put("user_id",userId);
-                put("status",status);
-            }
-        };
-        List<OrderinfoEntity> orderinfoEntities = orderinfoService.listByMap(map);
-        //获取订单
-        return R.ok().put("orders",orderinfoEntities);
-    }
-
-
-    /**
      * 新增订单
      */
     @PostMapping("/save")
@@ -152,34 +158,6 @@ public class OrderinfoController {
             return R.ok();
         } else
             return R.error(400,"新增订单失败");
-
-    }
-
-
-
-
-    /** ---------------------订单状态修改-------------------------------------------**/
-
-    /**
-     * 用户
-     * 修改订单状态（待付款0-待发货1）
-     *0：待付款，1：待发货，2：待收货，3：已收货，4：申请退货，5：待退货，6：拒绝退货，7：退货退款完成，8：已关闭，9：已取消，10：待评价
-     */
-    @PostMapping("/updateDFH")
-    //@RequiresPermissions("order:orderinfo:update")
-    public R updateDFH(@RequestBody OrderinfoEntity orderinfo){
-        orderinfo = orderinfoService.getById(orderinfo.getId());
-        Integer status = orderinfo.getStatus();
-        if(status==0){
-            orderinfo.setStatus(1);
-            boolean result = orderinfoService.updateById(orderinfo);
-            if(result){
-                return R.ok();
-            }
-            return R.error(400, "付款失败");
-        } else {
-            return R.error(400, "付款失败");
-        }
     }
 
     /**
@@ -204,49 +182,6 @@ public class OrderinfoController {
         }
     }
 
-    /**
-     * 用户
-     * 修改订单状态（待收货2-已收货3）
-     * 0：待付款，1：待发货，2：待收货，3：已收货，4：申请退货，5：待退货，6：拒绝退货，7：退货退款完成，8：已关闭，9：已取消，10：待评价
-     */
-    @PostMapping("/updateYSH")
-    //@RequiresPermissions("order:orderinfo:update")
-    public R updateYSH(@RequestBody OrderinfoEntity orderinfo){
-        orderinfo = orderinfoService.getById(orderinfo.getId());
-        Integer status = orderinfo.getStatus();
-        if(status==2){
-            orderinfo.setStatus(3);
-            boolean result = orderinfoService.updateById(orderinfo);
-            if(result){
-                return R.ok();
-            }
-            return R.error(400, "确认收货失败");
-        } else {
-            return R.error(400, "确认收货失败");
-        }
-    }
-
-    /**
-     * 用户
-     * 修改订单状态（申请退货），待付款和已收货的情况下才可以申请
-     *0：待付款，1：待发货，2：待收货，3：已收货，4：申请退货，5：待退货，6：拒绝退货，7：退货退款完成，8：已关闭，9：已取消，10：待评价
-     */
-    @PostMapping("/updateSQTH")
-    //@RequiresPermissions("order:orderinfo:update")
-    public R updateSQTH(@RequestBody OrderinfoEntity orderinfo){
-        orderinfo = orderinfoService.getById(orderinfo.getId());
-        Integer status = orderinfo.getStatus();
-        if(status==0 || status==3){
-            orderinfo.setStatus(4);
-            boolean result = orderinfoService.updateById(orderinfo);
-            if(result){
-                return R.ok();
-            }
-            return R.error(400, "申请退货退款失败");
-        } else {
-            return R.error(400, "申请退货退款失败");
-        }
-    }
 
     /**
      * 商家
@@ -315,6 +250,124 @@ public class OrderinfoController {
     }
 
     /**
+     * 商家 修改收货人的信息
+     */
+    @PostMapping("/updateReceiveAddress")
+    public R updateReceiveAddress(@RequestBody OrderinfoEntity orderinfo) {
+        if(orderinfo.getStatus()==1){
+            orderinfoService.updateById(orderinfo);
+            return R.ok();
+        }
+        else
+            return R.error(400,"当前订单状态下无法进行地址的修改");
+    }
+
+
+
+
+    /**
+     * =======================前台接口=======================
+     */
+
+    /**
+     * 前台用
+     * 根据状态查询订单
+     * 4：申请退货，5：待退货，6：拒绝退货，7：退货退款完成，
+     * 0：待付款，1：待发货，2：待收货，3：已收货，8：已关闭，9：已取消，10：待评价
+     *  提交订单(0) 支付订单(1) 平台发货(2) 确认收货(3) 完成评价(8)
+     *  商家对应的订单状态(0.待付款,1.待发货,2.已发货,3.已完成,8.已关闭 9.已关闭 10.已完成)
+     *
+     *
+     *
+     */
+    @GetMapping("/orders/{userId}/{status}")
+    //@RequiresPermissions("order:orderinfo:list")
+    public R getOrdersByStatus(@PathVariable Long status,@PathVariable Long userId){
+
+        Map<String,Object> map = new HashMap<String,Object>(){
+            {
+                put("user_id",userId);
+                put("status",status);
+            }
+        };
+        List<OrderinfoEntity> orderinfoEntities = orderinfoService.listByMap(map);
+        //获取订单
+        return R.ok().put("orders",orderinfoEntities);
+    }
+
+
+    /** ---------------------订单状态修改-------------------------------------------**/
+
+    /**
+     * 用户
+     * 修改订单状态（待付款0-待发货1）
+     *0：待付款，1：待发货，2：待收货，3：已收货，4：申请退货，5：待退货，6：拒绝退货，7：退货退款完成，8：已关闭，9：已取消，10：待评价
+     */
+    @PostMapping("/updateDFH")
+    //@RequiresPermissions("order:orderinfo:update")
+    public R updateDFH(@RequestBody OrderinfoEntity orderinfo){
+        orderinfo = orderinfoService.getById(orderinfo.getId());
+        Integer status = orderinfo.getStatus();
+        if(status==0){
+            orderinfo.setStatus(1);
+            boolean result = orderinfoService.updateById(orderinfo);
+            if(result){
+                return R.ok();
+            }
+            return R.error(400, "付款失败");
+        } else {
+            return R.error(400, "付款失败");
+        }
+    }
+
+
+
+    /**
+     * 用户
+     * 修改订单状态（待收货2-已收货3）
+     * 0：待付款，1：待发货，2：待收货，3：已收货，4：申请退货，5：待退货，6：拒绝退货，7：退货退款完成，8：已关闭，9：已取消，10：待评价
+     */
+    @PostMapping("/updateYSH")
+    //@RequiresPermissions("order:orderinfo:update")
+    public R updateYSH(@RequestBody OrderinfoEntity orderinfo){
+        orderinfo = orderinfoService.getById(orderinfo.getId());
+        Integer status = orderinfo.getStatus();
+        if(status==2){
+            orderinfo.setStatus(3);
+            boolean result = orderinfoService.updateById(orderinfo);
+            if(result){
+                return R.ok();
+            }
+            return R.error(400, "确认收货失败");
+        } else {
+            return R.error(400, "确认收货失败");
+        }
+    }
+
+    /**
+     * 用户
+     * 修改订单状态（申请退货），待付款和已收货的情况下才可以申请
+     *0：待付款，1：待发货，2：待收货，3：已收货，4：申请退货，5：待退货，6：拒绝退货，7：退货退款完成，8：已关闭，9：已取消，10：待评价
+     */
+    @PostMapping("/updateSQTH")
+    //@RequiresPermissions("order:orderinfo:update")
+    public R updateSQTH(@RequestBody OrderinfoEntity orderinfo){
+        orderinfo = orderinfoService.getById(orderinfo.getId());
+        Integer status = orderinfo.getStatus();
+        if(status==0 || status==3){
+            orderinfo.setStatus(4);
+            boolean result = orderinfoService.updateById(orderinfo);
+            if(result){
+                return R.ok();
+            }
+            return R.error(400, "申请退货退款失败");
+        } else {
+            return R.error(400, "申请退货退款失败");
+        }
+    }
+
+
+    /**
      * 用户
      * 修改订单状态（订单评价），处于已收货状态或者商家拒绝退货才可评价
      *0：待付款，1：待发货，2：待收货，3：已收货，4：申请退货，5：待退货，6：拒绝退货，7：退货退款完成，8：已关闭，9：已取消，10：待评价
@@ -378,38 +431,6 @@ public class OrderinfoController {
         } else {
             return R.error(400, "订单完成失败");
         }
-    }
-
-
-
-
-
-
-    /**
-     * 远程调用接口测试
-     * for ： 订单服务（this） -> 商品服务
-     * detail ： 输出订单信息 和 商品的信息
-     */
-
-    @GetMapping("/books")
-    public R test(){
-        OrderinfoEntity orderinfoEntity = new OrderinfoEntity();
-        orderinfoEntity.setId(1L);
-        orderinfoEntity.setCode("1erf-we25-de4c-f78d");
-        R book = productFeignService.setAndGetBook();
-        return R.ok().put("orderinfo",orderinfoEntity).put("book",book.get("book"));
-
-    }
-
-    /**
-     * 列表
-     */
-    @RequestMapping("/list")
-    //@RequiresPermissions("order:orderinfo:list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = orderinfoService.queryPage(params);
-
-        return R.ok().put("page", page);
     }
 
 
