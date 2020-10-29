@@ -68,6 +68,7 @@ public class BaseinfoController {
             int insert = baseinfoService.insert(baseinfoEntity);
 //      事物结束
         }catch (Exception e){
+            System.out.println(e.getMessage());
             return R.error(400,"数据校验出现错误");
         }
         return R.ok();
