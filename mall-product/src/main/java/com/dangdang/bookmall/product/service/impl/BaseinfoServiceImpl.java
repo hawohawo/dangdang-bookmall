@@ -123,7 +123,7 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     }
 
     @Override
-    public BigDecimal getScoreById(int id) {
+    public Integer getScoreById(int id) {
         return baseinfoDao.getScoreByIds(id);
     }
 

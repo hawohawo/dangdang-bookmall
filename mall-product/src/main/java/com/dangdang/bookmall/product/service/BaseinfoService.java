@@ -33,7 +33,7 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
     PageUtils getBooksByInsale(Map<String, Object> params);
     PageUtils getBooksByInsaleSeckill(Map<String, Object> params);
 
-    BigDecimal getScoreById(int id);
+    Integer getScoreById(int id);
 
     String getBookNameById(Long id);
 

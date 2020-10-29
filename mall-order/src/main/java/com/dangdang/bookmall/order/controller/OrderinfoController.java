@@ -100,9 +100,7 @@ public class OrderinfoController {
         //远程调用接口,<获取某个书本的积分>
         Integer totalJF = 0;
         for (BookinfoEntity bookinfoEntity : bookinfoEntities) {
-            R r = productFeignService.scoreById(Integer.parseInt(bookinfoEntity.getId().toString()));
-            Object info = r.get("info");
-            int integral = Integer.valueOf(info.toString());
+            int integral  = productFeignService.scoreById(Integer.parseInt(bookinfoEntity.getBookId().toString()));
             integral = integral * bookinfoEntity.getBookNum();
             totalJF+=integral;
         };

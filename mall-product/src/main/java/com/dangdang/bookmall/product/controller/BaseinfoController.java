@@ -114,13 +114,10 @@ public class BaseinfoController {
      * 获取积分（条件：id）
      */
     @GetMapping("/scoreById/{id}")
-    public R scoreById(@RequestParam(value = "current", required = false, defaultValue = "1") int current,
-                       @RequestParam(value = "size", required = false, defaultValue = "10") int size,
-                       @PathVariable("id") int id) {
+    public Integer scoreById(@PathVariable("id") int id) {
         //TODO 还没写校验
-        Page<BaseinfoEntity> objectPage = new Page<>(current, size);
-        BigDecimal info = baseinfoService.getScoreById(id);
-        return R.ok().put("info", info);
+
+        return baseinfoService.getScoreById(id);
     }
 
     /**
