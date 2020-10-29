@@ -70,6 +70,8 @@ public class ReturninfoEntity implements Serializable {
 	 */
 	private String bookPic;
 
+	private String address;
+
 
 
 }
