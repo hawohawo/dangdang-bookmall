@@ -123,13 +123,9 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     }
 
     @Override
-    public BigDecimal getScoreById(int id) {
+    public Integer getScoreById(int id) {
         return baseinfoDao.getScoreByIds(id);
     }
-
-
-
-
 
 
 
@@ -173,6 +169,31 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     @Transactional
     public int insert(BaseinfoEntity baseinfoEntity) {
         return baseMapper.insert(baseinfoEntity);
+    }
+
+    @Override
+    @Transactional
+    public int updateOwn(BaseinfoEntity baseinfoEntity) {
+        return baseMapper.updateById(baseinfoEntity);
+    }
+
+    @Override
+    public PageUtils getBooksByInsaleSeckill(Map<String, Object> params) {
+        IPage<BaseinfoEntity> page = this.page(
+                new Query<BaseinfoEntity>().getPage(params),
+                new QueryWrapper<BaseinfoEntity>()
+        );
+        PageUtils pageUtils = new PageUtils(page);
+        List<BaseinfoEntity> records = page.getRecords();
+        List<SelectBookByInsale> collect = records.stream().map((baseinfoEntity) -> {
+            SelectBookByInsale selectBookByInsale = new SelectBookByInsale();
+            selectBookByInsale.setId(baseinfoEntity.getId());
+            selectBookByInsale.setName(baseinfoEntity.getName());
+            selectBookByInsale.setPriceSj(baseinfoEntity.getPriceSj());
+            return selectBookByInsale;
+        }).collect(Collectors.toList());
+        pageUtils.setList(collect);
+        return pageUtils;
     }
 
 }

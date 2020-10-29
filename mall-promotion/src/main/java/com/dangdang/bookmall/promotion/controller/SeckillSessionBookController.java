@@ -13,10 +13,7 @@ import com.dangdang.common.utils.PageUtils;
 import com.dangdang.common.utils.R;
 
 
-
 /**
- * 
- *
  * @author zengyuzhi
  * @email shbyku@gmail.com
  * @date 2020-10-19 16:54:13
@@ -32,7 +29,7 @@ public class SeckillSessionBookController {
      */
     @GetMapping("/list")
     //@RequiresPermissions("promotion:seckillsessionbook:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = seckillSessionBookService.queryPage(params);
         return R.ok().put("page", page);
     }
@@ -43,8 +40,8 @@ public class SeckillSessionBookController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("promotion:seckillsessionbook:info")
-    public R info(@PathVariable("id") Integer id){
-		SeckillSessionBookEntity seckillSessionBook = seckillSessionBookService.getById(id);
+    public R info(@PathVariable("id") Integer id) {
+        SeckillSessionBookEntity seckillSessionBook = seckillSessionBookService.getById(id);
 
         return R.ok().put("seckillSessionBook", seckillSessionBook);
     }
@@ -54,8 +51,14 @@ public class SeckillSessionBookController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("promotion:seckillsessionbook:save")
-    public R save(@RequestBody SeckillSessionBookEntity seckillSessionBook){
-		seckillSessionBookService.save(seckillSessionBook);
+    public R save(@RequestBody SeckillSessionBookEntity seckillSessionBook) {
+        try {
+            seckillSessionBookService.save(seckillSessionBook);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return R.error(400, "数据校验错误，请检查输入数据的格式");
+        }
 
         return R.ok();
     }
@@ -65,8 +68,8 @@ public class SeckillSessionBookController {
      */
     @RequestMapping("/update")
     //@RequiresPermissions("promotion:seckillsessionbook:update")
-    public R update(@RequestBody SeckillSessionBookEntity seckillSessionBook){
-		seckillSessionBookService.updateById(seckillSessionBook);
+    public R update(@RequestBody SeckillSessionBookEntity seckillSessionBook) {
+        seckillSessionBookService.updateById(seckillSessionBook);
 
         return R.ok();
     }
@@ -76,8 +79,8 @@ public class SeckillSessionBookController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("promotion:seckillsessionbook:delete")
-    public R delete(@RequestBody Integer[] ids){
-		seckillSessionBookService.removeByIds(Arrays.asList(ids));
+    public R delete(@RequestBody Integer[] ids) {
+        seckillSessionBookService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

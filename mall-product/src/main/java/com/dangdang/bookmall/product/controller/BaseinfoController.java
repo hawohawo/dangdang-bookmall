@@ -1,7 +1,6 @@
 package com.dangdang.bookmall.product.controller;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,6 @@ import com.dangdang.bookmall.product.entity.dto.StockDto;
 import com.dangdang.bookmall.product.entity.vo.BookAllInfoVo;
 import com.dangdang.bookmall.product.service.BookdetailService;
 import com.dangdang.bookmall.product.service.PublishService;
-import com.dangdang.bookmall.product.vo.SelectBookByInsale;
 import com.dangdang.bookmall.product.vo.SelectBookByParam;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -54,22 +52,60 @@ public class BaseinfoController {
         BaseinfoEntity baseinfoEntity = new BaseinfoEntity();
         PublishEntity publishEntity = new PublishEntity();
         BookdetailEntity bookdetailEntity = new BookdetailEntity();
-        BeanUtils.copyProperties(bookAllInfoVo, baseinfoEntity);
-        BeanUtils.copyProperties(bookAllInfoVo, publishEntity);
-        BeanUtils.copyProperties(bookAllInfoVo, bookdetailEntity);
+        try{
+            BeanUtils.copyProperties(bookAllInfoVo, baseinfoEntity);
+            BeanUtils.copyProperties(bookAllInfoVo, publishEntity);
+            BeanUtils.copyProperties(bookAllInfoVo, bookdetailEntity);
+        }catch (Exception e){
+            return R.error(400,"数据校验出现错误");
+        }
+
         try {        //开启事物 并调用服务，返回id值为给 baseinfo进行封装
             //写入图书详细信息部分
-            int bookdetailId = bookdetailService.insert(bookdetailEntity);
+            bookdetailService.insert(bookdetailEntity);
             //写入图书出版社
-            int publichId = publishService.insert(publishEntity);
+            publishService.insert(publishEntity);
             //写入图书基本信息
-            baseinfoEntity.setPublishId(Long.parseLong(publichId + ""));
-            baseinfoEntity.setBookdetailId(Long.parseLong(bookdetailId + ""));
-            int insert = baseinfoService.insert(baseinfoEntity);
+            baseinfoEntity.setPublishId(Long.parseLong(publishEntity.getId() + ""));
+            baseinfoEntity.setBookdetailId(Long.parseLong(bookdetailEntity.getId() + ""));
+            baseinfoService.insert(baseinfoEntity);
 //      事物结束
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            return R.error(500,"服务器发生错误");
+        }
+        return R.ok();
+    }
+
+    /**
+     * 更新一本图书upbook
+     */
+    @PostMapping("/upbook")
+    public R upBook(@RequestBody BookAllInfoVo bookAllInfoVo) {
+        System.out.println("获取添加图书参数信息:===" + JSON.toJSONString(bookAllInfoVo));
+        BaseinfoEntity baseinfoEntity = new BaseinfoEntity();
+        PublishEntity publishEntity = new PublishEntity();
+        BookdetailEntity bookdetailEntity = new BookdetailEntity();
+        try{
+            BeanUtils.copyProperties(bookAllInfoVo, baseinfoEntity);
+            BeanUtils.copyProperties(bookAllInfoVo, publishEntity);
+            BeanUtils.copyProperties(bookAllInfoVo, bookdetailEntity);
+            //完成主键的封装
+            publishEntity.setId(baseinfoEntity.getPublishId());
+            bookdetailEntity.setId(baseinfoEntity.getBookdetailId());
+        }catch (Exception e){
             return R.error(400,"数据校验出现错误");
+        }
+
+        try {//开启事物 并调用服务，返回id值为给 baseinfo进行封装
+            //更新图书详细信息部分
+            bookdetailService.updateOwn(bookdetailEntity);
+            //更新图书出版社
+            publishService.updateOwn(publishEntity);
+            //更新图书基本信息
+            baseinfoService.updateOwn(baseinfoEntity);
+//      事物结束
+        }catch (Exception e){
+            return R.error(500,"服务器发生错误");
         }
         return R.ok();
     }
@@ -78,17 +114,14 @@ public class BaseinfoController {
      * 获取积分（条件：id）
      */
     @GetMapping("/scoreById/{id}")
-    public R scoreById(@RequestParam(value = "current", required = false, defaultValue = "1") int current,
-                       @RequestParam(value = "size", required = false, defaultValue = "10") int size,
-                       @PathVariable("id") int id) {
+    public Integer scoreById(@PathVariable("id") int id) {
         //TODO 还没写校验
-        Page<BaseinfoEntity> objectPage = new Page<>(current, size);
-        BigDecimal info = baseinfoService.getScoreById(id);
-        return R.ok().put("info", info);
+
+        return baseinfoService.getScoreById(id);
     }
 
     /**
-     * 分页示例
+
      * 查询全部图书信息
      */
     @RequestMapping("/books")
@@ -97,8 +130,6 @@ public class BaseinfoController {
         PageUtils page = baseinfoService.getBooksType(params);
         return R.ok().put("page", page);
 
-//        IPage<BaseInfoAddNameEntity> info  =  baseinfoService.getBooksType(objectPage);
-//        return R.ok().put("info",info);
     }
 
     /**
@@ -115,7 +146,7 @@ public class BaseinfoController {
     }
 
     /**
-     * 列表（查询所有图书，参数条图书名称和id还有售价，条件是这些商品是上架的商品）
+     * 列表（查询所有图书，参数条图书名称和id还有售价，条件是这些商品是上架的商品，推荐相关）
      */
     @GetMapping("/infobByInsale")
     public R infobByInsale(@RequestParam Map<String, Object> params) {
@@ -123,6 +154,17 @@ public class BaseinfoController {
         PageUtils page = baseinfoService.getBooksByInsale(params);
         return R.ok().put("page", page);
     }
+
+    /**
+     * 列表（查询所有图书，参数条图书名称和id还有售价，条件是这些商品是上架的商品,秒杀相关）
+     */
+    //TODO 过滤 子查询
+    @GetMapping("/addSeckillBookByInsale")
+    public R addSeckillBookByInsale(@RequestParam Map<String, Object> params){
+        PageUtils page = baseinfoService.getBooksByInsaleSeckill(params);
+        return R.ok().put("page", page);
+    }
+
 
     /**
      * 查询图书信息列表（多条件）
@@ -175,8 +217,8 @@ public class BaseinfoController {
     /**
      * 信息
      */
-    @RequestMapping("/info")
-    public R info(@RequestParam Long id) {
+    @RequestMapping("/info/{id}")
+    public R info(@PathVariable Long id) {
         BaseinfoEntity baseinfo = baseinfoService.getById(id);
         return R.ok().put("baseinfo", baseinfo);
     }
@@ -209,6 +251,7 @@ public class BaseinfoController {
     @RequestMapping("/delete")
     //@RequiresPermissions("product:baseinfo:delete")
     public R delete(@RequestBody Long[] ids) {
+//        TODO 删除一本图书，需要考虑到所有图书涉及的内容 目前已知的有： 图书人气推荐，图书出版社信息，图书详细信息 秒杀时段商品表
         baseinfoService.removeByIds(Arrays.asList(ids));
         return R.ok();
     }

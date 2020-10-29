@@ -33,4 +33,10 @@ public class PublishServiceImpl extends ServiceImpl<PublishDao, PublishEntity> i
         return baseMapper.insert(publishEntity);
     }
 
+    @Override
+    @Transactional
+    public int updateOwn(PublishEntity publishEntity) {
+       return baseMapper.updateById(publishEntity);
+    }
+
 }

@@ -35,4 +35,10 @@ public class BookdetailServiceImpl extends ServiceImpl<BookdetailDao, Bookdetail
         return baseMapper.insert(bookdetailEntity);
     }
 
+    @Override
+    @Transactional
+    public int updateOwn(BookdetailEntity bookdetailEntity) {
+        return baseMapper.updateById(bookdetailEntity);
+    }
+
 }

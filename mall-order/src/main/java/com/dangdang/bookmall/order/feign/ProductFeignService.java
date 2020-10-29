@@ -17,6 +17,6 @@ public interface ProductFeignService {
     public R setAndGetBook();
 
     @GetMapping("/product/baseinfo/scoreById/{id}")
-    public R scoreById( @PathVariable("id") int id);
+    public Integer scoreById(@PathVariable("id") int id);
 
 }
