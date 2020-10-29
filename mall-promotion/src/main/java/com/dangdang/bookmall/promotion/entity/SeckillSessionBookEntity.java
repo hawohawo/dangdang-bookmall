@@ -50,4 +50,8 @@ public class SeckillSessionBookEntity implements Serializable {
 	 */
 	private Integer sort;
 
+
+//	TODO 是否需要添加上下架状态
+
+
 }

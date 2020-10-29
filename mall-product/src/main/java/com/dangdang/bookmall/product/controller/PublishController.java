@@ -41,9 +41,9 @@ public class PublishController {
     /**
      * 信息
      */
-    @GetMapping("/info")
+    @RequestMapping("/info/{id}")
     //@RequiresPermissions("product:publish:info")
-    public R info(@RequestParam Long id){
+    public R info(@PathVariable Long id){
 		PublishEntity publish = publishService.getById(id);
 
         return R.ok().put("publish", publish);

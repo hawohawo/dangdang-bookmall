@@ -49,8 +49,9 @@ public class SeckillSessionController {
     @RequestMapping("/save")
     //@RequiresPermissions("promotion:seckillsession:save")
     public R save(@RequestBody SeckillSessionEntity seckillSession){
-		seckillSessionService.save(seckillSession);
-
+        System.out.println(seckillSession.getStartTime());
+//		seckillSessionService.save(seckillSession);
+//
         return R.ok();
     }
 

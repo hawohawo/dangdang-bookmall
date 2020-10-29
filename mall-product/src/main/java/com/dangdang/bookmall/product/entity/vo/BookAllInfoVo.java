@@ -14,6 +14,8 @@ import java.util.Date;
  */
 @Data
 public class BookAllInfoVo {
+
+    private Long id;
     /**
      * 图书图片
      */

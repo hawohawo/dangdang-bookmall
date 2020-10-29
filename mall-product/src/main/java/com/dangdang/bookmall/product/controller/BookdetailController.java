@@ -77,10 +77,9 @@ public class BookdetailController {
     /**
      * 信息
      */
-    @GetMapping("/info")
-    public R info(@RequestParam Long id){
+    @RequestMapping("/info/{id}")
+    public R info(@PathVariable Long id){
 		BookdetailEntity bookdetail = bookdetailService.getById(id);
-
         return R.ok().put("bookdetail", bookdetail);
     }
 
