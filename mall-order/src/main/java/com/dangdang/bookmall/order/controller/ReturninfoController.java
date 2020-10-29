@@ -79,7 +79,8 @@ public class ReturninfoController {
 
     /**
      * 同意退货
-     * 状态：  1-申请退货，2-同意退货，3-拒绝退货
+     * 状态：  1-申请退货，2-同意退货，4-拒绝退货
+     *        3：确认收货，
      */
     @PostMapping("/updateAccept")
     //@RequiresPermissions("order:returninfo:update")
@@ -99,8 +100,8 @@ public class ReturninfoController {
 
     /**
      * 拒绝退货
-     * 状态：  1-申请退货，2-同意退货，3-拒绝退货
-     *        4：确认收货，
+     * 状态：  1-申请退货，2-同意退货，4-拒绝退货
+     *        3：确认收货，
      */
     @PostMapping("/updateRefuse")
     //@RequiresPermissions("order:returninfo:update")
@@ -108,7 +109,7 @@ public class ReturninfoController {
         returninfo = returninfoService.getById(returninfo.getId());
         Integer status = returninfo.getStatus();
         if(status==1) {
-            returninfo.setStatus(3);
+            returninfo.setStatus(4);
             boolean result = returninfoService.updateById(returninfo);
             if (result) {
                 return R.ok();
@@ -118,6 +119,26 @@ public class ReturninfoController {
             return R.error(400, "当前状态下不可拒绝退货");
     }
 
+    /**
+     * 确认收货
+     * 状态：  1-申请退货，2-同意退货，4-拒绝退货
+     *        3：确认收货，
+     */
+    @PostMapping("/updateReceive")
+    //@RequiresPermissions("order:returninfo:update")
+    public R updateReceive(@RequestBody ReturninfoEntity returninfo){
+        returninfo = returninfoService.getById(returninfo.getId());
+        Integer status = returninfo.getStatus();
+        if(status==2) {
+            returninfo.setStatus(3);
+            boolean result = returninfoService.updateById(returninfo);
+            if (result) {
+                return R.ok();
+            } else
+                return R.error(400, "拒绝退货失败");
+        } else
+            return R.error(400, "当前状态下不可拒绝退货");
+    }
 
 
 
