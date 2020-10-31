@@ -3,6 +3,8 @@ package com.dangdang.bookmall.user.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dangdang.bookmall.user.entity.vo.IdAndGrowthVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,22 +38,25 @@ public class VipController {
      * 2.金会员 1.5倍
      * 3.钻石会员 2倍
      * 每200成长值升级一个段。成长值获取的积分是普通积分的n倍
+     * params userId,score(积分)
      */
     @PostMapping("/updateVip")
     //@RequiresPermissions("user:vip:update")
-    public R updateVip(@RequestBody IdAndGrowthVo idAndGrowthVo){
-        VipEntity vip = vipService.getById(idAndGrowthVo.getId());
-        Integer vipGrowth = vip.getLevel() * GROWTH_VALUE + vip.getGrowth() +idAndGrowthVo.getTotalJF();
+    public R updateVip(@RequestParam Map<String, Object> params){
+        String userId =(String) params.get("userId");
+        Integer score = Integer.parseInt((String)params.get("score"));
+        VipEntity vip = vipService.getByUserId(userId);
+        Integer vipGrowth = vip.getLevel() * GROWTH_VALUE + vip.getGrowth() +score;
         //取商
         Integer viplevel = vipGrowth / GROWTH_VALUE;
         if (viplevel>=3){
             vip.setLevel(3);
             vip.setGrowth(0);
-            vip.setScore(vip.getScore()+idAndGrowthVo.getTotalJF());
+            vip.setScore(vip.getScore()+score);
         }else {
             vip.setLevel(viplevel);
             vip.setGrowth(vipGrowth-viplevel*GROWTH_VALUE);
-            vip.setScore(vip.getScore()+idAndGrowthVo.getTotalJF());
+            vip.setScore(vip.getScore()+score);
         }
         vipService.updateById(vip);
         return R.ok();

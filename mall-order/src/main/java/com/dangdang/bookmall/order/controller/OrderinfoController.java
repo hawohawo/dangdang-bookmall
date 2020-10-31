@@ -1,13 +1,17 @@
 package com.dangdang.bookmall.order.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import com.dangdang.bookmall.order.entity.BookinfoEntity;
+import com.dangdang.bookmall.order.entity.RecordEntity;
 import com.dangdang.bookmall.order.entity.vo.BookinfoAndPriceVo;
 import com.dangdang.bookmall.order.feign.ProductFeignService;
 import com.dangdang.bookmall.order.service.BookinfoService;
+import com.dangdang.bookmall.order.service.RecordService;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +43,9 @@ public class OrderinfoController {
     //远程调用测试接口
     @Resource
     ProductFeignService productFeignService;
+
+    @Autowired
+    private RecordService recordService;
 
 
     /**
@@ -466,6 +473,39 @@ public class OrderinfoController {
     }
 
     /**
+     * 更新订单
+     */
+    @PostMapping("/deliver")
+    public R deliver(@RequestBody OrderinfoEntity orderinfoEntity){
+        //1 . 更新物流单号（前段获取）
+        //2 . 更新发货时间
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        orderinfoEntity.setDeliverTime(new Date());
+//        orderinfoService.updateById(orderinfoEntity);
+        //3.更新订单zt
+        OrderinfoEntity orderinfoId = orderinfoService.getById(orderinfoEntity.getId());
+        Integer status = orderinfoId.getStatus();
+        if(status==1){
+            orderinfoEntity.setStatus(2);
+            boolean result = orderinfoService.updateById(orderinfoEntity);
+            if(result){
+                RecordEntity record = new RecordEntity();
+                record.setOrderId(orderinfoEntity.getId());
+                record.setRemark("订单发货");
+                record.setStatus(orderinfoId.getStatus());
+                record.setTime(new Date());
+                record.setUserId("admin");
+                recordService.save(record);
+                return R.ok();
+            }else
+            return R.error(400, "发货失败");
+        } else {
+            return R.error(400, "当前状态禁止发货");
+        }
+
+    }
+
+    /**
      * 删除
      */
     @RequestMapping("/delete")
@@ -475,6 +515,11 @@ public class OrderinfoController {
 
         return R.ok();
     }
+
+
+    /**
+     * 用户下单
+     */
 
 
 

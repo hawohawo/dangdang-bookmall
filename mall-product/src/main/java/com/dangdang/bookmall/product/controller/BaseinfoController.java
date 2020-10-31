@@ -121,7 +121,6 @@ public class BaseinfoController {
     }
 
     /**
-
      * 查询全部图书信息
      */
     @RequestMapping("/books")
@@ -129,7 +128,6 @@ public class BaseinfoController {
     public R books(@RequestParam Map<String, Object> params) {
         PageUtils page = baseinfoService.getBooksType(params);
         return R.ok().put("page", page);
-
     }
 
     /**
@@ -199,7 +197,7 @@ public class BaseinfoController {
     @GetMapping("/feignbookinfo/{id}")
     public R feignBookInfoById(@PathVariable("id") Long id) {
         BaseinfoEntity baseinfoEntity = baseinfoService.feignBookInfoById(id);
-        return R.ok().put("name", baseinfoEntity.getName()).put("priceSj", baseinfoEntity.getPriceSj());
+        return R.ok().put("name", baseinfoEntity.getName()).put("priceSj", baseinfoEntity.getPriceSj()).put("author",baseinfoEntity.getAuthor()).put("picture",baseinfoEntity.getPicture());
     }
 
 
