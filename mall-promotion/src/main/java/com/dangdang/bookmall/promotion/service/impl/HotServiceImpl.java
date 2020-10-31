@@ -3,10 +3,12 @@ package com.dangdang.bookmall.promotion.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dangdang.bookmall.promotion.entity.vo.HotBookVo;
 import com.dangdang.bookmall.promotion.feign.ProductFeignService;
+import com.dangdang.common.utils.R;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,7 +49,14 @@ public class HotServiceImpl extends ServiceImpl<HotDao, HotEntity> implements Ho
 //            可以采用beanUtils进行封装
 //            BeanUtils.copyProperties(hotEntity,hotBookVo);
             //4 . 继续封装剩余VO，这里需要用到远程调用product-service 服务
-            hotBookVo.setBookName(productFeignService.getBookNameById(Long.valueOf(hotEntity.getBookId())));
+            R r = productFeignService.feignBookInfoById(Long.valueOf(hotEntity.getBookId()));
+            hotBookVo.setBookName((String)r.get("name"));
+            hotBookVo.setAuthor((String)r.get("author"));
+            hotBookVo.setPicture((String)r.get("picture"));
+            String priceSj=  String.valueOf(r.get("priceSj")) ;
+            BigDecimal bd=new BigDecimal(priceSj);
+            hotBookVo.setPriceSj(bd);
+
 
             return hotBookVo;
         }).collect(Collectors.toList());

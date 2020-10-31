@@ -197,7 +197,7 @@ public class BaseinfoController {
     @GetMapping("/feignbookinfo/{id}")
     public R feignBookInfoById(@PathVariable("id") Long id) {
         BaseinfoEntity baseinfoEntity = baseinfoService.feignBookInfoById(id);
-        return R.ok().put("name", baseinfoEntity.getName()).put("priceSj", baseinfoEntity.getPriceSj());
+        return R.ok().put("name", baseinfoEntity.getName()).put("priceSj", baseinfoEntity.getPriceSj()).put("author",baseinfoEntity.getAuthor()).put("picture",baseinfoEntity.getPicture());
     }
 
 
