@@ -121,7 +121,6 @@ public class BaseinfoController {
     }
 
     /**
-
      * 查询全部图书信息
      */
     @RequestMapping("/books")
@@ -129,7 +128,6 @@ public class BaseinfoController {
     public R books(@RequestParam Map<String, Object> params) {
         PageUtils page = baseinfoService.getBooksType(params);
         return R.ok().put("page", page);
-
     }
 
     /**

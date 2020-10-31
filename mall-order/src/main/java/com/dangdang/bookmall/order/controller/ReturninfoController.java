@@ -85,9 +85,11 @@ public class ReturninfoController {
     @PostMapping("/updateAccept")
     //@RequiresPermissions("order:returninfo:update")
     public R updateAccept(@RequestBody ReturninfoEntity returninfo){
+        String address = returninfo.getAddress();
         returninfo = returninfoService.getById(returninfo.getId());
         Integer status = returninfo.getStatus();
         if(status==1) {
+            returninfo.setAddress(address);
             returninfo.setStatus(2);
             boolean result = returninfoService.updateById(returninfo);
             if (result) {
@@ -135,9 +137,9 @@ public class ReturninfoController {
             if (result) {
                 return R.ok();
             } else
-                return R.error(400, "拒绝退货失败");
+                return R.error(400, "确认收货失败");
         } else
-            return R.error(400, "当前状态下不可拒绝退货");
+            return R.error(400, "当前状态下不可确认收货");
     }
 
 

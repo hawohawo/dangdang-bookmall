@@ -16,5 +16,7 @@ import java.util.Map;
 public interface VipService extends IService<VipEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    VipEntity getByUserId(String userId);
 }
 
