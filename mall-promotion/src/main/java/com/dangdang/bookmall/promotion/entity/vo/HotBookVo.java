@@ -16,6 +16,8 @@ public class HotBookVo{
     private String picture;
     private String author;
     private BigDecimal priceSj;
+    private Integer publishId;
+    private Integer bookdetailId;
 
 
 }
