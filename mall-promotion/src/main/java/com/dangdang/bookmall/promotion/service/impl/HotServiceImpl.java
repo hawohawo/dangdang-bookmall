@@ -53,9 +53,13 @@ public class HotServiceImpl extends ServiceImpl<HotDao, HotEntity> implements Ho
             hotBookVo.setBookName((String)r.get("name"));
             hotBookVo.setAuthor((String)r.get("author"));
             hotBookVo.setPicture((String)r.get("picture"));
-            String priceSj=  String.valueOf(r.get("priceSj")) ;
+            String priceSj=  String.valueOf(r.get("priceSj"));
+            Integer publishId= (Integer) r.get("publishId");
+            Integer bookdetailId= (Integer) r.get("bookdetailId") ;
             BigDecimal bd=new BigDecimal(priceSj);
             hotBookVo.setPriceSj(bd);
+            hotBookVo.setPublishId(publishId);
+            hotBookVo.setBookdetailId(bookdetailId);
 
 
             return hotBookVo;
