@@ -37,7 +37,6 @@ public class AddressController {
     //@RequiresPermissions("user:address:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = addressService.queryPage(params);
-
         return R.ok().put("page", page);
     }
 
@@ -70,8 +69,7 @@ public class AddressController {
     @RequestMapping("/update")
     //@RequiresPermissions("user:address:update")
     public R update(@RequestBody AddressEntity address){
-		addressService.updateById(address);
-
+		addressService.updateAddress(address);
         return R.ok();
     }
 

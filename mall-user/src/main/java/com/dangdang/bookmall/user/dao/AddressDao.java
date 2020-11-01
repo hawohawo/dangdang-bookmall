@@ -3,6 +3,8 @@ package com.dangdang.bookmall.user.dao;
 import com.dangdang.bookmall.user.entity.AddressEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * 
@@ -13,5 +15,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AddressDao extends BaseMapper<AddressEntity> {
-	
+
+    @Update("update umt_address set sort='999'")
+    void updateAllAddress();
 }
