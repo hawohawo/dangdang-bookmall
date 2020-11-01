@@ -4,6 +4,7 @@ import com.dangdang.bookmall.promotion.dao.SeckillSessionBookDao;
 import com.dangdang.bookmall.promotion.dao.SeckillSessionDao;
 import com.dangdang.bookmall.promotion.entity.SeckillSessionBookEntity;
 import com.dangdang.bookmall.promotion.entity.SeckillSessionEntity;
+import com.dangdang.bookmall.promotion.entity.vo.SeckillMiniAppVo;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookInfoVo;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookNumVo;
 import com.dangdang.bookmall.promotion.feign.ProductFeignService;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -84,13 +87,39 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillDao, SeckillEntity> i
             SeckillSessionAndBookInfoVo seckillSessionAndBookInfoVo = new SeckillSessionAndBookInfoVo();
             BeanUtils.copyProperties(item, seckillSessionAndBookInfoVo);
             //远程调用product-service服务 获取图书基本的信息
-            R r = productFeignService.feignBookInfoById(Long.valueOf(item.getBookId()));
+                    R r = productFeignService.feignBookInfoById(Long.valueOf(item.getBookId()));
             seckillSessionAndBookInfoVo.setBookName((String) r.get("name"));
             seckillSessionAndBookInfoVo.setPriceSj((Double) r.get("priceSj"));
 
             return seckillSessionAndBookInfoVo;
         }).collect(Collectors.toList());
         return seckillSessionAndBookInfoVos;
+    }
+
+    @Override
+    public void seckillDisplay() {
+        QueryWrapper<SeckillSessionEntity> seckillSessionEntityQueryWrapper = new QueryWrapper<>();
+        seckillSessionEntityQueryWrapper.eq("status",1);
+        //1 获取系统当前的时间的HH:mm:ss
+        SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间
+        sdf.applyPattern("HH:mm:ss");// a为am/pm的标记
+        Date date = new Date();// 获取当前时间
+        String format = sdf.format(date);
+        List<SeckillSessionEntity> seckillSessionEntities = seckillSessionDao.selectList(seckillSessionEntityQueryWrapper);
+        seckillSessionEntities.stream().map(item->{
+            //2 获取秒杀时间段的HH:mm:ss
+            System.out.println(sdf.format(seckillSessionEntities.get(0).getStartTime()));
+            System.out.println(sdf.format(seckillSessionEntities.get(0).getEndTime()));
+            SeckillMiniAppVo seckillMiniAppVo = new SeckillMiniAppVo();
+            seckillMiniAppVo.setId(item.getId());
+            seckillMiniAppVo.setStartTime();
+            // endtime直接返回本场次秒杀剩余时间
+            seckillMiniAppVo.setEndTime();
+            seckillMiniAppVo.setIsNow();
+
+
+            return null;
+        });
     }
 
 }
