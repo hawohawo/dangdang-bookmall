@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.dangdang.bookmall.promotion.entity.vo.SeckillMiniAppVo;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookInfoVo;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookNumVo;
 import com.dangdang.bookmall.promotion.feign.ProductFeignService;
@@ -122,9 +123,9 @@ public class SeckillController {
      */
     @GetMapping("/seckill")
     public R seckill(){
-        seckillService.seckillDisplay();
+        List<SeckillMiniAppVo> seckillMiniAppVos = seckillService.seckillDisplay();
 
-        return R.ok();
+        return R.ok().put("info",seckillMiniAppVos);
     }
 
 

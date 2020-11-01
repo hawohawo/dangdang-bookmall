@@ -1,6 +1,7 @@
 package com.dangdang.bookmall.promotion.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dangdang.bookmall.promotion.entity.vo.SeckillMiniAppVo;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookInfoVo;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookNumVo;
 import com.dangdang.common.utils.PageUtils;
@@ -24,6 +25,6 @@ public interface SeckillService extends IService<SeckillEntity> {
 
     List<SeckillSessionAndBookInfoVo> getSeckillSessionBooksInfo(Integer seckillId, Integer seckillSessionId);
 
-    void seckillDisplay();
+    List<SeckillMiniAppVo> seckillDisplay();
 }
 

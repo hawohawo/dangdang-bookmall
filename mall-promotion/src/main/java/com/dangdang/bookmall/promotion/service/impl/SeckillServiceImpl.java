@@ -1,9 +1,16 @@
 package com.dangdang.bookmall.promotion.service.impl;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSON;
 import com.dangdang.bookmall.promotion.dao.SeckillSessionBookDao;
 import com.dangdang.bookmall.promotion.dao.SeckillSessionDao;
 import com.dangdang.bookmall.promotion.entity.SeckillSessionBookEntity;
 import com.dangdang.bookmall.promotion.entity.SeckillSessionEntity;
+import com.dangdang.bookmall.promotion.entity.dto.BookBaseInfoDto;
+import com.dangdang.bookmall.promotion.entity.dto.SeckillAndSeckillBooksDto;
+import com.dangdang.bookmall.promotion.entity.dto.SeckillSessionBookAndBookDto;
+import com.dangdang.bookmall.promotion.entity.vo.HotBookVo;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillMiniAppVo;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookInfoVo;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookNumVo;
@@ -97,7 +104,7 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillDao, SeckillEntity> i
     }
 
     @Override
-    public void seckillDisplay() {
+    public List<SeckillMiniAppVo> seckillDisplay() {
         QueryWrapper<SeckillSessionEntity> seckillSessionEntityQueryWrapper = new QueryWrapper<>();
         seckillSessionEntityQueryWrapper.eq("status",1);
         //1 获取系统当前的时间的HH:mm:ss
@@ -105,21 +112,76 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillDao, SeckillEntity> i
         sdf.applyPattern("HH:mm:ss");// a为am/pm的标记
         Date date = new Date();// 获取当前时间
         String format = sdf.format(date);
+        Date dateNow = DateUtil.parse(format);
         List<SeckillSessionEntity> seckillSessionEntities = seckillSessionDao.selectList(seckillSessionEntityQueryWrapper);
-        seckillSessionEntities.stream().map(item->{
+        //System.out.println(sdf.format(seckillSessionEntities.get(0).getStartTime()));
+
+        List<SeckillMiniAppVo> collect = seckillSessionEntities.stream().map(item -> {
             //2 获取秒杀时间段的HH:mm:ss
-            System.out.println(sdf.format(seckillSessionEntities.get(0).getStartTime()));
-            System.out.println(sdf.format(seckillSessionEntities.get(0).getEndTime()));
             SeckillMiniAppVo seckillMiniAppVo = new SeckillMiniAppVo();
             seckillMiniAppVo.setId(item.getId());
-            seckillMiniAppVo.setStartTime();
-            // endtime直接返回本场次秒杀剩余时间
-            seckillMiniAppVo.setEndTime();
-            seckillMiniAppVo.setIsNow();
+            //格式转化
+            String startTime = sdf.format(item.getStartTime());
+            String endTime = sdf.format(item.getEndTime());
+            Date dateStartTime = DateUtil.parse(startTime);
+            Date dateEndTime = DateUtil.parse(endTime);
+            seckillMiniAppVo.setStartTime(item.getStartTime());
+            seckillMiniAppVo.setEndTime(item.getEndTime());
 
+            //          判断当前时间是否处于该范围内
+            if (!dateNow.before(dateStartTime) && !dateNow.after(dateEndTime)) {
+                seckillMiniAppVo.setIsNow("抢购中");
+                long surplusTime = DateUtil.between(dateNow, dateEndTime, DateUnit.SECOND);
+                seckillMiniAppVo.setSurplusTime(surplusTime);
+            } else {
+                seckillMiniAppVo.setIsNow("即将开始");
+            }
 
-            return null;
-        });
+            //封装每个秒杀时段下的秒杀活动以及秒杀的商品
+            // 取已经上线的秒杀活动
+            QueryWrapper<SeckillEntity> seckillEntityQueryWrapper = new QueryWrapper<>();
+            seckillEntityQueryWrapper.eq("status",1);
+            List<SeckillEntity> seckillEntities = seckillDao.selectList(seckillEntityQueryWrapper);
+            List<SeckillAndSeckillBooksDto> SeckillAndSeckillBooksDtoStream = seckillEntities.stream().map(seckillEntity -> {
+                SeckillAndSeckillBooksDto seckillAndSeckillBooksDto = new SeckillAndSeckillBooksDto();
+                seckillAndSeckillBooksDto.setSeckillEntity(seckillEntity);
+
+                //封装SeckillSessionBookAndBookDto(秒杀活动下对应上架的书籍，前提是属于当前秒杀时间段)
+                List<SeckillSessionBookEntity> seckillSessionBookEntities = seckillSessionBookDao.getBySeeionAndSeckill(seckillEntity.getId(), item.getId());
+                List<SeckillSessionBookAndBookDto> SeckillSessionBookAndBookDtoStream = seckillSessionBookEntities.stream().map(seckillSessionBookEntity -> {
+                    SeckillSessionBookAndBookDto seckillSessionBookAndBookDto = new SeckillSessionBookAndBookDto();
+                    seckillSessionBookAndBookDto.setSeckillSessionBookEntity(seckillSessionBookEntity);
+//                   远程调用服务，请求获取书籍基本信息
+                    BookBaseInfoDto bookBaseInfoDto = new BookBaseInfoDto();
+                    R r = productFeignService.feignBookInfoById(Long.valueOf(seckillSessionBookEntity.getBookId()));
+                    bookBaseInfoDto.setBookName((String) r.get("name"));
+                    bookBaseInfoDto.setAuthor((String) r.get("author"));
+                    bookBaseInfoDto.setPicture((String) r.get("picture"));
+                    String priceSj = String.valueOf(r.get("priceSj"));
+                    Integer publishId = (Integer) r.get("publishId");
+                    Integer bookdetailId = (Integer) r.get("bookdetailId");
+                    BigDecimal bd = new BigDecimal(priceSj);
+                    bookBaseInfoDto.setPriceSj(bd);
+                    bookBaseInfoDto.setPublishId(publishId);
+                    bookBaseInfoDto.setBookdetailId(bookdetailId);
+                    seckillSessionBookAndBookDto.setBookBaseInfoDto(bookBaseInfoDto);
+
+                    return seckillSessionBookAndBookDto;
+                }).collect(Collectors.toList());
+
+                seckillAndSeckillBooksDto.setSeckillSessionBookAndBookDtos(SeckillSessionBookAndBookDtoStream);
+
+                return seckillAndSeckillBooksDto;
+            }).collect(Collectors.toList());
+
+            seckillMiniAppVo.setSeckillAndSeckillBooksDto(SeckillAndSeckillBooksDtoStream);
+
+            return seckillMiniAppVo;
+        }).collect(Collectors.toList());
+
+        return collect;
+
     }
+
 
 }
