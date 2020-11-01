@@ -23,5 +23,7 @@ public interface SeckillService extends IService<SeckillEntity> {
     List<SeckillSessionAndBookNumVo> getSeckillSessionBooksNum(Integer id);
 
     List<SeckillSessionAndBookInfoVo> getSeckillSessionBooksInfo(Integer seckillId, Integer seckillSessionId);
+
+    void seckillDisplay();
 }
 
