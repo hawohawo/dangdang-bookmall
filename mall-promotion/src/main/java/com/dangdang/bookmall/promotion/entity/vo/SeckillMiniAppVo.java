@@ -1,8 +1,10 @@
 package com.dangdang.bookmall.promotion.entity.vo;
 
+import com.dangdang.bookmall.promotion.entity.dto.SeckillAndSeckillBooksDto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author zengyuzhi
@@ -24,12 +26,19 @@ public class SeckillMiniAppVo {
      */
     private Integer status;
 
-
+    /** 新增
+     * 该秒杀活动是否已经开始
+     */
     private String isNow;
+
+    /** 新增
+     * 该秒杀活动的剩余时间
+     */
+    private Long surplusTime;
 
 //    -------------------------
 
-    private SeckillSessionAndBookInfoVo seckillSessionAndBookInfoVo;
+    private List<SeckillAndSeckillBooksDto> seckillAndSeckillBooksDto;
 
 
 }
