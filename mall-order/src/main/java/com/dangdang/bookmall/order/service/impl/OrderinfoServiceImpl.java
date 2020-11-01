@@ -1,9 +1,14 @@
 package com.dangdang.bookmall.order.service.impl;
 
+import com.dangdang.bookmall.order.dao.BookinfoDao;
+import com.dangdang.bookmall.order.entity.BookinfoEntity;
+import com.dangdang.bookmall.order.entity.vo.OrderInfoAndBookInfoVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -22,6 +27,8 @@ public class OrderinfoServiceImpl extends ServiceImpl<OrderinfoDao, OrderinfoEnt
 
     @Resource
     OrderinfoDao orderinfoDao;
+    @Resource
+    BookinfoDao bookinfoDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -30,6 +37,9 @@ public class OrderinfoServiceImpl extends ServiceImpl<OrderinfoDao, OrderinfoEnt
         orderinfoEntityQueryWrapper.orderByAsc("time_xd","status");
         if(params.get("userId")!=null){
             orderinfoEntityQueryWrapper.eq("user_id",(String)params.get("userId"));
+        }
+        if(params.get("status")!=null){
+            orderinfoEntityQueryWrapper.eq("status",(String)params.get("status"));
         }
 
 
@@ -43,6 +53,31 @@ public class OrderinfoServiceImpl extends ServiceImpl<OrderinfoDao, OrderinfoEnt
     @Override
     public List<OrderinfoEntity> findOrders(Map<String,Object> orderinfoEntity) {
         return orderinfoDao.findOrders(orderinfoEntity);
+    }
+
+    @Override
+    public List<OrderInfoAndBookInfoVo> selectUserOrderList(Map<String, Object> params) {
+        //过滤条件
+        QueryWrapper<OrderinfoEntity> orderinfoEntityQueryWrapper = new QueryWrapper<>();
+        //根据订单状态
+        if(params.get("userId")!=null){
+            orderinfoEntityQueryWrapper.eq("user_id",(String)params.get("userId"));
+        }
+        if(params.get("status")!=null){
+            orderinfoEntityQueryWrapper.eq("status",(String)params.get("status"));
+        }
+
+        List<OrderinfoEntity> orderinfoEntities = orderinfoDao.selectList(orderinfoEntityQueryWrapper);
+        List<OrderInfoAndBookInfoVo> orderInfoAndBookInfoVos = orderinfoEntities.stream().map(orderinfoEntity -> {
+            OrderInfoAndBookInfoVo orderInfoAndBookInfoVo = new OrderInfoAndBookInfoVo();
+            orderInfoAndBookInfoVo.setOrderinfoEntity(orderinfoEntity);
+            QueryWrapper<BookinfoEntity> bookinfoEntityQueryWrapper = new QueryWrapper<>();
+            bookinfoEntityQueryWrapper.eq("order_id", orderinfoEntity.getId());
+            List<BookinfoEntity> bookinfoEntities = bookinfoDao.selectList(bookinfoEntityQueryWrapper);
+            orderInfoAndBookInfoVo.setBookinfoEntitys(bookinfoEntities);
+            return orderInfoAndBookInfoVo;
+        }).collect(Collectors.toList());
+        return orderInfoAndBookInfoVos;
     }
 
 
