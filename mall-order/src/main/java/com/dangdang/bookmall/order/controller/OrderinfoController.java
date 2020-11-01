@@ -520,7 +520,23 @@ public class OrderinfoController {
     /**
      * 用户下单
      */
+    @PostMapping("/place")
+    //@RequiresPermissions("order:orderinfo:delete")
+    public R placeOrder(){
+//        orderinfoService.placeOrder();
+        //下单步骤
+//        1.下单成功 锁定库存
 
+//        2.新增订单书籍信息
+
+//        3.新增订单基本信息，此时订单为待付款状态
+
+//        4.设置订单过期时间 利用MQ实现延迟消息
+
+//        5.库存解锁(订单过期没有支付被取消)
+
+        return R.ok();
+    }
 
 
 }
