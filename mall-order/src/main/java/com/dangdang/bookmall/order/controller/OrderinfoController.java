@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.dangdang.bookmall.order.entity.BookinfoEntity;
 import com.dangdang.bookmall.order.entity.RecordEntity;
 import com.dangdang.bookmall.order.entity.vo.BookinfoAndPriceVo;
+import com.dangdang.bookmall.order.entity.vo.OrderInfoAndBookInfoVo;
 import com.dangdang.bookmall.order.feign.ProductFeignService;
 import com.dangdang.bookmall.order.service.BookinfoService;
 import com.dangdang.bookmall.order.service.RecordService;
@@ -92,6 +93,7 @@ public class OrderinfoController {
     }
 
     /**
+     * 商家后台端
      * 订单详细信息
      */
     @GetMapping("/detail/{id}")
@@ -125,6 +127,19 @@ public class OrderinfoController {
         orderinfoEntities.add(orderinfoEntity);
         return R.ok().put("order",orderinfoEntities).put("books", collect).put("totalJF",totalJF).put("pricezj",pricezj);
     }
+
+    /**
+     * 小程序端
+     * 拉取订单列表
+     */
+    @RequestMapping("/list/miniapp")
+    //@RequiresPermissions("order:orderinfo:list")
+    public R listMiniapp(@RequestParam Map<String, Object> params){
+        List<OrderInfoAndBookInfoVo> orderInfoAndBookInfoVos = orderinfoService.selectUserOrderList(params);
+        return R.ok().put("info", orderInfoAndBookInfoVos);
+    }
+
+
 
 
     /**
