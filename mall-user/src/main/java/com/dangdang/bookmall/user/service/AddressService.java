@@ -16,5 +16,7 @@ import java.util.Map;
 public interface AddressService extends IService<AddressEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void updateAddress(AddressEntity address);
 }
 

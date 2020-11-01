@@ -28,6 +28,10 @@ public class OrderinfoServiceImpl extends ServiceImpl<OrderinfoDao, OrderinfoEnt
 
         QueryWrapper<OrderinfoEntity> orderinfoEntityQueryWrapper = new QueryWrapper<>();
         orderinfoEntityQueryWrapper.orderByAsc("time_xd","status");
+        if(params.get("userId")!=null){
+            orderinfoEntityQueryWrapper.eq("user_id",(String)params.get("userId"));
+        }
+
 
         IPage<OrderinfoEntity> page = this.page(
                 new Query<OrderinfoEntity>().getPage(params),
