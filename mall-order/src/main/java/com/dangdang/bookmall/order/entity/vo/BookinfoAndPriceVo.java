@@ -46,9 +46,6 @@ public class BookinfoAndPriceVo {
      */
     private Integer status;
 
-    /**
-     * 图书状态
-     */
     private Double priceSum;
 
 
