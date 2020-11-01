@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookInfoVo;
 import com.dangdang.bookmall.promotion.entity.vo.SeckillSessionAndBookNumVo;
 import com.dangdang.bookmall.promotion.feign.ProductFeignService;
+import com.dangdang.bookmall.promotion.service.SeckillSessionBookService;
+import com.dangdang.bookmall.promotion.service.SeckillSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +32,10 @@ import com.dangdang.common.utils.R;
 public class SeckillController {
     @Autowired
     private SeckillService seckillService;
+    @Autowired
+    private SeckillSessionService seckillSessionService;
+    @Autowired
+    private SeckillSessionBookService seckillSessionBookService;
 
     @Autowired
     private ProductFeignService productFeignService;
@@ -112,6 +118,18 @@ public class SeckillController {
     }
 
     /**
+     * 用户 秒杀时间段
+     */
+    @GetMapping("/seckill")
+    public R seckill(){
+        seckillService.seckillDisplay();
+
+        return R.ok();
+    }
+
+
+
+    /**
      * ==================================================end
      */
 
@@ -125,5 +143,7 @@ public class SeckillController {
 
         return R.ok().put("seckill", seckill);
     }
+
+
 
 }
