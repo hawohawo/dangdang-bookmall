@@ -82,7 +82,6 @@ public class AddressController {
     //@RequiresPermissions("user:address:delete")
     public R delete(@RequestBody Integer[] ids){
 		addressService.removeByIds(Arrays.asList(ids));
-
         return R.ok();
     }
 
