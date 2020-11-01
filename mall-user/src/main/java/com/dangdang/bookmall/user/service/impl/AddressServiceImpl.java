@@ -32,12 +32,12 @@ public class AddressServiceImpl extends ServiceImpl<AddressDao, AddressEntity> i
     }
 
     @Override
-    public void updateAddress(AddressEntity address) {
-        //全部更新为999
+    public void updateAddress() {
+//        全部更新为999
         addressDao.updateAllAddress();
-        //置为默认地址
-        address.setSort(1);
-        baseMapper.updateById(address);
+//        //置为默认地址
+//        address.setSort(1);
+//        baseMapper.updateById(address);
     }
 
 }
