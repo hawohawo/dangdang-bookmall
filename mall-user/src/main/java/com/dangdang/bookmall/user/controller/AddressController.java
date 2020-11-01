@@ -4,11 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dangdang.bookmall.user.entity.AddressEntity;
 import com.dangdang.bookmall.user.service.AddressService;
@@ -69,9 +65,20 @@ public class AddressController {
     @RequestMapping("/update")
     //@RequiresPermissions("user:address:update")
     public R update(@RequestBody AddressEntity address){
-		addressService.updateAddress(address);
+		addressService.updateById(address);
         return R.ok();
     }
+
+    /**
+     * 地址排序置为999
+     */
+    @PostMapping("/updatesort")
+    //@RequiresPermissions("user:address:update")
+    public R updateSort(){
+        addressService.updateAddress();
+        return R.ok();
+    }
+
 
     /**
      * 删除
