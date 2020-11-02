@@ -1,5 +1,6 @@
 package com.dangdang.bookmall.order.service.impl;
 
+import com.dangdang.bookmall.order.entity.ReasonEntity;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,9 +19,13 @@ public class ReceiveServiceImpl extends ServiceImpl<ReceiveDao, ReceiveEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String key = params.get("key").toString();
+        QueryWrapper<ReceiveEntity> receiveEntityQueryWrapper = new QueryWrapper<>();
+        receiveEntityQueryWrapper.like("id",key).or().like("receive_name",key).or().like("receive_tel",key).or().like("receive_addr",key).or().like("postal",key);
+
         IPage<ReceiveEntity> page = this.page(
                 new Query<ReceiveEntity>().getPage(params),
-                new QueryWrapper<ReceiveEntity>()
+                receiveEntityQueryWrapper
         );
 
         return new PageUtils(page);

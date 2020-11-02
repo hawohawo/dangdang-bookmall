@@ -1,5 +1,6 @@
 package com.dangdang.bookmall.promotion.service.impl;
 
+import com.dangdang.bookmall.promotion.entity.SeckillEntity;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,9 +19,15 @@ public class SeckillSessionServiceImpl extends ServiceImpl<SeckillSessionDao, Se
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String key = params.get("key").toString();
+        QueryWrapper<SeckillSessionEntity> seckillSessionEntityQueryWrapper = new QueryWrapper<>();
+        seckillSessionEntityQueryWrapper.like("id",key)
+                .or().like("start_time",key)
+                .or().like("end_time",key);
+
         IPage<SeckillSessionEntity> page = this.page(
                 new Query<SeckillSessionEntity>().getPage(params),
-                new QueryWrapper<SeckillSessionEntity>()
+                seckillSessionEntityQueryWrapper
         );
 
         return new PageUtils(page);

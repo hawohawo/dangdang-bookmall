@@ -46,7 +46,10 @@ public class OrderinfoServiceImpl extends ServiceImpl<OrderinfoDao, OrderinfoEnt
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
 
+        String key = params.get("key").toString();
         QueryWrapper<OrderinfoEntity> orderinfoEntityQueryWrapper = new QueryWrapper<>();
+        orderinfoEntityQueryWrapper.like("code",key).or().like("payment_type",key).or().like("time_xd",key);
+
         orderinfoEntityQueryWrapper.orderByAsc("time_xd","status");
         if(params.get("userId")!=null){
             orderinfoEntityQueryWrapper.eq("user_id",(String)params.get("userId"));

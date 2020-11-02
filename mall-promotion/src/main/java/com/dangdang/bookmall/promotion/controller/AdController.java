@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import com.dangdang.bookmall.promotion.entity.AdEntity;
@@ -30,7 +31,8 @@ public class AdController {
      * 广告列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
+        //Assert.notNull(params.get("key"),"key is null");
         PageUtils page = adService.queryPage(params);
         return R.ok().put("page", page);
     }
