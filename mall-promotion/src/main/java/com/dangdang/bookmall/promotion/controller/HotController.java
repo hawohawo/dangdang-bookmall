@@ -60,6 +60,17 @@ public class HotController {
 
 
     /**
+     * 列表
+     */
+    @RequestMapping("/list/miniapp")
+    public R listMiniapp(@RequestParam Map<String, Object> params) {
+        params.put("limit","20239182");
+        PageUtils page = hotService.queryPageMiniapp(params);
+        return R.ok().put("page", page);
+    }
+
+
+    /**
      * 信息
      */
     @RequestMapping("/info/{id}")

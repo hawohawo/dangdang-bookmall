@@ -20,5 +20,6 @@ public interface HotService extends IService<HotEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
+    PageUtils queryPageMiniapp(Map<String, Object> params);
 }
 

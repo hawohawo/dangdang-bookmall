@@ -76,5 +76,48 @@ public class HotServiceImpl extends ServiceImpl<HotDao, HotEntity> implements Ho
         return pageUtils;
     }
 
+    @Override
+    public PageUtils queryPageMiniapp(Map<String, Object> params) {
+        QueryWrapper<HotEntity> hotEntityQueryWrapper = new QueryWrapper<>();
+        hotEntityQueryWrapper.eq("status",1);
+
+        IPage<HotEntity> page = this.page(
+                new Query<HotEntity>().getPage(params),
+                hotEntityQueryWrapper
+        );
+
+        PageUtils pageUtils = new PageUtils(page);
+        //流式编程 封装VO
+        //1 . 得到基本的HotEntity类
+        List<HotEntity> records = page.getRecords();
+        //2 . 获取到每个item(hotEntity)的map进行处理
+        List<HotBookVo> hotBookVoList = records.stream().map((hotEntity) -> {
+            //3 . new 一个 要进行封装的VO类
+            HotBookVo hotBookVo = new HotBookVo();
+            hotBookVo.setHotEntity(hotEntity);
+//            可以采用beanUtils进行封装
+//            BeanUtils.copyProperties(hotEntity,hotBookVo);
+            //4 . 继续封装剩余VO，这里需要用到远程调用product-service 服务
+            R r = productFeignService.feignBookInfoById(Long.valueOf(hotEntity.getBookId()));
+            hotBookVo.setBookName((String)r.get("name"));
+            hotBookVo.setAuthor((String)r.get("author"));
+            hotBookVo.setPicture((String)r.get("picture"));
+            String priceSj=  String.valueOf(r.get("priceSj"));
+            Integer publishId= (Integer) r.get("publishId");
+            Integer bookdetailId= (Integer) r.get("bookdetailId") ;
+            BigDecimal bd=new BigDecimal(priceSj);
+            hotBookVo.setPriceSj(bd);
+            hotBookVo.setPublishId(publishId);
+            hotBookVo.setBookdetailId(bookdetailId);
+
+
+            return hotBookVo;
+        }).collect(Collectors.toList());
+
+        pageUtils.setList(hotBookVoList);
+
+        return pageUtils;
+    }
+
 
 }

@@ -38,7 +38,7 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
      * @param typeId 图书类别号
      * @return
      */
-    @Select("select * from bmt_baseinfo where type_id=#{typeId}")
+    @Select("select * from bmt_baseinfo where type_id=#{typeId} and insale='1'")
     IPage<BaseinfoEntity> getBooksByType (Page<BaseinfoEntity> page,int typeId);
 
 
