@@ -539,7 +539,7 @@ public class OrderinfoController {
     //@RequiresPermissions("order:orderinfo:delete")
     public R placeOrder(){
 //        orderinfoService.placeOrder();
-        //下单步骤
+//        下单步骤
 //        1.下单成功 锁定库存
 
 //        2.新增订单书籍信息
@@ -549,9 +549,6 @@ public class OrderinfoController {
 //        4.设置订单过期时间 利用MQ实现延迟消息
 
 //        5.库存解锁(订单过期没有支付被取消)
-
         return R.ok();
     }
-
-
 }

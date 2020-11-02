@@ -178,6 +178,18 @@ public class BaseinfoServiceImpl extends ServiceImpl<BaseinfoDao, BaseinfoEntity
     }
 
     @Override
+    public PageUtils queryPageMiniapp(Map<String, Object> params) {
+        QueryWrapper<BaseinfoEntity> baseinfoEntityQueryWrapper = new QueryWrapper<>();
+        baseinfoEntityQueryWrapper.eq("insale",1);
+        IPage<BaseinfoEntity> page = this.page(
+                new Query<BaseinfoEntity>().getPage(params),
+                baseinfoEntityQueryWrapper
+        );
+
+        return new PageUtils(page);
+    }
+
+    @Override
     public PageUtils getBooksByInsaleSeckill(Map<String, Object> params) {
         IPage<BaseinfoEntity> page = this.page(
                 new Query<BaseinfoEntity>().getPage(params),
