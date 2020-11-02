@@ -26,9 +26,16 @@ public class ReturninfoServiceImpl extends ServiceImpl<ReturninfoDao, Returninfo
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+
+        String key = params.get("key").toString();
+        System.out.println(key);
+        QueryWrapper<ReturninfoEntity> returninfoEntityQueryWrapper = new QueryWrapper<>();
+        returninfoEntityQueryWrapper.like("code",key).or().like("book_name",key)
+                .or().like("book_price",key);
+
         IPage<ReturninfoEntity> page = this.page(
                 new Query<ReturninfoEntity>().getPage(params),
-                new QueryWrapper<ReturninfoEntity>()
+                returninfoEntityQueryWrapper
         );
 
         return new PageUtils(page);

@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.dangdang.bookmall.promotion.dao.SeckillSessionBookDao;
 import com.dangdang.bookmall.promotion.dao.SeckillSessionDao;
+import com.dangdang.bookmall.promotion.entity.AdEntity;
 import com.dangdang.bookmall.promotion.entity.SeckillSessionBookEntity;
 import com.dangdang.bookmall.promotion.entity.SeckillSessionEntity;
 import com.dangdang.bookmall.promotion.entity.dto.BookBaseInfoDto;
@@ -56,9 +57,15 @@ public class SeckillServiceImpl extends ServiceImpl<SeckillDao, SeckillEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String key = params.get("key").toString();
+        QueryWrapper<SeckillEntity> seckillEntityQueryWrapper = new QueryWrapper<>();
+        seckillEntityQueryWrapper.like("title",key)
+                .or().like("start_date",key)
+                .or().like("end_date",key);
+
         IPage<SeckillEntity> page = this.page(
                 new Query<SeckillEntity>().getPage(params),
-                new QueryWrapper<SeckillEntity>()
+                seckillEntityQueryWrapper
         );
 
         return new PageUtils(page);
