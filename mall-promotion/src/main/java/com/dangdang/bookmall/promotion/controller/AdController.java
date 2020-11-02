@@ -37,6 +37,14 @@ public class AdController {
         return R.ok().put("page", page);
     }
 
+    @RequestMapping("/list/miniapp")
+    public R listMiniapp(@RequestParam Map<String, Object> params) {
+        params.put("limit","20239182");
+        PageUtils page = adService.queryPageMiniapp(params);
+        return R.ok().put("page", page);
+    }
+
+
     /**
      * 新增广告信息
      */

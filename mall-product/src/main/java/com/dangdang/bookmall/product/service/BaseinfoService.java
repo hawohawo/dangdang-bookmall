@@ -55,5 +55,6 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
     int updateOwn(BaseinfoEntity baseinfoEntity);
 
 
+    PageUtils queryPageMiniapp(Map<String, Object> params);
 }
 
