@@ -1,6 +1,7 @@
 package com.dangdang.bookmall.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dangdang.bookmall.order.entity.dto.FKXD;
 import com.dangdang.bookmall.order.entity.vo.OrderInfoAndBookInfoVo;
 import com.dangdang.common.utils.PageUtils;
 import com.dangdang.bookmall.order.entity.OrderinfoEntity;
@@ -22,5 +23,7 @@ public interface OrderinfoService extends IService<OrderinfoEntity> {
     List<OrderinfoEntity> findOrders(Map<String,Object> orderinfoEntity);
 
     List<OrderInfoAndBookInfoVo> selectUserOrderList(Map<String, Object> params);
+
+    Long placeOrder(List<FKXD> ts,String score);
 }
 

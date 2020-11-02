@@ -14,7 +14,7 @@ import com.dangdang.common.utils.R;
 
 
 /**
- * 
+ *
  *
  * @author zengyuzhi
  * @email shbyku@gmail.com
@@ -88,6 +88,24 @@ public class AddressController {
     public R delete(@RequestBody Integer[] ids){
 		addressService.removeByIds(Arrays.asList(ids));
         return R.ok();
+    }
+
+    /**
+     * 删除
+     */
+    @GetMapping("/default")
+    //@RequiresPermissions("user:address:delete")
+    public R defaultAddress(){
+        AddressEntity defaultAddress = addressService.getDefaultAddress();
+        return R.ok().put("address",defaultAddress);
+    }
+
+    @GetMapping("/feigndefault")
+    //@RequiresPermissions("user:address:delete")
+    public R feignDefault(){
+        AddressEntity defaultAddress = addressService.getDefaultAddress();
+        return R.ok().put("address",defaultAddress.getAddress()).put("userPhone",defaultAddress.getPhone()).put("name",defaultAddress.getName()).put("postal",defaultAddress.getPostal());
+
     }
 
 }

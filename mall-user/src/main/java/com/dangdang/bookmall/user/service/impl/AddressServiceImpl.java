@@ -1,5 +1,6 @@
 package com.dangdang.bookmall.user.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Map;
@@ -38,6 +39,16 @@ public class AddressServiceImpl extends ServiceImpl<AddressDao, AddressEntity> i
 //        //置为默认地址
 //        address.setSort(1);
 //        baseMapper.updateById(address);
+    }
+
+    @Override
+    public AddressEntity getDefaultAddress() {
+        QueryWrapper<AddressEntity> addressEntityQueryWrapper = new QueryWrapper<>();
+        addressEntityQueryWrapper.eq("user_id","1");
+        addressEntityQueryWrapper.orderByAsc("sort");
+        AddressEntity addressEntity = baseMapper.selectOne(addressEntityQueryWrapper);
+        System.out.println(JSON.toJSONString(addressEntity));
+        return (addressEntity);
     }
 
 }

@@ -1,17 +1,27 @@
 package com.dangdang.bookmall.order.controller;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+
+import cn.hutool.core.lang.UUID;
+
+import com.alibaba.fastjson.JSONArray;
 import com.dangdang.bookmall.order.entity.BookinfoEntity;
 import com.dangdang.bookmall.order.entity.RecordEntity;
+import com.dangdang.bookmall.order.entity.ReturninfoEntity;
+import com.dangdang.bookmall.order.entity.dto.FKXD;
 import com.dangdang.bookmall.order.entity.vo.BookinfoAndPriceVo;
 import com.dangdang.bookmall.order.entity.vo.OrderInfoAndBookInfoVo;
 import com.dangdang.bookmall.order.feign.ProductFeignService;
 import com.dangdang.bookmall.order.service.BookinfoService;
 import com.dangdang.bookmall.order.service.RecordService;
+import com.dangdang.bookmall.order.service.ReturninfoService;
+//import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +50,9 @@ public class OrderinfoController {
 
     @Autowired
     private BookinfoService bookinfoService;
+
+    @Autowired
+    private ReturninfoService returninfoService;
 
     //远程调用测试接口
     @Resource
@@ -330,6 +343,8 @@ public class OrderinfoController {
         Integer status = orderinfo.getStatus();
         if(status==0){
             orderinfo.setStatus(1);
+            orderinfo.setPaymentType("微信支付");
+            orderinfo.setPaymentTime(new Date());
             boolean result = orderinfoService.updateById(orderinfo);
             if(result){
                 return R.ok();
@@ -371,13 +386,28 @@ public class OrderinfoController {
      */
     @PostMapping("/updateSQTH")
     //@RequiresPermissions("order:orderinfo:update")
-    public R updateSQTH(@RequestBody OrderinfoEntity orderinfo){
-        orderinfo = orderinfoService.getById(orderinfo.getId());
+    public R updateSQTH(@RequestBody Map<String, Object> params){
+        OrderinfoEntity orderinfo = new OrderinfoEntity();
+        orderinfo = orderinfoService.getById(Integer.parseInt((String) params.get("id")));
         Integer status = orderinfo.getStatus();
         if(status==0 || status==3){
             orderinfo.setStatus(4);
             boolean result = orderinfoService.updateById(orderinfo);
             if(result){
+//              创建退货单
+                ReturninfoEntity returninfoEntity = new ReturninfoEntity();
+                returninfoEntity.setCode(UUID.fastUUID().toString());
+                returninfoEntity.setTime(new Date());
+                returninfoEntity.setStatus(1);
+                returninfoEntity.setReason("七天无理由");
+                returninfoEntity.setProblem("七天无理由");
+                returninfoEntity.setBookId(Long.valueOf(params.get("bookId").toString()));
+                returninfoEntity.setBookName((String)params.get("bookName"));
+                returninfoEntity.setBookNum(Integer.parseInt(params.get("bookNum").toString()));
+                returninfoEntity.setOrderId(Long.valueOf(params.get("orderId").toString()));
+                returninfoEntity.setBookPic((String)params.get("bookPic"));
+                returninfoEntity.setBookPrice(BigDecimal.valueOf(Double.valueOf(params.get("bookPrice").toString())));
+                returninfoService.save(returninfoEntity);
                 return R.ok();
             }
             return R.error(400, "申请退货退款失败");
@@ -419,7 +449,7 @@ public class OrderinfoController {
     public R updateQXDD(@RequestBody OrderinfoEntity orderinfo){
         orderinfo = orderinfoService.getById(orderinfo.getId());
         Integer status = orderinfo.getStatus();
-        if(status==0){
+        if(status==0 ||status==1){
             orderinfo.setStatus(9);
             boolean result = orderinfoService.updateById(orderinfo);
             if(result){
@@ -535,22 +565,26 @@ public class OrderinfoController {
     /**
      * 用户下单
      */
-    @PostMapping("/place")
-    //@RequiresPermissions("order:orderinfo:delete")
-    public R placeOrder(){
-//        orderinfoService.placeOrder();
-        //下单步骤
-//        1.下单成功 锁定库存
-
-//        2.新增订单书籍信息
-
-//        3.新增订单基本信息，此时订单为待付款状态
-
-//        4.设置订单过期时间 利用MQ实现延迟消息
-
-//        5.库存解锁(订单过期没有支付被取消)
-
-        return R.ok();
+    @GetMapping("/place")
+    public R placeOrder(@RequestParam String fkxd,@RequestParam String score){
+        System.out.printf("订单：", fkxd);
+        String substring = fkxd;
+        System.out.println(substring);
+        List<FKXD> ts = (List<FKXD>) JSONArray.parseArray(substring, FKXD.class);
+        for(FKXD f : ts){
+            System.out.println(f.getGoods_name());
+        }
+//        //2、使用JSONArray
+//        JSONArray jsonArray= JSONArray.fromObject(substring);
+//        //获得jsonArray的第一个元素
+//        for(Object o:jsonArray){
+//            JSONObject jsonObject2=JSONObject.fromObject(o);
+//            FKXD stu2=(FKXD)JSONObject.toBean(jsonObject2, FKXD.class);
+//            System.out.println("stu2:"+stu2);
+//        }
+        Long orderId = orderinfoService.placeOrder(ts,score);
+        System.out.println("订单id "+orderId);
+        return R.ok().put("orderId",orderId);
     }
 
 

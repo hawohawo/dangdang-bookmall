@@ -1,6 +1,7 @@
 package com.dangdang.bookmall.product.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -295,6 +296,31 @@ public class BaseinfoController {
 //        for(String a : result)
 //            System.out.println(a);
         return R.ok().put("Stock", StockDto);
+    }
+
+
+    /**
+     * 锁定库存
+     * **/
+    @GetMapping("/lockstock")
+    public boolean lockStock(@RequestParam("ids") Integer[] ids,@RequestParam("nums") Integer[] nums){
+        ArrayList<BaseinfoEntity> baseinfoEntities = new ArrayList<>();
+        for (int i = 0; i < ids.length; i++) {
+            BaseinfoEntity baseinfoEntity = new BaseinfoEntity();
+            baseinfoEntity.setId(Long.parseLong(ids[i].toString()));
+            Long stock = baseinfoService.getById(Long.parseLong(ids[i].toString())).getStock();
+            Long stockNow = stock-Long.parseLong(nums[i].toString());
+            if(stockNow>=0){
+                baseinfoEntity.setStock(stockNow);
+            }else{
+                return false;
+            }
+            baseinfoEntities.add(baseinfoEntity);
+        }
+        for(BaseinfoEntity baseinfoEntity:baseinfoEntities){
+            baseinfoService.updateById(baseinfoEntity);
+        }
+        return true;
     }
 
 
