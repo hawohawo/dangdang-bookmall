@@ -71,7 +71,7 @@ public class ReturninfoController {
     public R returninfo(@PathVariable Long id){
 //        List<ReturninfoEntity> list = returninfoService.list();
         ReturninfoEntity returninfoEntity = returninfoService.getById(id);
-        OrderinfoEntity orderinfoEntity = orderinfoService.getById(id);
+        OrderinfoEntity orderinfoEntity = orderinfoService.getById(returninfoEntity.getOrderId());
         List<ReturninfoEntity> returninfoEntities = new ArrayList<>();
         returninfoEntities.add(returninfoEntity);
         return R.ok().put("return", returninfoEntities).put("ordercode",orderinfoEntity.getCode());

@@ -117,7 +117,8 @@ public class OrderinfoServiceImpl extends ServiceImpl<OrderinfoDao, OrderinfoEnt
         BigDecimal freight  = new BigDecimal(0.00);
         for(FKXD fkxd : ts){
             freight = BigDecimal.valueOf(Double.valueOf(fkxd.getGoods_priceYf().toString())).max(freight);
-            moneyTotal = BigDecimal.valueOf(Double.valueOf(fkxd.getGoods_price().toString()));
+            Double oneBookPrice =Double.valueOf(fkxd.getGoods_price())*Double.valueOf(fkxd.getNum().toString());
+            moneyTotal = moneyTotal.add(BigDecimal.valueOf(oneBookPrice));
         }
 //          orderinfoEntity.setId();
 

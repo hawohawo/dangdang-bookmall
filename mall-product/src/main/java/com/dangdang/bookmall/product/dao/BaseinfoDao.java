@@ -75,11 +75,11 @@ public interface BaseinfoDao extends BaseMapper<BaseinfoEntity> {
 
 
     //统计 远程调用
-    @Select("SELECT COUNT(id) FROM bmt_baseinfo WHERE insale = 0")
+    @Select("SELECT COUNT(id) FROM bmt_baseinfo WHERE insale = 1")
 
     String getTotalOnShelves();
 
-    @Select("SELECT COUNT(id) FROM bmt_baseinfo WHERE insale = 1")
+    @Select("SELECT COUNT(id) FROM bmt_baseinfo WHERE insale = 0")
 
     String getTotalOffShelves();
 

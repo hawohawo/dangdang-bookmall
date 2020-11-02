@@ -38,14 +38,14 @@ public interface BaseinfoService extends IService<BaseinfoEntity> {
     String getBookNameById(Long id);
 
 
-    String getTotalOnShelves();
     //上架商品总数
-    String getTotalOffShelves();
+    String getTotalOnShelves();
     //下架商品总数
-    String getAllShelves();
+    String getTotalOffShelves();
     //全部商品数
-    List<StockDto> getStockDto();
+    String getAllShelves();
     //库存
+    List<StockDto> getStockDto();
 
     BaseinfoEntity feignBookInfoById(Long id);
 

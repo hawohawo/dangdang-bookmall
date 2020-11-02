@@ -27,18 +27,20 @@ public class StatisticsController {
     @GetMapping("/srotm")
     public R getSalesrRankingOfTheMonth(){
         List<SalesrRankingOfTheMonthDto> salesrRankingOfTheMonth = statisticsService.getSalesrRankingOfTheMonth();
-//        String[] result = new String[salesrRankingOfTheMonth.size()+1];
-//        int i = 1;
-//        for(SalesrRankingOfTheMonthDto salesrRankingOfTheMonthDto : salesrRankingOfTheMonth){
-//            result[i] = salesrRankingOfTheMonthDto.getBookNum()+","+salesrRankingOfTheMonthDto.getBookNum()+","+salesrRankingOfTheMonthDto.getBookName();
-//            i++;
-//        }
-//        result[0] = "'score','bookNum','bookName'";
-//
-//        for(String a : result)
-//            System.out.println(a);
-        return R.ok().put("salesrRankingOfTheMonth",salesrRankingOfTheMonth);
+        List<String> bookNameDate= new ArrayList<>();
+        List<Integer> bookNumDate= new ArrayList<>();
+
+        for(SalesrRankingOfTheMonthDto salesrRankingOfTheMonthDto: salesrRankingOfTheMonth){
+            bookNameDate.add(salesrRankingOfTheMonthDto.getBookName());
+            bookNumDate.add(salesrRankingOfTheMonthDto.getBookNum());
+        }
+
+
+
+
+        return R.ok().put("bookNameDate",bookNameDate).put("bookNumDate",bookNumDate);
     }
+
 
 
 
@@ -79,7 +81,7 @@ public class StatisticsController {
         statisticsDto2.setValue(Double.valueOf(statisticsService.getSalesLastMonth()));
         statisticsDtos.add(statisticsDto);
         statisticsDtos.add(statisticsDto2);
-        return  R.ok().put("salesstatistics",statisticsDtos);
+        return R.ok().put("salesstatistics",statisticsDtos);
     }
     @GetMapping("/order/shipped")//待发货订单量统计
     public  R getOrderToBeShipped(){

@@ -11,31 +11,31 @@ import java.util.List;
 @Repository
 public interface StatisticsDao {
 
-    @Select("SELECT a.book_name,a.book_num FROM omt_bookinfo a JOIN omt_orderinfo b ON a.order_id = b.`code` where DATE_FORMAT(time_xd,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m') ORDER BY a.book_num DESC")
+    @Select("SELECT a.book_name,a.book_num FROM omt_bookinfo a JOIN omt_orderinfo b ON a.order_id = b.`id` where DATE_FORMAT(time_xd,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m') ORDER BY a.book_num ASC")
 
     List<SalesrRankingOfTheMonthDto> getSalesrRankingOfTheMonth();
 
-    @Select("SELECT   COUNT(id) from omt_orderinfo where `status` =7 AND DATE_FORMAT(time_xd,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m')")
+    @Select("SELECT COUNT(id) from omt_orderinfo where `status` != 1 and  `status` != 2 and  `status` != 3 and  `status` != 0  AND DATE_FORMAT(time_xd,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m')")
 
     String getThisMonthOrderNum();
 
-    @Select("SELECT   COUNT(id) from omt_orderinfo where `status` =7 AND DATE_FORMAT(time_xd,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m')")
+    @Select("SELECT   COUNT(id) from omt_orderinfo where `status` != 1 and  `status` != 2 and  `status` != 3 and  `status` != 0  AND DATE_FORMAT(time_xd,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m')")
 
     String getLastMonthOrderNum();
 
-    @Select("SELECT COUNT(id) FROM omt_orderinfo WHERE `status` =7 AND YEARWEEK(DATE_FORMAT(time_xd,'%Y-%m-%d')) = YEARWEEK(now())")
+    @Select("SELECT COUNT(id) FROM omt_orderinfo WHERE `status` != 1 and  `status` != 2 and  `status` != 3 and  `status` != 0  AND YEARWEEK(DATE_FORMAT(time_xd,'%Y-%m-%d')) = YEARWEEK(now())")
 
     String getThisWeekOrderNum();
 
-    @Select("SELECT COUNT(id) FROM omt_orderinfo WHERE `status` =7 AND YEARWEEK(DATE_FORMAT(time_xd,'%Y-%m-%d')) = YEARWEEK(now())-1")
+    @Select("SELECT COUNT(id) FROM omt_orderinfo WHERE `status` != 1 and  `status` != 2 and  `status` != 3 and  `status` != 0  AND YEARWEEK(DATE_FORMAT(time_xd,'%Y-%m-%d')) = YEARWEEK(now())-1")
 
     String getLastWeekOrderNum();
 
-    @Select("SELECT SUM(a.book_price) FROM omt_bookinfo a JOIN omt_orderinfo b ON a.order_id = b.`code` where date_format(time_xd,'%Y-%m')=date_format(now(),'%Y-%m')")
+    @Select("SELECT SUM(a.book_price) FROM omt_bookinfo a JOIN omt_orderinfo b ON a.order_id = b.`id` where date_format(time_xd,'%Y-%m')=date_format(now(),'%Y-%m')")
 
     String getSalesThisMonth();
 
-    @Select("SELECT SUM(a.book_price) FROM omt_bookinfo a JOIN omt_orderinfo b ON a.order_id = b.`code` where date_format(time_xd,'%Y-%m')=date_format(DATE_SUB(CURDATE(),INTERVAL 1 MONTH),'%Y-%m')")
+    @Select("SELECT SUM(a.book_price) FROM omt_bookinfo a JOIN omt_orderinfo b ON a.order_id = b.`id` where date_format(time_xd,'%Y-%m')=date_format(DATE_SUB(CURDATE(),INTERVAL 1 MONTH),'%Y-%m')")
 
     String getSalesLastMonth();
 
@@ -55,7 +55,7 @@ public interface StatisticsDao {
 //
 //    List<StockDto> getStockDto();
 
-    @Select("SELECT SUM(a.book_price) FROM omt_bookinfo a JOIN omt_orderinfo b ON a.order_id = b.`code` where TO_DAYS(b.time_xd) = TO_DAYS(NOW())")
+    @Select("SELECT SUM(a.book_price) FROM omt_bookinfo a JOIN omt_orderinfo b ON a.order_id = b.`id` where TO_DAYS(b.time_xd) = TO_DAYS(NOW())")
 
     String getDaySales();
 
