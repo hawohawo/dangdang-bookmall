@@ -34,7 +34,17 @@ public class AdServiceImpl extends ServiceImpl<AdDao, AdEntity> implements AdSer
         return new PageUtils(page);
     }
 
+    @Override
+    public PageUtils queryPageMiniapp(Map<String, Object> params) {
+        QueryWrapper<AdEntity> adEntityQueryWrapper = new QueryWrapper<>();
 
+        adEntityQueryWrapper.eq("status",1);
+        IPage<AdEntity> page = this.page(
+                new Query<AdEntity>().getPage(params),
+                adEntityQueryWrapper
+        );
+        return new PageUtils(page);
+    }
 
 
 }

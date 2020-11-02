@@ -1,8 +1,10 @@
 package com.dangdang.bookmall.promotion.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
+import cn.hutool.core.date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,9 +50,15 @@ public class SeckillSessionController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("promotion:seckillsession:save")
-    public R save(@RequestBody SeckillSessionEntity seckillSession){
-        System.out.println(seckillSession.getStartTime());
-//		seckillSessionService.save(seckillSession);
+    public R save(@RequestBody Map<String,Object> params){
+
+        SeckillSessionEntity seckillSessionEntity = new SeckillSessionEntity();
+        Date startTime = DateUtil.parse(params.get("startTime").toString(), "HH:mm");
+        Date endTime = DateUtil.parse(params.get("endTime").toString(), "HH:mm");
+        seckillSessionEntity.setStartTime(startTime);
+        seckillSessionEntity.setEndTime(endTime);
+        seckillSessionEntity.setStatus(Integer.parseInt(params.get("status").toString()));
+        seckillSessionService.save(seckillSessionEntity);
 //
         return R.ok();
     }

@@ -17,5 +17,6 @@ public interface AdService extends IService<AdEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
+    PageUtils queryPageMiniapp(Map<String, Object> params);
 }
 

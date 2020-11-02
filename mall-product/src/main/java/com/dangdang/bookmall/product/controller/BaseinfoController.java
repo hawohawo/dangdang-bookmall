@@ -209,8 +209,16 @@ public class BaseinfoController {
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = baseinfoService.queryPage(params);
         return R.ok().put("page", page);
-
     }
+
+    @GetMapping("/list/miniapp")
+    public R listMiniapp(@RequestParam Map<String, Object> params) {
+        params.put("limit","20239182");
+        PageUtils page = baseinfoService.queryPageMiniapp(params);
+        return R.ok().put("page", page);
+    }
+
+
 
 
     /**
