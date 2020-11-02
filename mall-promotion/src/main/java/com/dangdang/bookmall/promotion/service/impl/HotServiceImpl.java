@@ -1,6 +1,7 @@
 package com.dangdang.bookmall.promotion.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dangdang.bookmall.promotion.entity.AdEntity;
 import com.dangdang.bookmall.promotion.entity.vo.HotBookVo;
 import com.dangdang.bookmall.promotion.feign.ProductFeignService;
 import com.dangdang.common.utils.R;
@@ -32,9 +33,14 @@ public class HotServiceImpl extends ServiceImpl<HotDao, HotEntity> implements Ho
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String key = params.get("key").toString();
+        System.out.println(key);
+        QueryWrapper<HotEntity> hotEntityQueryWrapper = new QueryWrapper<>();
+        hotEntityQueryWrapper.like("book_id",key);
+
         IPage<HotEntity> page = this.page(
                 new Query<HotEntity>().getPage(params),
-                new QueryWrapper<HotEntity>()
+                hotEntityQueryWrapper
         );
 
         PageUtils pageUtils = new PageUtils(page);

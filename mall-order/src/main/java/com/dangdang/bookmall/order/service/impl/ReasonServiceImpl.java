@@ -1,5 +1,6 @@
 package com.dangdang.bookmall.order.service.impl;
 
+import com.dangdang.bookmall.order.entity.OrderinfoEntity;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,9 +19,13 @@ public class ReasonServiceImpl extends ServiceImpl<ReasonDao, ReasonEntity> impl
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String key = params.get("key").toString();
+        QueryWrapper<ReasonEntity> reasonEntityQueryWrapper = new QueryWrapper<>();
+        reasonEntityQueryWrapper.like("id",key).or().like("type",key);
+
         IPage<ReasonEntity> page = this.page(
                 new Query<ReasonEntity>().getPage(params),
-                new QueryWrapper<ReasonEntity>()
+                reasonEntityQueryWrapper
         );
 
         return new PageUtils(page);
